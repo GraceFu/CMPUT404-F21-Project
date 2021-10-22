@@ -1,0 +1,12 @@
+# system cache
+.vscode/
+.DS_Store
+**/__pycache__/
+**/vendor
+
+# virtual eviroment
+/venv
+/.env
+
+# database produces in local machine
+db.sqlite3
