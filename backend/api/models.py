@@ -61,7 +61,7 @@ class Inbox(models.Model):
 class Post(models.Model):
     post_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
-    author_id = models.ForeignKey(Author, on_delete=models.CASCADE,)
+    author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     origin_post = models.URLField()
     source = models.URLField()
@@ -113,16 +113,17 @@ class Like(models.Model):
 
 ######### Node #########
 class Node(models.Model):
+    host_url = models.URLField(max_length=200, default='localhost') 
     host = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
-    user = models.OneToOneField(
+        primary_key=True, default=generate_id, editable=False, unique=True,null=True, blank=True)  #doubt we even need this,this class only looks for interfaceable servers/hosts 
+    user = models.OneToOneField(                                                                   #so no need to generate unique id
         User, on_delete=models.CASCADE, blank=True, null=True)
-    username = models.CharField(max_length=200, null=False)
-    password = models.CharField(max_length=200, null=False)
-    email = models.EmailField(max_length=200, null=False)
-    display_name = models.CharField(max_length=200, null=True)
-    host_url = models.URLField(max_length=200, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_interfaced = models.DateTimeField(auto_now_add=True)
+    host_username = models.CharField(max_length=200, null=False)
+    host_password = models.CharField(max_length=200, null=False)
+    email = models.EmailField(max_length=200, null=True, blank=True, default=None)
+    display_name = models.CharField(max_length=200, null=True, blank=True)  
+    
 
 
 # ######### Sign up #########
