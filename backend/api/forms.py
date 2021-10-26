@@ -1,16 +1,21 @@
-from django.shortcuts import  render, redirect
-from .forms import NewUserForm
-from django.contrib.auth import login
-from django.contrib import messages
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-def register_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("main:homepage")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request=request, template_name="main/register.html", context={"register_form":form})
+
+class NewUserForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        # password1 is the initial password, password2 is the password confirmation
+        fields = ("username", "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(NewUserForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        # set user to be inactive first, admin needs to activate it before it can log in
+        user.is_active = False
+        if commit:
+            user.save()
+        return user

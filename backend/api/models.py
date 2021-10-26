@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.db.models.fields import related
 from django.conf import settings
+from django.utils.translation import activate
 #from ..Social_network.settings import HOSTNAME
 from .utils import generate_id
 from django import forms
@@ -23,7 +24,7 @@ class Author(models.Model):
     author_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True)
+        User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=100)
     host = models.CharField(default='localhost', max_length=500)
     url = models.URLField(null=True, blank=True)
