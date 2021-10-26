@@ -35,8 +35,11 @@ class Follow(models.Model):
     request_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     # friend request from user
-    actor = models.ForeignKey(Author, on_delete=models.CASCADE)
+    actor = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name="actor")
     # friend request to user
+    object = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name="object")
     request_time = models.DateTimeField(auto_now_add=True)
     summary = models.CharField(max_length=100, default="new friend request")
     request_acceptance = models.BooleanField(default=False)

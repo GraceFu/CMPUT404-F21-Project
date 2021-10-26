@@ -10,4 +10,4 @@
 
 # database produces in local machine
 db.sqlite3
-/migrations
+**/migrations
