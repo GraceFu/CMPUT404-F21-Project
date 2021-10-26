@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 import api
-from .views import signup
+from .views import auth, homepage
 
 urlpatterns = [
     # Authors
@@ -43,5 +43,8 @@ urlpatterns = [
 
     # Inbox
 
-    path("signup", signup.signup_request, name="signup")
+    path("homepage", homepage.homepage, name="homepage"),
+    path("signup", auth.signup_request, name="signup"),
+    path("waitforapproval", auth.wait_for_approval_page, name="waitforapproval"),
+    path("login", auth.login_request, name="login")
 ]
