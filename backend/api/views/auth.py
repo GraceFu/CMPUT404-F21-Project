@@ -10,16 +10,13 @@ def signup_request(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect("waitforapproval")
+            messages.warning(
+                request, "Thank you! Please wait for admin to appove your registration.")
         else:
             messages.error(
                 request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render(request=request, template_name="signup.html", context={"register_form": form})
-
-
-def wait_for_approval_page(request):
-    return render(request=request, template_name="waitforapproval.html")
 
 
 def login_request(request):

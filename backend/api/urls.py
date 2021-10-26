@@ -45,6 +45,5 @@ urlpatterns = [
 
     path("homepage", homepage.homepage, name="homepage"),
     path("signup", auth.signup_request, name="signup"),
-    path("waitforapproval", auth.wait_for_approval_page, name="waitforapproval"),
     path("login", auth.login_request, name="login")
 ]
