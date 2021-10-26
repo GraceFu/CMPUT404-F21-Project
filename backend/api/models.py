@@ -35,8 +35,9 @@ class Follow(models.Model):
     request_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     # friend request from user
-    actor = models.ForeignKey(Author, on_delete=models.CASCADE)
+    actor = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="actor")
     # friend request to user
+    object = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="object")
     request_time = models.DateTimeField(auto_now_add=True)
     summary = models.CharField(max_length=100, default="new friend request")
     request_acceptance = models.BooleanField(default=False)
@@ -115,7 +116,7 @@ class Like(models.Model):
 class Node(models.Model):
     host_url = models.URLField(max_length=200, default='localhost') 
     host = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True,null=True, blank=True)  #doubt we even need this,this class only looks for interfaceable servers/hosts 
+        primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  #doubt we even need this,this class only looks for interfaceable servers/hosts 
     user = models.OneToOneField(                                                                   #so no need to generate unique id
         User, on_delete=models.CASCADE, blank=True, null=True)
     date_interfaced = models.DateTimeField(auto_now_add=True)
