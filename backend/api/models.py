@@ -113,17 +113,17 @@ class Like(models.Model):
 
 ######### Node #########
 class Node(models.Model):
-    host_url = models.URLField(max_length=200, default='localhost') 
+    host_url = models.URLField(max_length=200, default='localhost')
     host = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True,null=True, blank=True)  #doubt we even need this,this class only looks for interfaceable servers/hosts 
-    user = models.OneToOneField(                                                                   #so no need to generate unique id
+        primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
+    user = models.OneToOneField(  # so no need to generate unique id
         User, on_delete=models.CASCADE, blank=True, null=True)
     date_interfaced = models.DateTimeField(auto_now_add=True)
     host_username = models.CharField(max_length=200, null=False)
     host_password = models.CharField(max_length=200, null=False)
-    email = models.EmailField(max_length=200, null=True, blank=True, default=None)
-    display_name = models.CharField(max_length=200, null=True, blank=True)  
-    
+    email = models.EmailField(
+        max_length=200, null=True, blank=True, default=None)
+    display_name = models.CharField(max_length=200, null=True, blank=True)
 
 
 # ######### Sign up #########
