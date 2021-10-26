@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-###Need work
+# Need work
 
 import os
 from pathlib import Path
@@ -18,7 +18,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#HOSTNAME='localhost'
+HOSTNAME = 'localhost'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -29,7 +29,6 @@ SECRET_KEY = 'django-insecure-61aaw#-3hhs_!ok)@4no@s5wrnzby!^^xwy9nv3kk*z=c9lx%-
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 
 # Application definition
@@ -129,10 +128,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_project')
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR),'frontend','static')
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'frontend','media')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'media')
 
 
 # Default primary key field type
