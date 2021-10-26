@@ -1,7 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
+from django.db.models.fields import related
+from django.conf import settings
+from backend.Social_network.settings import HOSTNAME
 from utils import generate_id
 
 # Create your models here.
+
+
+######### Author #########
+class Author(models.Model):
+
 
 class Follow(models.Model):
     request_id = models.UUIDField(primary_key=True, default=generate_id, editable=False, unique=True)
