@@ -37,7 +37,6 @@ class Follow(models.Model):
     # friend request from user
     actor = models.ForeignKey(Author, on_delete=models.CASCADE)
     # friend request to user
-    object = models.ForeignKey(Author, on_delete=models.CASCADE)
     request_time = models.DateTimeField(auto_now_add=True)
     summary = models.CharField(max_length=100, default="new friend request")
     request_acceptance = models.BooleanField(default=False)
@@ -94,7 +93,6 @@ class Comment(models.Model):
     content_type = models.CharField(
         max_length=50, default="text/html", blank=False, null=False)
     host = models.CharField(max_length=50)
-    post_author = models.ForeignKey(Author, on_delete=models.CASCADE)
     url = models.URLField(null=True, blank=True, default=None)
 
 
