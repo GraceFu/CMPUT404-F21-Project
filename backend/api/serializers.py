@@ -1,4 +1,4 @@
-from models import Author, Post, Follow, Friend, Comment, Like, Inbox
+from .models import Author, Post, Follow, Friend, Comment, Like, Inbox
 from rest_framework import serializers
 
 

@@ -23,8 +23,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-import api
-from .views import auth, homepage
+from api.views import auth, homepage, posts
 
 urlpatterns = [
     # Authors
@@ -34,7 +33,8 @@ urlpatterns = [
     # FriendRequest
 
     # Post
-
+    path("author/<str:author_id>/posts/<str:post_id>", posts.handel_existing_post, "handel_existing_post"),
+    path("author/<str:author_id>/posts/", posts.handel_creating_post, "handel_creating_post"),
     # Comments
 
     # Likes
