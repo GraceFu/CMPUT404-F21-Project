@@ -9,13 +9,16 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+
+# Need work
+
 import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+HOSTNAME = 'localhost'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -37,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'api'
+    'rest_framework',
+    'api',
+    'crispy_forms'  # temporary, remove later
 ]
 
 MIDDLEWARE = [
@@ -125,13 +129,25 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_project')
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR),'frontend','static')
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'frontend','media')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'media')
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Defined number of objects per page are returned
+# https://www.django-rest-framework.org/tutorial/quickstart/
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]
+}

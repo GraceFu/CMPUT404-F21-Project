@@ -17,11 +17,13 @@ Including another URLconf
 This class sets the api endpoints of the app. Refers to https://github.com/abramhindle/CMPUT404-project-socialdistribution/blob/master/project.org#objects
 Methods allowed: GET, POST, PUT, DELETE
 """
+# Needs work
+
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-import api
+from api.views import auth, homepage, posts
 
 urlpatterns = [
     # Authors
@@ -31,7 +33,10 @@ urlpatterns = [
     # FriendRequest
 
     # Post
-
+    path("author/<str:author_id>/posts/<str:post_id>",
+         posts.handle_existing_post, "handle_existing_post"),
+    path("author/<str:author_id>/posts/",
+         posts.handle_creating_post, "handle_creating_post"),
     # Comments
 
     # Likes
@@ -39,4 +44,8 @@ urlpatterns = [
     # Liked
 
     # Inbox
+
+    path("homepage", homepage.homepage, name="homepage"),
+    path("signup", auth.signup_request, name="signup"),
+    path("login", auth.login_request, name="login")
 ]

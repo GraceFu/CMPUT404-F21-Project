@@ -1,7 +1,27 @@
 from django.contrib import admin
-from .models.profiles import Profile
+from .models import Post  #
+from .models import Author
+# from .models import Signup_Request  # need to implement
+# Do we want the models in a directory or everything in the models.py file?
+from .models import Comment
+from .models import Like
+from .models import Follow
+# from .models import Friend  # need to implement
+from .models import Inbox
+from .models import Node
+
+#from .views.adminviews.adminlistview import signup_request_admin_list_view
+
 
 # Register your models here.
+admin.site.register(Post)
+admin.site.register(Author)
+admin.site.register(Comment)
+admin.site.register(Like)
+admin.site.register(Follow)
+# admin.site.register(Friend)
+admin.site.register(Inbox)
+admin.site.register(Node)
 
-
-admin.site.register(Profile)
+# custom register
+#admin.site.register(Signup_Request, signup_request_admin_list_view)
