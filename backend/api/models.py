@@ -12,12 +12,13 @@ from django import forms
 # Create your models here.
 # https://docs.djangoproject.com/en/3.2/topics/db/models/
 # https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
-    
+
 
 # Defined constant fields
 class VisibilityType(models.TextChoices):
     PUBLIC = "PUBLIC"
     FRIENDS = "FRIENDS"
+
 
 class ContentType(models.TextChoices):
     MARKDOWN = "text/markdown"
@@ -41,6 +42,8 @@ class Author(models.Model):
     profile_picture = models.URLField()  # TODO Should be an url ?
 
 ######### Follow #########
+
+
 class Follow(models.Model):
     type = models.CharField(default="followers", max_length=100)
     request_id = models.UUIDField(
@@ -55,6 +58,8 @@ class Follow(models.Model):
     request_acceptance = models.BooleanField(default=False)
 
 ######### Friend #########
+
+
 class Friend(models.Model):
     type = models.CharField(default="friend", max_length=100)
     request_id = models.UUIDField(
@@ -69,7 +74,9 @@ class Friend(models.Model):
     request_time = models.DateTimeField(auto_now_add=True)
     request_acceptance = models.BooleanField(default=False)
 
-######### Post ######### potentially missing comment field and list of comment field
+# Post ######### potentially missing comment field and list of comment field
+
+
 class Post(models.Model):
     type = models.CharField(default="post", max_length=100)
     post_id = models.UUIDField(
@@ -81,30 +88,36 @@ class Post(models.Model):
     content_type = models.CharField(max_length=100, default=ContentType.PLAIN)
     content = models.CharField(max_length=500, null=True, blank=True)
     image_content = models.URLField()  # TODO Should be an url ?
-    author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     categories = models.JSONField()  # list of strings
     count = models.IntegerField(default=0)
     published_date = models.DateTimeField(default=timezone.now)
-    visibility = models.CharField(max_length=50, choices=VisibilityType.choices, default=VisibilityType.PUBLIC)
+    visibility = models.CharField(
+        max_length=50, choices=VisibilityType.choices, default=VisibilityType.PUBLIC)
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
     # TODO list of comment object ? -> list of comment id maybe
-    
+
 ######### Comment #########
+
+
 class Comment(models.Model):
     type = models.CharField(default="comment", max_length=100)
     comment_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, null=True)
-    content_type = models.CharField(max_length=100, default=ContentType.PLAIN, blank=False, null=False)
+    content_type = models.CharField(
+        max_length=100, default=ContentType.PLAIN, blank=False, null=False)
     image_content = models.URLField()  # TODO Should be an url ?
     published_date = models.DateTimeField(default=timezone.now)
     url = models.URLField(null=True, blank=True, editable=False)
 
-######### Like ######### Doubt we need @context in the model (see proj description)
+# Like ######### Doubt we need @context in the model (see proj description)
+
+
 class Like(models.Model):
     # like_id = models.UUIDField(primary_key=True, default=generate_id, editable=False, unique=True)
     type = models.CharField(default="like", max_length=100)
@@ -113,7 +126,9 @@ class Like(models.Model):
     # object_url refer to the post object/link or the comment object/link that is liked
     object_url = models.URLField(null=True, blank=True, editable=False)
 
-######### Inbox ######### potentially missing list of inbox object
+# Inbox ######### potentially missing list of inbox object
+
+
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
     inbox_id = models.UUIDField(
