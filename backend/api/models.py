@@ -89,7 +89,7 @@ class Post(models.Model):
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
-    # TODO list of comment object ?
+    # TODO list of comment object ? -> list of comment id maybe
     
 ######### Comment #########
 class Comment(models.Model):
