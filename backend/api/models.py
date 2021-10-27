@@ -29,7 +29,7 @@ class ContentType(models.TextChoices):
 
 ######### Author #########
 class Author(models.Model):
-    type = models.CharField(default="author")
+    type = models.CharField(default="author", max_length=100)
     author_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     user = models.ForeignKey(
@@ -41,8 +41,8 @@ class Author(models.Model):
     profile_picture = models.URLField()  # TODO Should be an url ?
 
 ######### Follow #########
-class Follower(models.Model):
-    type = models.CharField(default="followers")
+class Follow(models.Model):
+    type = models.CharField(default="followers", max_length=100)
     request_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     # follow request from user
@@ -56,7 +56,7 @@ class Follower(models.Model):
 
 ######### Friend #########
 class Friend(models.Model):
-    type = models.CharField(default="friend")
+    type = models.CharField(default="friend", max_length=100)
     request_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     # friend request from user
@@ -71,21 +71,21 @@ class Friend(models.Model):
 
 ######### Post ######### potentially missing comment field and list of comment field
 class Post(models.Model):
-    type = models.CharField(default="post")
+    type = models.CharField(default="post", max_length=100)
     post_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     title = models.CharField(max_length=100)
     source = models.URLField()
     origin_post = models.URLField()
     description = models.CharField(max_length=200)
-    content_type = models.CharField(default=ContentType.choices, default=ContentType.PLAIN)
+    content_type = models.CharField(max_length=100, default=ContentType.PLAIN)
     content = models.CharField(max_length=500, null=True, blank=True)
     image_content = models.URLField()  # TODO Should be an url ?
     author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
     categories = models.JSONField()  # list of strings
     count = models.IntegerField(default=0)
     published_date = models.DateTimeField(default=timezone.now)
-    visibility = models.CharField(choices=VisibilityType.choices, default=VisibilityType.PUBLIC)
+    visibility = models.CharField(max_length=50, choices=VisibilityType.choices, default=VisibilityType.PUBLIC)
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
@@ -93,13 +93,13 @@ class Post(models.Model):
     
 ######### Comment #########
 class Comment(models.Model):
-    type = models.CharField(default="comment")
+    type = models.CharField(default="comment", max_length=100)
     comment_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, null=True)
-    content_type = models.CharField(default=ContentType.PLAIN, blank=False, null=False)
+    content_type = models.CharField(max_length=100, default=ContentType.PLAIN, blank=False, null=False)
     image_content = models.URLField()  # TODO Should be an url ?
     published_date = models.DateTimeField(default=timezone.now)
     url = models.URLField(null=True, blank=True, editable=False)
@@ -107,7 +107,7 @@ class Comment(models.Model):
 ######### Like ######### Doubt we need @context in the model (see proj description)
 class Like(models.Model):
     # like_id = models.UUIDField(primary_key=True, default=generate_id, editable=False, unique=True)
-    type = models.CharField(default="like")
+    type = models.CharField(default="like", max_length=100)
     author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
     summary = models.CharField(max_length=100)
     # object_url refer to the post object/link or the comment object/link that is liked
@@ -115,26 +115,26 @@ class Like(models.Model):
 
 ######### Inbox ######### potentially missing list of inbox object
 class Inbox(models.Model):
-    type = models.CharField(default="inbox")
+    type = models.CharField(default="inbox", max_length=100)
     inbox_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    # TODO list of inbox object ?
+    items = models.JSONField(default=list)
 
 
-# ######### Node #########
-# class Node(models.Model):
-#     host_url = models.URLField(max_length=200, default="localhost")
-#     host = models.UUIDField(
-#         primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
-#     user = models.OneToOneField(  # so no need to generate unique id
-#         User, on_delete=models.CASCADE, blank=True, null=True)
-#     date_interfaced = models.DateTimeField(auto_now_add=True)
-#     host_username = models.CharField(max_length=200, null=False)
-#     host_password = models.CharField(max_length=200, null=False)
-#     email = models.EmailField(
-#         max_length=200, null=True, blank=True, default=None)
-#     display_name = models.CharField(max_length=200, null=True, blank=True)
+######### Node #########
+class Node(models.Model):
+    host_url = models.URLField(default="localhost", max_length=100)
+    host = models.UUIDField(
+        primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
+    user = models.OneToOneField(  # so no need to generate unique id
+        User, on_delete=models.CASCADE, blank=True, null=True)
+    date_interfaced = models.DateTimeField(auto_now_add=True)
+    host_username = models.CharField(max_length=200, null=False)
+    host_password = models.CharField(max_length=200, null=False)
+    email = models.EmailField(
+        max_length=200, null=True, blank=True, default=None)
+    display_name = models.CharField(max_length=200, null=True, blank=True)
 
 # ######### Sign up #########
 # class sign_up_form(forms.Form):
