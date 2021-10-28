@@ -38,8 +38,9 @@ class Author(models.Model):
     display_name = models.CharField(max_length=100)
     host = models.CharField(default="localhost", max_length=500)
     url = models.URLField(editable=False)
-    github = models.URLField(editable=False)
-    profile_picture = models.URLField()  # TODO Should be an url ?
+    github = models.URLField(null=True, blank=True)
+    profile_picture = models.URLField(
+        null=True, blank=True)  # TODO Should be an url ?
 
 ######### Follow #########
 

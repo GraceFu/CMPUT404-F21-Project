@@ -27,7 +27,7 @@ def login_request(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             # TODO: Different message sent to wrong auth and not-yet-approved users
-            if user is None and user.is_active:
+            if user is not None and user.is_active:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
                 return redirect("homepage")
