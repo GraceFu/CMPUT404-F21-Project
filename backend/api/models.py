@@ -33,13 +33,15 @@ class Author(models.Model):
     type = models.CharField(default="author", max_length=100)
     author_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=100)
     host = models.CharField(default="localhost", max_length=500)
     url = models.URLField(editable=False)
-    github = models.URLField(editable=False)
-    profile_picture = models.URLField()  # TODO Should be an url ?
+    github = models.URLField(null=True, blank=True)
+    profile_picture = models.URLField(
+        null=True, blank=True)  # TODO Should be an url ?
+
 
 ######### Follow #########
 

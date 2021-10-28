@@ -7,6 +7,7 @@ from api.serializers import PostSerializer, AuthorSerializer
 from api.utils import generate_id
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from ..forms import NewPostForm
 
 
 # Create your views here.
@@ -33,8 +34,7 @@ def handle_existing_post(request, author_id, post_id):
 
     # check whether the author matches the post
     if post.author.author_id != author.author_id:
-        raise exceptions.PermissionDenied(
-            "The author does not match the post.")
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     if request.method == GET:
         return get_post(request, post)
@@ -73,6 +73,7 @@ def handle_creating_post(request, author_id):
 
 def get_post(request, post):
     """ View a public post """
+    # TODO: try it out
     if post.visibility != Post.VisibilityType.PUBLIC:
         return Response(status=status.HTTP_403_FORBIDDEN)
 
@@ -109,7 +110,7 @@ def get_author_by_id(author_id):
     try:
         return Author.objects.get(author_id=author_id)
     except Author.DoesNotExist:
-        raise exceptions.NotFound("Author does not exist!")
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def get_post_by_id(post_id):
@@ -117,4 +118,4 @@ def get_post_by_id(post_id):
     try:
         return Post.objects.get(post_id=post_id)
     except Post.DoesNotExist:
-        raise exceptions.NotFound("Post does not exist!")
+        return Response(status=status.HTTP_404_NOT_FOUND)

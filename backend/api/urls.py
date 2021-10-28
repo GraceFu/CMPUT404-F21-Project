@@ -34,9 +34,9 @@ urlpatterns = [
 
     # Post
     path("author/<str:author_id>/posts/<str:post_id>",
-         posts.handle_existing_post, "handle_existing_post"),
+         posts.handle_existing_post, name="handle_existing_post"),
     path("author/<str:author_id>/posts/",
-         posts.handle_creating_post, "handle_creating_post"),
+         posts.handle_creating_post, name="handle_creating_post"),
     # Comments
 
     # Likes
