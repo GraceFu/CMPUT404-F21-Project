@@ -28,7 +28,7 @@ from api.views import auth, homepage, authors, followers, posts
 from api.utils import methods
 
 router = DefaultRouter()
-router.register(r'posts', posts.post_view_set, basename='posts')
+router.register(r'posts', posts.PostViewSet, basename='posts')
 urlpatterns = router.urls
 
 urlpatterns = [
@@ -42,17 +42,20 @@ urlpatterns = [
     # Authors
     # TODO -> {methods.GET: 'retrieve_all_authors'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
     # TODO -> {methods.GET: 'retrieve'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
-    path("author/<str:author_id>", authors.author_view_set.as_view({methods.POST: 'update'}), name="author_profile"),
-    
+    path("author/<str:author_id>",
+         authors.author_view_set.as_view({methods.POST: 'update'}), name="author_profile"),
+
     # Followers
 
     # FriendRequest
 
     # Post
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a author_id
-    path("author/<str:author_id>/posts/", posts.post_view_set.as_view({methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
+    path("author/<str:author_id>/posts/", posts.PostViewSet.as_view(
+        {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
     # TODO -> fix update_post to have author_id and able able update TODO {methods.PUT: 'get_public_posts'}
-    path("author/<str:author_id>/posts/<str:post_id>", posts.post_view_set.as_view({methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post'}), name="handle_existing_post")
+    path("author/<str:author_id>/posts/<str:post_id>", posts.PostViewSet.as_view(
+        {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post'}), name="handle_existing_post")
     # TODO post
     #  stream
 

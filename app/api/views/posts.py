@@ -14,7 +14,7 @@ from datetime import datetime
 # https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
 
 
-class post_view_set(viewsets.ViewSet):
+class PostViewSet(viewsets.ViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
 
