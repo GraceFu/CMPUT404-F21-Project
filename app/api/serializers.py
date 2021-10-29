@@ -10,7 +10,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ["type", "id", "url", "host",
-                  "displayName", "github", "profileImage"]
+                  "displayName", "github"]
 
     # Create and return a new Author instance, given the validated data.
     def create(self, validated_data):
@@ -19,7 +19,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     # allowing changes to displayName and github link
     def update(self, instance, validated_data):
         instance.displayName = validated_data.get(
-            'display_name', instance.displayName)
+            'displayName', instance.displayName)
         instance.github = validated_data.get('github', instance.github)
         instance.save()
         return instance
@@ -28,7 +28,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["type", "title", "id", "source", "origin", "description", "contentType", "content",
-                  "author", "categories", "count", "comments", "published", "visibility", "unlisted"]
+        fields = ["type", "title", "postID", "source", "origin", "description", "contentType", "content",
+                  "author", "categories", "count", "published", "visibility", "unlisted"]
 
 # TODO add more serializers

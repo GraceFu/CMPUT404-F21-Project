@@ -1,0 +1,32 @@
+{% include 'messages.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/auth.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+</head>
+
+<body>
+  <div class='container py-5'>
+      <div class="main">
+        <p class="sign" align="center">Sign Up</p>
+          <form method='POST'>
+            <input class="un" type="text" name="username" align="center" placeholder="Username" value="{{ username }}" required />
+            <input class="pass" type="password" name="password1" align="center" placeholder="Password" value="{{ password1 }}" required />
+            <input class="pass" type="password" name="password2" align="center" placeholder="Repeat Password" value="{{ password2 }}" required />
+            <input class="un" type="text" name="displayName" align="center" placeholder="Display Name" value="{{ displayName }}" required />
+            <input class="un" type="url" name="github" align="center" placeholder="GitHub Profile" value="{{ github }}" required />
+            <input class="submit" type="submit" align="center" value="Submit">
+          </form>
+          <p class="login" align="center"><a href="/login">Already have an account?</p>
+      </div>
+  </div>
+</body>
+
+</html>

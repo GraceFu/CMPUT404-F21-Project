@@ -1,0 +1,38 @@
+<style>
+.messages {
+  padding: 15px;
+  background-color: #4446c5; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+.msgtext {
+    padding-left: 15px;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+</style>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="msgtext" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+        <span class="closebtn" onclick="this.parentElement.parentElement.style.display='none';">&times;</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

@@ -1,0 +1,30 @@
+{% include 'messages.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="font-family" href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/auth.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Log in</title>
+</head>
+
+<body>
+    <div class='container py-5'>
+        <div class="main">
+            <p class="sign" align="center">Login</p>
+            <box class="form1">
+                <form method='POST'>
+                    <input class="un " type="text" id="username" name="username" align="center" placeholder="Username" value="{{ username }}" required />
+                    <input class="pass" type="password" id="password" name="password" align="center" placeholder="Password" value="{{ password }}"required />
+                    <input class="submit" type="submit" align="center" value="Login">
+                    <p class="forgot" align="center"><a href="/signup">Don't have an account?</p>
+                </form>
+            </box>
+        </div>
+    </div>
+</body>
+
+</html>

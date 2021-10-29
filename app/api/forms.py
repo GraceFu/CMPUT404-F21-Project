@@ -6,12 +6,15 @@ from .utils import generate_id
 
 
 class NewUserForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    displayName = forms.CharField(
+        max_length=100, help_text="Enter a name you want to display o.o", required=True)
+    github = forms.URLField(help_text="Enter your GitHub link.")
 
     class Meta:
         model = User
         # password1 is the initial password, password2 is the password confirmation
-        fields = ("username", "password1", "password2")
+        fields = ("username", "password1", "password2",
+                  "displayName", "github")
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
