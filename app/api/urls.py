@@ -40,10 +40,10 @@ urlpatterns = [
     path("homepage", homepage.homepage, name="homepage"),
 
     # Authors
-    # TODO -> {methods.GET: 'retrieve_all_authors'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
-    # TODO -> {methods.GET: 'retrieve'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    path("authors",
+         authors.AuthorsViewSet.as_view({methods.GET: 'list_all'}), name="authors_list"),
     path("author/<str:authorID>",
-         authors.AuthorViewSet.as_view({methods.POST: 'update'}), name="author_profile"),
+         authors.ProfileViewSet.as_view({methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
 
     # Followers
 
