@@ -1,121 +1,120 @@
-from rest_framework import status, exceptions
-from rest_framework.decorators import api_view
+from rest_framework import status, viewsets, permissions
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
-from api.models import Author, Post
-from api.serializers import PostSerializer, AuthorSerializer
-from api.utils import generate_id
-from django.shortcuts import render, redirect
+from api.models import Author, Post, visibilityType
+from api.serializers import PostSerializer
+from api.utils import generate_id, methods
+from Social_network.settings import HOSTNAME
 from django.contrib.auth.decorators import login_required
-from ..forms import NewPostForm
+from datetime import datetime
 
-
-# Create your views here.
+# References
 # https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
-
-GET = 'GET'
-POST = 'POST'
-DELETE = 'DELETE'
-PUT = 'PUT'
-
-"""
-URL: ://service/author/{AUTHOR_ID}/posts/{POST_ID}
-GET: get the public post
-POST: update the post (must be authenticated)
-DELETE: remove the post
-PUT: create a post with that post_id
-"""
-
-
-@api_view([GET, POST, DELETE, PUT])
-def handle_existing_post(request, author_id, post_id):
-    author = get_author_by_id(author_id)
-    post = get_post_by_id(post_id)
-
-    # check whether the author matches the post
-    if post.author.author_id != author.author_id:
-        return Response(status=status.HTTP_403_FORBIDDEN)
-
-    if request.method == GET:
-        return get_post(request, post)
-    elif request.method == PUT:
-        return create_post(request, author, post_id)
-    elif request.method == DELETE:
-        return delete_post(request, author_id)
-    elif request.method == POST:
-        return update_post(request, author_id)
-
-    else:
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-"""
-Creation URL ://service/author/{AUTHOR_ID}/posts/
-GET: get recent posts of author (paginated)
-POST: create a new post but generate a post_id
-"""
-
-
-@api_view([GET, POST])
-def handle_creating_post(request, author_id):
-    author = get_author_by_id(author_id)
-    post_id = generate_id()
-
-    if request.method == GET:
-        return get_posts(request, author_id)
-    elif request.method == POST:
-        return create_post(request, author_id, post_id)
-    else:
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
+# https://www.django-rest-framework.org/api-guide/viewsets/
 # https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
 
 
-def get_post(request, post):
-    """ View a public post """
-    # TODO: try it out
-    if post.visibility != Post.VisibilityType.PUBLIC:
-        return Response(status=status.HTTP_403_FORBIDDEN)
+class post_view_set(viewsets.ViewSet):
 
-    serializer = PostSerializer(post)
-    # return 400 response if the data was invalid.
-    if serializer.is_valid(raise_exception=True):
-        return render(request, 'post.html', serializer)
+    permission_classes = [ permissions.IsAuthenticated ]
+    """
+    Creation URL ://service/author/{AUTHOR_ID}/posts/
+    GET: get recent posts of author (paginated)
+    POST: create a new post but generate a post_id
+    """
+    @action(methods=[methods.GET], detail=True)
+    def get_author_posts(self, author_id):
+        """ list author posts """
+        if self.check_author_by_id(author_id) is False:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        queryset = Post.objects.filter(author=author_id).order_by('-published_date')
+        serializer = PostSerializer(queryset, many=True)
+        if serializer.is_valid:
+            return Response(serializer.data)
+        else:
+            # return 400 response if the data was invalid.
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-def create_post(request, author, post_id):
-    """ create a post """
-    # TODO service
-    #post_serializer = PostSerializer(data=request.data)
-    #post_instance = post_serializer.save()
-
-
-def delete_post(request, author_id, post_id):
-    # TODO service
-    pass
-
-
-def update_post(request, author_id, post_id):
-    # TODO service
-    pass
-
-
-def get_posts(request, author_id):
-    # TODO service
-    pass
-
-
-def get_author_by_id(author_id):
-    """ check existence of an author """
-    try:
-        return Author.objects.get(author_id=author_id)
-    except Author.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    @action(methods=[methods.POST], detail=True)
+    def create_post_without_post_id(self, request, author_id):
+        """ create a post """
+        if self.check_author_by_id(author_id) is False:
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
+        
+        post_id = generate_id
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            instance = Post.objects.create()
+            self.populate_post_data(post_id, author_id, serializer.data, instance)
+            return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
 
 
-def get_post_by_id(post_id):
-    """ check existence of a post """
-    try:
-        return Post.objects.get(post_id=post_id)
-    except Post.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    """
+    URL: ://service/author/{AUTHOR_ID}/posts/{POST_ID}
+    GET: get the public post
+    POST: update the post (must be authenticated)
+    DELETE: remove the post
+    PUT: create a post with that post_id
+    """
+    @action(methods=[methods.GET], detail=True)
+    def get_public_posts(self):
+        """ list public postS """
+        # sort public post from the most recent to the oldest
+        queryset = Post.objects.filter(visibility=visibilityType.PUBLIC).order_by('-published_date')
+        serializer = self.get_serializer(queryset, many=True)
+        
+        if serializer.is_valid:
+            return Response(serializer.data)
+        else:
+            # return 400 response if the data was invalid.
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def create_post_with_post_id(self, request):
+        #TODO
+        pass
+
+    def delete_post(self, request, post_id):
+        # TODO service
+        pass
+
+    def update_post(self, request, post_id):
+        # TODO service
+        pass
+
+
+    def check_author_by_id(self, author_id):
+        """ check existence of an author """
+        try:
+            if Author.objects.get(author_id=author_id):
+                return True
+        except Author.DoesNotExist:
+            return False
+
+    def check_post_by_id(self, post_id):
+        """ check existence of a post """
+        try:
+            if Post.objects.get(post_id=post_id):
+                return True
+        except Post.DoesNotExist:
+            return False
+    
+    def populate_post_data(self, post_id, author_id, data, instance):
+        """ put request data into instance """
+        instance.type = data["type"]
+        instance.title = data["title"]
+        instance.post_id = post_id
+        instance.source = data["source"]  # TODO make it to url
+        instance.origin_post = data["origin"]  # TODO make it to url
+        instance.description = data["description"]
+        instance.content_type = data["contentType"]
+        instance.content = data["content"]
+        instance.author = author_id
+        instance.categories = data["categories"]
+        instance.count = data["count"]
+        instance.published_date = datetime.now().isoformat()
+        instance.visibility = data["visibility"]
+        instance.unlisted = data["unlisted"]
+        instance.save()

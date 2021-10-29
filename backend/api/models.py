@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.db.models.fields import related
-from django.conf import settings
+from Social_network.settings import HOSTNAME
 from django.utils.translation import activate
 from .utils import generate_id
 from django import forms
@@ -14,13 +14,13 @@ from django import forms
 # https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
 
 
-# Defined constant fields
-class VisibilityType(models.TextChoices):
+# Defined constant/enum fields
+class visibilityType(models.TextChoices):
     PUBLIC = "PUBLIC"
     FRIENDS = "FRIENDS"
 
 
-class ContentType(models.TextChoices):
+class contentType(models.TextChoices):
     MARKDOWN = "text/markdown"
     PLAIN = "text/plain"
     APPLICATION = "application/base64"
@@ -32,15 +32,15 @@ class ContentType(models.TextChoices):
 class Author(models.Model):
     type = models.CharField(default="author", max_length=100)
     author_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, default=generate_id(), editable=False, unique=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
-    display_name = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100, default="Someone")
     host = models.CharField(default="localhost", max_length=500)
-    url = models.URLField(editable=False)
+    url = models.URLField(null=True, blank=True, editable=False)
     github = models.URLField(null=True, blank=True)
-    profile_picture = models.URLField(
-        null=True, blank=True)  # TODO Should be an url ?
+    # profile_picture = models.URLField(null=True, blank=True)
+    # TODO set profile picture properly
 
 
 ######### Follow #########
@@ -87,15 +87,15 @@ class Post(models.Model):
     source = models.URLField()
     origin_post = models.URLField()
     description = models.CharField(max_length=200)
-    content_type = models.CharField(max_length=100, default=ContentType.PLAIN)
+    content_type = models.CharField(max_length=100, default=contentType.PLAIN)
     content = models.CharField(max_length=500, null=True, blank=True)
     image_content = models.URLField()  # TODO Should be an url ?
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    # author = models.ForeignKey(Author, on_delete=models.CASCADE)
     categories = models.JSONField()  # list of strings
     count = models.IntegerField(default=0)
     published_date = models.DateTimeField(default=timezone.now)
     visibility = models.CharField(
-        max_length=50, choices=VisibilityType.choices, default=VisibilityType.PUBLIC)
+        max_length=50, choices=visibilityType.choices, default=visibilityType.PUBLIC)
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
@@ -112,7 +112,7 @@ class Comment(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, null=True)
     content_type = models.CharField(
-        max_length=100, default=ContentType.PLAIN, blank=False, null=False)
+        max_length=100, default=contentType.PLAIN, blank=False, null=False)
     image_content = models.URLField()  # TODO Should be an url ?
     published_date = models.DateTimeField(default=timezone.now)
     url = models.URLField(null=True, blank=True, editable=False)
@@ -141,7 +141,7 @@ class Inbox(models.Model):
 
 ######### Node #########
 class Node(models.Model):
-    host_url = models.URLField(default="localhost", max_length=100)
+    host_url = models.URLField(default='localhost', max_length=100)
     host = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
     user = models.OneToOneField(  # so no need to generate unique id

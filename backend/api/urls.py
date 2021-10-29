@@ -17,13 +17,19 @@ Including another URLconf
 This class sets the api endpoints of the app. Refers to https://github.com/abramhindle/CMPUT404-project-socialdistribution/blob/master/project.org#objects
 Methods allowed: GET, POST, PUT, DELETE
 """
-# Needs work
+# https://www.django-rest-framework.org/api-guide/viewsets/#example
 
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 from api.views import auth, homepage, posts
+from api.utils import methods
+
+router = DefaultRouter()
+router.register(r'posts', posts.post_view_set, basename='posts')
+urlpatterns = router.urls
 
 urlpatterns = [
     # Authors
@@ -32,11 +38,10 @@ urlpatterns = [
 
     # FriendRequest
 
-    # Post
-    path("author/<str:author_id>/posts/<str:post_id>",
-         posts.handle_existing_post, name="handle_existing_post"),
-    path("author/<str:author_id>/posts/",
-         posts.handle_creating_post, name="handle_creating_post"),
+    # Post            methods.GET: 'get_author_posts',  --> GET /posts/> uuid invalid error?
+    path("posts/", posts.post_view_set.as_view({methods.POST: 'create_post_without_post_id'}), name="handle_new_post"),
+    path("posts/<str:post_id>", posts.post_view_set.as_view({methods.GET: 'get_public_posts', methods.POST: 'create_post_with_post_id'}), name="handle_existing_post"),
+    
     # Comments
 
     # Likes
