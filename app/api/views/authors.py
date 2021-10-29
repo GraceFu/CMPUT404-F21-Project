@@ -7,6 +7,7 @@ from api.utils import methods
 
 # Create your models here.
 
+
 class author_view_set(viewsets.ViewSet):
     @action(methods=[methods.POST], detail=True)
     def update(self, request, author_id):

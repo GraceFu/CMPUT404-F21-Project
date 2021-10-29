@@ -13,7 +13,8 @@ class NewUserForm(UserCreationForm):
     class Meta:
         model = User
         # password1 is the initial password, password2 is the password confirmation
-        fields = ("username", "password1", "password2")
+        fields = ("username", "password1", "password2",
+                  "display_name", "github")
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)

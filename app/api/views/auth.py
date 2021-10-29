@@ -5,6 +5,7 @@ from ..forms import NewUserForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from ..utils import generate_id
 
 
 def signup_request(request):
@@ -12,7 +13,7 @@ def signup_request(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            author = Author(user=user)
+            author = Author(user=user, author_id=generate_id())
             author.github = form.cleaned_data["github"]
             author.displayName = form.cleaned_data["displayName"]
             author.url = author.host + "author/" + author.author_id
@@ -23,7 +24,7 @@ def signup_request(request):
             messages.error(
                 request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
-    return render(request=request, template_name="signup.html", context={"register_form": form})
+    return render(request=request, template_name="signup.html", context={"form": form})
 
 
 def login_request(request):
@@ -43,4 +44,4 @@ def login_request(request):
         else:
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
-    return render(request=request, template_name="login.html", context={"login_form": form})
+    return render(request=request, template_name="login.html", context={"form": form})
