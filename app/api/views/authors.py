@@ -12,30 +12,40 @@ from django.shortcuts import get_object_or_404
 
 class AuthorViewSet(viewsets.ViewSet):
 
+    permission_classes = [permissions.IsAuthenticated]
+
     """
     URL: ://service/authors/
     GET: retrieve all profiles on the server paginated
     page: how many pages
     size: how big is a page
+
+    URL: ://service/author/{AUTHOR_ID}/
+    GET: retrieve their profile
+    POST: update profile
     """
 
-    @action(methods=[methods.POST], detail=True)
+    @action(methods=[methods.GET], detail=True)
     def list(self, request):
         queryset = Author.objects.all()
         serializer = AuthorSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    @action(methods=[methods.GET], detail=True)
+    def retrieve(self, request, author_id):
         queryset = Author.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = AuthorSerializer(user)
+        author = get_object_or_404(queryset, authorID=author_id)
+        serializer = AuthorSerializer(author)
         return Response(serializer.data)
 
-    def create(self, request):
-        pass
+    @action(methods=[methods.POST], detail=True)
+    def update(self, request, author_id):
 
-    def update(self, request, pk=None):
-        pass
-
-    def delete(self, request, pk=None):
-        pass
+        serializer = AuthorSerializer(data=request.data)
+        if serializer.is_valid():
+            instance = Author(authorID=author_id)
+            self.populate_post_data(serializer.data, instance)
+            return Response(AuthorSerializer(instance).data, status=status.HTTP_200_OK)
+        else:
+            # return 400 response if the data was invalid/missing require field
+            return Response(status=status.HTTP_400_BAD_REQUEST)

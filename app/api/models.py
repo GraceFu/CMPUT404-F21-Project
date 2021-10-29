@@ -103,7 +103,7 @@ class Post(models.Model):
 ######### Comment #########
 class Comment(models.Model):
     type = models.CharField(default="comment", max_length=100)
-    comment_id = models.UUIDField(
+    commentID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -128,7 +128,7 @@ class Like(models.Model):
 # Inbox ######### potentially missing list of inbox object
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
-    inbox_id = models.UUIDField(
+    inboxID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     items = models.JSONField(default=list)

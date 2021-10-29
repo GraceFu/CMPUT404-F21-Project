@@ -43,7 +43,7 @@ urlpatterns = [
     # TODO -> {methods.GET: 'retrieve_all_authors'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
     # TODO -> {methods.GET: 'retrieve'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
     path("author/<str:author_id>",
-         authors.author_view_set.as_view({methods.POST: 'update'}), name="author_profile"),
+         authors.AuthorViewSet.as_view({methods.POST: 'update'}), name="author_profile"),
 
     # Followers
 

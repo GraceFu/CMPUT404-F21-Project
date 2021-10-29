@@ -108,7 +108,7 @@ class PostViewSet(viewsets.ViewSet):
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post(postID=generate_id())
+            instance = Post(postID=post_id)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
