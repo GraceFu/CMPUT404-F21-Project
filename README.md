@@ -8,11 +8,13 @@ This is a blogging/social network platform that will allow the importing of othe
 
 - Python 3.6+
 - Django
+- django-crispy-forms 
+- djangorestframework
 - (Recommended) Python virtual environment
 
 ### Instructions
 
-1. `git clone https://github.com/GraceFu/CMPUT404-F21-Project.git` to your local machine
+1. `git clone` this repo
 2. `cd CMPUT404-F21-Project\app` to navigate to the app folder
 3. `python3 manage.py makemigrations` or `python3 manage.py makemigrations api` for *mac user*
 4. `python3 manage.py migrate`
