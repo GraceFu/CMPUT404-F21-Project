@@ -19,6 +19,7 @@ class visibilityType(models.TextChoices):
     PUBLIC = "PUBLIC"
     FRIENDS = "FRIENDS"
 
+
 class contentType(models.TextChoices):
     MARKDOWN = "text/markdown"
     PLAIN = "text/plain"
@@ -31,12 +32,12 @@ class contentType(models.TextChoices):
 class Author(models.Model):
     type = models.CharField(default="author", max_length=100)
     author_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, default=generate_id(), editable=False, unique=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
-    display_name = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100, default="Someone")
     host = models.CharField(default="localhost", max_length=500)
-    url = models.URLField(editable=False)
+    url = models.URLField(null=True, blank=True, editable=False)
     github = models.URLField(null=True, blank=True)
     # profile_picture = models.URLField(null=True, blank=True)
     # TODO set profile picture properly
@@ -75,7 +76,7 @@ class Friend(models.Model):
     request_time = models.DateTimeField(auto_now_add=True)
     request_acceptance = models.BooleanField(default=False)
 
-######### Post ######### potentially missing comment field and list of comment field
+# Post ######### potentially missing comment field and list of comment field
 
 
 class Post(models.Model):
@@ -116,7 +117,7 @@ class Comment(models.Model):
     published_date = models.DateTimeField(default=timezone.now)
     url = models.URLField(null=True, blank=True, editable=False)
 
-######### Like ######### Doubt we need @context in the model (see proj description)
+# Like ######### Doubt we need @context in the model (see proj description)
 
 
 class Like(models.Model):
@@ -127,7 +128,7 @@ class Like(models.Model):
     # object_url refer to the post object/link or the comment object/link that is liked
     object_url = models.URLField(null=True, blank=True, editable=False)
 
-######### Inbox ######### potentially missing list of inbox object
+# Inbox ######### potentially missing list of inbox object
 
 
 class Inbox(models.Model):
