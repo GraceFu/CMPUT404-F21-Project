@@ -12,9 +12,9 @@ This is a blogging/social network platform that will allow the importing of othe
 
 ### Instructions
 
-1. `git clone` this repository
+1. `git clone https://github.com/GraceFu/CMPUT404-F21-Project.git` to your local machine
 2. `cd CMPUT404-F21-Project\app` to navigate to the app folder
-3. `python3 manage.py makemigrations`
+3. `python3 manage.py makemigrations` or `python3 manage.py makemigrations api` for *mac user*
 4. `python3 manage.py migrate`
 5. `python3 manage.py createsuperuser` to create an admin account. Fill the information for signing up.
 6. `python3 manage.py runserver`. After this, you should be able to access the app on your local host.
