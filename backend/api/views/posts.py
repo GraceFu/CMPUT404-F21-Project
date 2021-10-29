@@ -17,72 +17,102 @@ from datetime import datetime
 class post_view_set(viewsets.ViewSet):
 
     permission_classes = [ permissions.IsAuthenticated ]
+
     """
     Creation URL ://service/author/{AUTHOR_ID}/posts/
     GET: get recent posts of author (paginated)
     POST: create a new post but generate a post_id
     """
+    # TODO get valid author id
     @action(methods=[methods.GET], detail=True)
-    def get_author_posts(self, request, author_id):
+    def get_author_post(self, request, author_id):
         """ list author posts """
+        # return 401 response if the author does not exists
         if self.check_author_by_id(author_id) is False:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        queryset = Post.objects.filter(author_id=author_id).order_by('-published_date')
+        # get all posts that is owned by the author
+        queryset = Post.objects.filter(author_id=author_id).order_by('-published')
         serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
         else:
-            # return 400 response if the data was invalid.
+            # return 400 response if the data was invalid/missing require field
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=[methods.POST], detail=True)
-    def create_post_without_post_id(self, request, author_id):
+    def create_post_with_new_id(self, request, author_id):
         """ create a post """
-        if self.check_author_by_id(author_id) is False:
-            return Response(status=status.HTTP_400_BAD_REQUEST) 
+        # DO NOT REMOVE this is a useful code
+        # if self.check_author_by_id(author_id) is False:
+        #     return Response(status=status.HTTP_401_UNAUTHORIZED) 
         
-        post_id = generate_id()
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post(post_id=post_id)
+            instance = Post(post_id=generate_id())
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
+            # return 400 response if the data was invalid/missing require field
             return Response(status=status.HTTP_400_BAD_REQUEST) 
 
 
     """
     URL: ://service/author/{AUTHOR_ID}/posts/{POST_ID}
-    GET: get the public post
+    GET: get a public post by post_id
     POST: update the post (must be authenticated)
-    DELETE: remove the post
+    DELETE: remove the author's post
     PUT: create a post with that post_id
     """
     @action(methods=[methods.GET], detail=True)
-    def get_public_posts(self):
+    def get_public_post(self, request, author_id, post_id):
         """ list public postS """
-        # sort public post from the most recent to the oldest
-        queryset = Post.objects.filter(visibility=visibility_type.PUBLIC).order_by('-published_date')
-        serializer = self.get_serializer(queryset, many=True)
-        
+        # return 404 response if the post_id does not exists
+        if self.check_post_by_id(post_id) is False:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        queryset = Post.objects.filter(post_id=post_id, visibility=visibility_type.PUBLIC)
+        serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
         else:
-            # return 400 response if the data was invalid.
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            # return 400 response if the data was invalid/missing require field
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def create_post_with_post_id(self, request):
+    def create_post_with_exist_id(self, request):
         #TODO
         pass
+    
 
-    def delete_post(self, request, post_id):
-        # TODO service
-        pass
+    # TODO get valid author id
+    @action(methods=[methods.DELETE], detail=True)
+    def delete_post(self, request, author_id, post_id):
+        # return 4xx response if neither author nor post exists
+        if self.check_post_by_id(author_id) is False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if self.check_post_by_id(post_id) is False:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+        Post.objects.get( post_id=post_id).delete()
+        return Response(status=status.HTTP_200_OK)
+    
+    # TODO get valid author id
+    @action(methods=[methods.POST], detail=True)
+    def update_post(self, request, author_id, post_id):
+         # return 4xx response if neither author nor post exists
+        if self.check_post_by_id(author_id) is False:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if self.check_post_by_id(post_id) is False:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def update_post(self, request, post_id):
-        # TODO service
-        pass
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            instance = Post(post_id=generate_id())
+            self.populate_post_data(serializer.data, instance)
+            return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
+        else:
+            # return 400 response if the data was invalid/missing require field
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
 
 
     def check_author_by_id(self, author_id):
@@ -98,22 +128,38 @@ class post_view_set(viewsets.ViewSet):
         try:
             if Post.objects.get(post_id=post_id):
                 return True
-        except Post.DoesNotExist:
+        except:
             return False
     
-    def populate_post_data(self, post_id, author_id, data, instance):
-        """ put request data into instance """
+    def populate_post_data(self, data, instance):
+        """ put request data into instance 
+        auto-set fields: post_id, type, visibility, unlisted, count
+
+        example of an working data:
+
+        {
+        "title": "my title",
+        "source": "https://uofa-cmput404.github.io/",
+        "origin": "https://uofa-cmput404.github.io/",
+        "description": "my des",
+        "contentType": "text/plain",
+        "content": "my content",
+        "categories": ["web", "tutorial"]
+        }
+
+        """
+        
         instance.title = data["title"]
-        instance.post_id = post_id
+        # DO NOT REMOVE uncomment field in this method
         instance.source = data["source"]  # TODO make it to url
         instance.origin = data["origin"]  # TODO make it to url
         instance.description = data["description"]
         instance.contentType = data["contentType"]
         instance.content = data["content"]
-        instance.author = author_id
+        # instance.author = author_id
         instance.categories = data["categories"]
-        instance.count = len(data["comments"])  # total number of comments for this post
+        # instance.count = len(data["comment"])  # total number of comments for this post
         instance.published = datetime.now().isoformat()
-        instance.visibility = data["visibility"]
-        instance.unlisted = data["unlisted"]
+        # instance.visibility = data["visibility"]
+        # instance.unlisted = data["unlisted"]
         instance.save()
