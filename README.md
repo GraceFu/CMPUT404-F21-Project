@@ -19,6 +19,9 @@ This is a blogging/social network platform that will allow the importing of othe
 5. `python3 manage.py createsuperuser` to create an admin account. Fill the information for signing up.
 6. `python3 manage.py runserver`. After this, you should be able to access the app on your local host.
 
+### Admin Control
+Since we do not have a separate admin panel yet, admin can now approve new users' signup requests by visiting `localhost/admin` and manually activate users.
+
 ## Documentation
 
 Internal documentation is inside /docs folder. You can `cd docs` or visit the links below.
