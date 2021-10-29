@@ -20,7 +20,7 @@ class AuthorViewSet(viewsets.ViewSet):
     page: how many pages
     size: how big is a page
 
-    URL: ://service/author/{AUTHOR_ID}/
+    URL: ://service/author/{authorID}/
     GET: retrieve their profile
     POST: update profile
     """
@@ -32,18 +32,18 @@ class AuthorViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     @action(methods=[methods.GET], detail=True)
-    def retrieve(self, request, author_id):
+    def retrieve(self, request, authorID):
         queryset = Author.objects.all()
-        author = get_object_or_404(queryset, authorID=author_id)
+        author = get_object_or_404(queryset, authorID=authorID)
         serializer = AuthorSerializer(author)
         return Response(serializer.data)
 
     @action(methods=[methods.POST], detail=True)
-    def update(self, request, author_id):
+    def update(self, request, authorID):
 
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Author(authorID=author_id)
+            instance = Author(authorID=authorID)
             self.populate_post_data(serializer.data, instance)
             return Response(AuthorSerializer(instance).data, status=status.HTTP_200_OK)
         else:
