@@ -6,7 +6,6 @@ from django.utils import timezone
 from django.db.models.fields import related
 from Social_network.settings import HOSTNAME
 from django.utils.translation import activate
-from .utils import generate_id
 from django import forms
 
 # Create your models here.
@@ -32,7 +31,7 @@ class contentType(models.TextChoices):
 class Author(models.Model):
     type = models.CharField(default="author", max_length=100)
     author_id = models.UUIDField(
-        primary_key=True, default=generate_id(), editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=100, default="Someone")
@@ -49,7 +48,7 @@ class Author(models.Model):
 class Follow(models.Model):
     type = models.CharField(default="followers", max_length=100)
     request_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     # follow request from user
     followee = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="followee")
@@ -65,7 +64,7 @@ class Follow(models.Model):
 class Friend(models.Model):
     type = models.CharField(default="friend", max_length=100)
     request_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     # friend request from user
     actor = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="actor")
@@ -82,15 +81,18 @@ class Friend(models.Model):
 class Post(models.Model):
     type = models.CharField(default="post", max_length=100)
     post_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     title = models.CharField(max_length=100)
     source = models.URLField(null=True, blank=True)
     origin_post = models.URLField(null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
-    content_type = models.CharField(max_length=100, default=contentType.PLAIN, null=True, blank=True)
+    content_type = models.CharField(
+        max_length=100, default=contentType.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
-    image_content = models.URLField(null=True, blank=True)  # TODO Should be an url ?
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
+    image_content = models.URLField(
+        null=True, blank=True)  # TODO Should be an url ?
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, null=True, blank=True)
     categories = models.JSONField(null=True, blank=True)  # list of strings
     count = models.IntegerField(default=0)
     published_date = models.DateTimeField(default=timezone.now)
@@ -107,7 +109,7 @@ class Post(models.Model):
 class Comment(models.Model):
     type = models.CharField(default="comment", max_length=100)
     comment_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.CharField(max_length=500, null=True)
@@ -134,7 +136,7 @@ class Like(models.Model):
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
     inbox_id = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True)
+        primary_key=True, editable=False, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     items = models.JSONField(default=list)
 
@@ -143,7 +145,7 @@ class Inbox(models.Model):
 class Node(models.Model):
     host_url = models.URLField(default='localhost', max_length=100)
     host = models.UUIDField(
-        primary_key=True, default=generate_id, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
+        primary_key=True, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
     user = models.OneToOneField(  # so no need to generate unique id
         User, on_delete=models.CASCADE, blank=True, null=True)
     date_interfaced = models.DateTimeField(auto_now_add=True)

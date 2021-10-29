@@ -16,7 +16,7 @@ from datetime import datetime
 
 class post_view_set(viewsets.ViewSet):
 
-    permission_classes = [ permissions.IsAuthenticated ]
+    permission_classes = [permissions.IsAuthenticated]
     """
     Creation URL ://service/author/{AUTHOR_ID}/posts/
     GET: get recent posts of author (paginated)
@@ -28,7 +28,8 @@ class post_view_set(viewsets.ViewSet):
         if self.check_author_by_id(author_id) is False:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = Post.objects.filter(author_id=author_id).order_by('-published_date')
+        queryset = Post.objects.filter(
+            author_id=author_id).order_by('-published_date')
         serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
@@ -40,8 +41,8 @@ class post_view_set(viewsets.ViewSet):
     def create_post_without_post_id(self, request, author_id):
         """ create a post """
         if self.check_author_by_id(author_id) is False:
-            return Response(status=status.HTTP_400_BAD_REQUEST) 
-        
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         post_id = generate_id()
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
@@ -49,8 +50,7 @@ class post_view_set(viewsets.ViewSet):
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST) 
-
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     """
     URL: ://service/author/{AUTHOR_ID}/posts/{POST_ID}
@@ -63,9 +63,10 @@ class post_view_set(viewsets.ViewSet):
     def get_public_posts(self):
         """ list public postS """
         # sort public post from the most recent to the oldest
-        queryset = Post.objects.filter(visibility=visibilityType.PUBLIC).order_by('-published_date')
+        queryset = Post.objects.filter(
+            visibility=visibilityType.PUBLIC).order_by('-published_date')
         serializer = self.get_serializer(queryset, many=True)
-        
+
         if serializer.is_valid:
             return Response(serializer.data)
         else:
@@ -73,7 +74,7 @@ class post_view_set(viewsets.ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def create_post_with_post_id(self, request):
-        #TODO
+        # TODO
         pass
 
     def delete_post(self, request, post_id):
@@ -83,7 +84,6 @@ class post_view_set(viewsets.ViewSet):
     def update_post(self, request, post_id):
         # TODO service
         pass
-
 
     def check_author_by_id(self, author_id):
         """ check existence of an author """
@@ -100,7 +100,7 @@ class post_view_set(viewsets.ViewSet):
                 return True
         except Post.DoesNotExist:
             return False
-    
+
     def populate_post_data(self, post_id, author_id, data, instance):
         """ put request data into instance """
         instance.title = data["title"]
@@ -112,7 +112,8 @@ class post_view_set(viewsets.ViewSet):
         instance.content = data["content"]
         instance.author = author_id
         instance.categories = data["categories"]
-        instance.count = len(data["comments"])  # total number of comments for this post
+        # total number of comments for this post
+        instance.count = len(data["comments"])
         instance.published_date = datetime.now().isoformat()
         instance.visibility = data["visibility"]
         instance.unlisted = data["unlisted"]
