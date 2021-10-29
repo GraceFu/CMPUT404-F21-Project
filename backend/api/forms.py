@@ -6,7 +6,7 @@ from .utils import generate_id
 
 
 class NewUserForm(UserCreationForm):
-    display_name = forms.CharField(
+    displayName = forms.CharField(
         max_length=100, help_text="Enter a name you want to display o.o", required=True)
     github = forms.URLField(help_text="Enter your GitHub link.")
 

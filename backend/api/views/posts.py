@@ -1,7 +1,7 @@
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from api.models import Author, Post, visibilityType
+from api.models import Author, Post, visibility_type
 from api.serializers import PostSerializer
 from api.utils import generate_id, methods
 from Social_network.settings import HOSTNAME
@@ -63,7 +63,7 @@ class post_view_set(viewsets.ViewSet):
     def get_public_posts(self):
         """ list public postS """
         # sort public post from the most recent to the oldest
-        queryset = Post.objects.filter(visibility=visibilityType.PUBLIC).order_by('-published_date')
+        queryset = Post.objects.filter(visibility=visibility_type.PUBLIC).order_by('-published_date')
         serializer = self.get_serializer(queryset, many=True)
         
         if serializer.is_valid:
@@ -106,14 +106,14 @@ class post_view_set(viewsets.ViewSet):
         instance.title = data["title"]
         instance.post_id = post_id
         instance.source = data["source"]  # TODO make it to url
-        instance.origin_post = data["origin"]  # TODO make it to url
+        instance.origin = data["origin"]  # TODO make it to url
         instance.description = data["description"]
-        instance.content_type = data["contentType"]
+        instance.contentType = data["contentType"]
         instance.content = data["content"]
         instance.author = author_id
         instance.categories = data["categories"]
         instance.count = len(data["comments"])  # total number of comments for this post
-        instance.published_date = datetime.now().isoformat()
+        instance.published = datetime.now().isoformat()
         instance.visibility = data["visibility"]
         instance.unlisted = data["unlisted"]
         instance.save()

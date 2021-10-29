@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, posts
+from api.views import auth, homepage, authors, followers, posts
 from api.utils import methods
 
 router = DefaultRouter()
@@ -32,17 +32,30 @@ router.register(r'posts', posts.post_view_set, basename='posts')
 urlpatterns = router.urls
 
 urlpatterns = [
-    # Authors
+    # Authorization
+    path("login", auth.login_request, name="login"),
+    path("signup", auth.signup_request, name="signup"),
 
+    # Homepage after login
+    path("homepage", homepage.homepage, name="homepage"),
+
+    # Authors
+    # TODO -> {methods.GET: 'retrieve_all_authors'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    # TODO -> {methods.GET: 'retrieve'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    path("author/<str:author_id>", authors.author_view_set.as_view({methods.POST: 'update'}), name="author_profile"),
+    
     # Followers
 
     # FriendRequest
 
     # Post
-    # {methods.GET: 'get_author_posts'},  --> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    # TODO -> {methods.GET: 'get_author_posts'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
     path("author/<str:author_id>/posts/", posts.post_view_set.as_view({methods.POST: 'create_post_without_post_id'}), name="handle_new_post"),
-    path("author/<str:author_id>/posts/<str:post_id>", posts.post_view_set.as_view({methods.GET: 'get_public_posts', methods.POST: 'create_post_with_post_id'}), name="handle_existing_post"),
-    
+    # TODO -> {methods.GET: 'get_public_posts'}, -> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    path("author/<str:author_id>/posts/<str:post_id>", posts.post_view_set.as_view({methods.POST: 'create_post_with_post_id'}), name="handle_existing_post")
+    # TODO post
+    #  stream
+
     # Comments
 
     # Likes
@@ -51,7 +64,4 @@ urlpatterns = [
 
     # Inbox
 
-    path("homepage", homepage.homepage, name="homepage"),
-    path("signup", auth.signup_request, name="signup"),
-    path("login", auth.login_request, name="login")
 ]
