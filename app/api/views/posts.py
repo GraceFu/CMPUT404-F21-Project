@@ -33,7 +33,7 @@ class post_view_set(viewsets.ViewSet):
 
         # get all posts that is owned by the author
         queryset = Post.objects.filter(
-            author_id=author_id).order_by('-published')
+            authorID=author_id).order_by('-published')
         serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
@@ -50,7 +50,7 @@ class post_view_set(viewsets.ViewSet):
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post(post_id=generate_id())
+            instance = Post(postID=generate_id())
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -72,7 +72,7 @@ class post_view_set(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         queryset = Post.objects.filter(
-            post_id=post_id, visibility=visibility_type.PUBLIC)
+            postID=post_id, visibility=visibility_type.PUBLIC)
         serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
@@ -94,7 +94,7 @@ class post_view_set(viewsets.ViewSet):
         if self.check_post_by_id(post_id) is False:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        Post.objects.get(post_id=post_id).delete()
+        Post.objects.get(postID=post_id).delete()
         return Response(status=status.HTTP_200_OK)
 
     # TODO get valid author id
@@ -108,7 +108,7 @@ class post_view_set(viewsets.ViewSet):
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post(post_id=generate_id())
+            instance = Post(postID=generate_id())
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -118,7 +118,7 @@ class post_view_set(viewsets.ViewSet):
     def check_author_by_id(self, author_id):
         """ check existence of an author """
         try:
-            if Author.objects.get(author_id=author_id):
+            if Author.objects.get(authorID=author_id):
                 return True
         except Author.DoesNotExist:
             return False
@@ -126,7 +126,7 @@ class post_view_set(viewsets.ViewSet):
     def check_post_by_id(self, post_id):
         """ check existence of a post """
         try:
-            if Post.objects.get(post_id=post_id):
+            if Post.objects.get(postID=post_id):
                 return True
         except:
             return False

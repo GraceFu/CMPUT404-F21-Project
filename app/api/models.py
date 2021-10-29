@@ -30,7 +30,7 @@ class content_type(models.TextChoices):
 ######### Author #########
 class Author(models.Model):
     type = models.CharField(default="author", max_length=100)
-    author_id = models.UUIDField(
+    authorID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
@@ -45,7 +45,7 @@ class Author(models.Model):
 ######### Follow #########
 class Follow(models.Model):
     type = models.CharField(default="followers", max_length=100)
-    request_id = models.UUIDField(
+    requestID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     # follow request from user
     followee = models.ForeignKey(
@@ -53,14 +53,14 @@ class Follow(models.Model):
     # follow request to user, person to be follow
     follower = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="follower")
-    request_time = models.DateTimeField(auto_now_add=True)
-    request_acceptance = models.BooleanField(default=False)
+    time = models.DateTimeField(auto_now_add=True)
+    acceptance = models.BooleanField(default=False)
 
 
 ######### Friend #########
 class Friend(models.Model):
     type = models.CharField(default="friend", max_length=100)
-    request_id = models.UUIDField(
+    requestID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     # friend request from user
     actor = models.ForeignKey(
@@ -69,14 +69,14 @@ class Friend(models.Model):
     object = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="object")
     summary = models.CharField(max_length=100)
-    request_time = models.DateTimeField(auto_now_add=True)
-    request_acceptance = models.BooleanField(default=False)
+    time = models.DateTimeField(auto_now_add=True)
+    acceptance = models.BooleanField(default=False)
 
 
 # Post ######### potentially missing comment field and list of comment field
 class Post(models.Model):
     type = models.CharField(default="post", max_length=100)
-    post_id = models.UUIDField(
+    postID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     title = models.CharField(max_length=100)
     source = models.URLField(null=True, blank=True)
@@ -85,7 +85,7 @@ class Post(models.Model):
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
-    image_content = models.URLField(
+    image = models.URLField(
         null=True, blank=True)  # TODO Should be an url ?
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, blank=True)
@@ -110,7 +110,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=500, null=True)
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, blank=False, null=False)
-    image_content = models.URLField()  # TODO Should be an url ?
+    image = models.URLField()  # TODO Should be an url ?
     published = models.DateTimeField(default=timezone.now)
     url = models.URLField(null=True, blank=True, editable=False)
 
@@ -119,7 +119,7 @@ class Comment(models.Model):
 class Like(models.Model):
     context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
-    author_id = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
     object = models.URLField(null=True, blank=True, editable=False)
@@ -136,22 +136,14 @@ class Inbox(models.Model):
 
 ######### Node #########
 class Node(models.Model):
-    host_url = models.URLField(default=HOSTNAME, max_length=100)
+    url = models.URLField(default=HOSTNAME, max_length=100)
     host = models.UUIDField(
         primary_key=True, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
     user = models.OneToOneField(  # so no need to generate unique id
         User, on_delete=models.CASCADE, blank=True, null=True)
-    date_interfaced = models.DateTimeField(auto_now_add=True)
-    host_username = models.CharField(max_length=200, null=False)
-    host_password = models.CharField(max_length=200, null=False)
+    date = models.DateTimeField(auto_now_add=True)
+    hostUsername = models.CharField(max_length=200, null=False)
+    hostPassword = models.CharField(max_length=200, null=False)
     email = models.EmailField(
         max_length=200, null=True, blank=True, default=None)
     displayName = models.CharField(max_length=200, null=True, blank=True)
-
-# ######### Sign up #########
-# class sign_up_form(forms.Form):
-#     username = forms.CharField(max_length=200, null=False)
-#     password = forms.CharField(max_length=200, null=False)
-#     email = forms.EmailField(max_length=200, null=False)
-#     display_name = forms.CharField(max_length=200, null=True)
-#     host_url = forms.URLField(max_lenght = 200,null=True, blank=True)

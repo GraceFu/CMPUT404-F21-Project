@@ -28,7 +28,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["type", "title", "post_id", "source", "origin", "description", "contentType", "content",
+        fields = ["type", "title", "postID", "source", "origin", "description", "contentType", "content",
                   "author", "categories", "count", "published", "visibility", "unlisted"]
 
 # TODO add more serializers

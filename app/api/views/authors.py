@@ -10,5 +10,5 @@ from api.utils import methods
 
 class author_view_set(viewsets.ViewSet):
     @action(methods=[methods.POST], detail=True)
-    def update(self, request, author_id):
+    def update(self, request, authorID):
         pass
