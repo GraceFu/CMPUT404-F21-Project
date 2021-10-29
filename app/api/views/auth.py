@@ -39,9 +39,8 @@ def login_request(request):
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
                 return redirect("homepage")
-            else:
-                messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(
+                request, "Invalid username or password. Or your account has not been approved yet.")
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})

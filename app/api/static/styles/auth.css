@@ -1,5 +1,11 @@
 body {
-  background-color: #f3ebf6;
+  background-color: #f9f9fd;
+  background-image: repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      #f9f9fd 40px
+    ),
+    repeating-linear-gradient(#c7f3f355, #c7f3f3);
   font-family: "Ubuntu", sans-serif;
 }
 
@@ -15,7 +21,7 @@ body {
 
 .sign {
   padding-top: 40px;
-  color: #8c55aa;
+  color: #7400b8;
   font-family: "Ubuntu", sans-serif;
   font-weight: bold;
   font-size: 23px;
@@ -74,7 +80,7 @@ box.form1 {
   cursor: pointer;
   border-radius: 5em;
   color: #fff;
-  background: linear-gradient(to right, #9c27b0, #e040fb);
+  background: linear-gradient(to right, #6930c3, #4ea8de);
   border: 0;
   padding-left: 40px;
   padding-right: 40px;
@@ -94,7 +100,7 @@ box.form1 {
 
 a {
   text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-  color: #e1bee7;
+  color: #4ea8de;
   text-decoration: none;
 }
 
