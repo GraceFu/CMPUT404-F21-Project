@@ -9,7 +9,7 @@ from rest_framework import serializers
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ["type", "id", "url", "host",
+        fields = ["type", "authorID", "url", "host",
                   "displayName", "github"]
 
     # Create and return a new Author instance, given the validated data.
