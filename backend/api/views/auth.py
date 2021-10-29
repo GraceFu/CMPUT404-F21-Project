@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+
+from ..models import Author
 from ..forms import NewUserForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
@@ -10,6 +12,10 @@ def signup_request(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            author = Author(user=user)
+            author.github = form.cleaned_data["github"]
+            author.display_name = form.cleaned_data["display_name"]
+            author.save()
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
         else:
