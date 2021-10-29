@@ -23,12 +23,12 @@ class post_view_set(viewsets.ViewSet):
     POST: create a new post but generate a post_id
     """
     @action(methods=[methods.GET], detail=True)
-    def get_author_posts(self, author_id):
+    def get_author_posts(self, request, author_id):
         """ list author posts """
         if self.check_author_by_id(author_id) is False:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = Post.objects.filter(author=author_id).order_by('-published_date')
+        queryset = Post.objects.filter(author_id=author_id).order_by('-published_date')
         serializer = PostSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
@@ -42,11 +42,11 @@ class post_view_set(viewsets.ViewSet):
         if self.check_author_by_id(author_id) is False:
             return Response(status=status.HTTP_400_BAD_REQUEST) 
         
-        post_id = generate_id
+        post_id = generate_id()
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post.objects.create()
-            self.populate_post_data(post_id, author_id, serializer.data, instance)
+            instance = Post(post_id=post_id)
+            self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST) 
@@ -103,7 +103,6 @@ class post_view_set(viewsets.ViewSet):
     
     def populate_post_data(self, post_id, author_id, data, instance):
         """ put request data into instance """
-        instance.type = data["type"]
         instance.title = data["title"]
         instance.post_id = post_id
         instance.source = data["source"]  # TODO make it to url
@@ -113,7 +112,7 @@ class post_view_set(viewsets.ViewSet):
         instance.content = data["content"]
         instance.author = author_id
         instance.categories = data["categories"]
-        instance.count = data["count"]
+        instance.count = len(data["comments"])  # total number of comments for this post
         instance.published_date = datetime.now().isoformat()
         instance.visibility = data["visibility"]
         instance.unlisted = data["unlisted"]

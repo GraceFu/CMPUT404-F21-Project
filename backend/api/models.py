@@ -84,14 +84,14 @@ class Post(models.Model):
     post_id = models.UUIDField(
         primary_key=True, default=generate_id, editable=False, unique=True)
     title = models.CharField(max_length=100)
-    source = models.URLField()
-    origin_post = models.URLField()
-    description = models.CharField(max_length=200)
-    content_type = models.CharField(max_length=100, default=contentType.PLAIN)
+    source = models.URLField(null=True, blank=True)
+    origin_post = models.URLField(null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    content_type = models.CharField(max_length=100, default=contentType.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
-    image_content = models.URLField()  # TODO Should be an url ?
-    # author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    categories = models.JSONField()  # list of strings
+    image_content = models.URLField(null=True, blank=True)  # TODO Should be an url ?
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
+    categories = models.JSONField(null=True, blank=True)  # list of strings
     count = models.IntegerField(default=0)
     published_date = models.DateTimeField(default=timezone.now)
     visibility = models.CharField(

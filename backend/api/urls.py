@@ -38,9 +38,10 @@ urlpatterns = [
 
     # FriendRequest
 
-    # Post            methods.GET: 'get_author_posts',  --> GET /posts/> uuid invalid error?
-    path("posts/", posts.post_view_set.as_view({methods.POST: 'create_post_without_post_id'}), name="handle_new_post"),
-    path("posts/<str:post_id>", posts.post_view_set.as_view({methods.GET: 'get_public_posts', methods.POST: 'create_post_with_post_id'}), name="handle_existing_post"),
+    # Post
+    # {methods.GET: 'get_author_posts'},  --> GET error,since we dont have a object to trigger GET. frontend should have a trigger that send request payload and method to the url
+    path("author/<str:author_id>/posts/", posts.post_view_set.as_view({methods.POST: 'create_post_without_post_id'}), name="handle_new_post"),
+    path("author/<str:author_id>/posts/<str:post_id>", posts.post_view_set.as_view({methods.GET: 'get_public_posts', methods.POST: 'create_post_with_post_id'}), name="handle_existing_post"),
     
     # Comments
 
