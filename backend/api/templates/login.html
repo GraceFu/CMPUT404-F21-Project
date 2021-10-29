@@ -1,14 +1,9 @@
-{% extends 'header.html' %}
-
-{% block content %}
-
-{% load crispy_forms_tags %}
-
+<!DOCTYPE html>
 <html>
 <style>
 
 
-        body {
+    body {
         background-color: #F3EBF6;
         font-family: 'Ubuntu', sans-serif;
     }
@@ -112,29 +107,29 @@
         .main {
             border-radius: 0px;
         }
+    }
 
 </style>
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-  <title>Sign in</title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <title>Log in</title>
 </head>
 
 <body>
-  <div class='container py-5'>
-  <from method='POST'>
-  <div class="main">
+    {% include 'messages.html' %}
+    <div class='container py-5'>
+    <from method='POST'>
+    <div class="main">
     <p class="sign" align="center">Login</p>
     <form class="form1">
-      {% csrf_token %}
-      {{ login_form|crispy }}
 
-      <input class="un " type="text" align="center" placeholder="Username" required/>
-      <input class="pass" type="password" align="center" placeholder="Password" required/>
+      <input class="un " type="text" id="username" align="center" placeholder="Username" required/>
+      <input class="pass" type="password" id="password" align="center" placeholder="Password" required/>
       <a class="submit" align="center" a href="/homepage">Login</a>
-      <p class="forgot" align="center"><a href="/signup">Don't have account?</p>
+      <p class="forgot" align="center"><a href="/signup">Don't have an account?</p>
             
                 
     </div>
@@ -142,5 +137,3 @@
 </body>
 
 </html>
-
-{% endblock %}
