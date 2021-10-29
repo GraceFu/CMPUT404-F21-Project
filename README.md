@@ -21,7 +21,9 @@ Internal documentation is inside /docs folder. You can `cd docs` or visit the li
 - [References](https://github.com/GraceFu/CMPUT404-F21-Project/blob/main/docs/references.md)
 
 ## License
-`MIT License
+[License file](https://github.com/GraceFu/CMPUT404-F21-Project/blob/main/LICENSE)
+```
+MIT License
 
 Copyright (c) 2021 Grace Fu, Zhining He, Faiyaz Ahmed, Pengcheng Yan, Jingzeng Xie
 
@@ -41,4 +43,5 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.`
+SOFTWARE.
+```
