@@ -15,6 +15,7 @@ def signup_request(request):
             author = Author(user=user)
             author.github = form.cleaned_data["github"]
             author.display_name = form.cleaned_data["display_name"]
+            author.url = author.host + "author/" + author.author_id
             author.save()
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
