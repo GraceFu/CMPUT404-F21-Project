@@ -28,11 +28,29 @@
 </style>
 
 {% if messages %}
-<ul class="messages">
+<ul class="messages" id="messages_ul">
     {% for message in messages %}
     <li class="msgtext" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
         <span class="closebtn" onclick="this.parentElement.parentElement.style.display='none';">&times;</span>
     </li>
+    <li class="msgtext" id="messages_timer" {% if message.tags %} class="{{ message.tags }}" {% endif %}></li>
     {% endfor %}
 </ul>
 {% endif %}
+
+<script>
+  window.onload=function() {
+    var maxtime = 10;
+    var item = document.getElementById('messages_ul');
+    var timer = document.getElementById('messages_timer');
+
+    (function CountDown() {
+      timer.innerHTML = "Close after " + maxtime + " seconds";
+      if (--maxtime >= 0) {
+        setTimeout(CountDown,1000);
+      } else {
+        item.style.display = "none";
+      }
+    })();
+  }
+</script>
