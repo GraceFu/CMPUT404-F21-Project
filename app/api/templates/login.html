@@ -20,7 +20,7 @@
                     <input class="un " type="text" id="username" name="username" align="center" placeholder="Username" value="{{ username }}" required />
                     <input class="pass" type="password" id="password" name="password" align="center" placeholder="Password" value="{{ password }}"required />
                     <input class="submit" type="submit" align="center" value="Login">
-                    <p class="forgot" align="center"><a href="/signup">Don't have an account?</p>
+                    <p class="forgot" align="center"><a href="{% url 'signup' %}">Don't have an account?</p>
                 </form>
             </box>
         </div>
