@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from ..models import Author
 from ..forms import NewUserForm
@@ -42,5 +43,12 @@ def login_request(request):
         else:
             messages.error(
                 request, "Invalid username or password. Or your account has not been approved yet.")
+
+    elif request.method == 'GET':
+        if not request.user.is_anonymous and request.user.is_active:
+            return redirect(reverse("homepage"))
+
+        return render(request=request, template_name="login.html")
+
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
