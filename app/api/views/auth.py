@@ -44,7 +44,7 @@ def login_request(request):
             messages.error(
                 request, "Invalid username or password. Or your account has not been approved yet.")
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         if not request.user.is_anonymous and request.user.is_active:
             return redirect(reverse("homepage"))
 
@@ -54,6 +54,6 @@ def login_request(request):
     return render(request=request, template_name="login.html", context={"form": form})
 
 def logout_request(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         logout(request)
         return redirect(reverse("login"))

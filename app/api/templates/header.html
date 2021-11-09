@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -5,8 +6,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/header.css' %}">
     <!--
     <title>Social Networks</title>
     -->
@@ -17,29 +18,58 @@
 
     {% include 'messages.html' %}
 
-    <header className="header" id="header">
-        <nav className="nav_container">
+    <nav class="nav">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'homepage' %}">Project Name</a>
+            </div>
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li>
+                        <form method="POST" id="form_logout" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <a onclick="document.getElementById('form_logout').submit()">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <span class="navTrigger">
+                <i></i>
+                <i></i>
+                <i></i>
+            </span>
+        </div>
+    </nav>
 
-            <label href="{% url 'homepage' %}" className="nav_logo">
-                <!--
-                <img src="" alt="" className="nav_logo_img"/>
-                -->
-                    Project Name
-            </label>
-
-            <form method="POST" id="form_logout" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <a href="" className="button_logout" onclick="document.getElementById('form_logout').submit()">Logout</a>
-            </form>
-
-        </nav>
-
-        <hr className="header"/>
-    </header>
+    <section class="home"></section>
 
     {% block content %}
 
     {% endblock %}
+
+    <!-- Jquery needed -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Function used to shrink nav bar removing paddings and adding black background -->
+    <script>
+
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('.nav').addClass('affix');
+                console.log("OK");
+            } else {
+                $('.nav').removeClass('affix');
+            }
+        });
+
+        $('.navTrigger').click(function () {
+            $(this).toggleClass('active');
+            console.log("Clicked menu");
+            $("#mainListDiv").toggleClass("show_list");
+            $("#mainListDiv").fadeIn();
+        });
+
+    </script>
 
 </body>
 
