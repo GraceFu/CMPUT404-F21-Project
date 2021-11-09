@@ -39,16 +39,10 @@ def login_request(request):
             if user is not None and user.is_active:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect("homepage")
+                return redirect(reverse("homepage"))
         else:
             messages.error(
                 request, "Invalid username or password. Or your account has not been approved yet.")
-
-    elif request.method == "GET":
-        if not request.user.is_anonymous and request.user.is_active:
-            return redirect(reverse("homepage"))
-
-        return render(request=request, template_name="login.html")
 
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
@@ -57,3 +51,10 @@ def logout_request(request):
     if request.method == "POST":
         logout(request)
         return redirect(reverse("login"))
+
+def default_page_request(request):
+    if request.method == "GET":
+        if not request.user.is_anonymous and request.user.is_active:
+            return redirect(reverse("homepage"))
+
+    return redirect(reverse("login"))

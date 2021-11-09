@@ -33,7 +33,7 @@ urlpatterns = router.urls
 
 urlpatterns = [
     # Default
-    path("", auth.login_request, name="default"),
+    path("", auth.default_page_request, name="default"),
 
     # Authorization
     path("login", auth.login_request, name="login"),
@@ -41,7 +41,7 @@ urlpatterns = [
     path("logout", auth.logout_request, name="logout"),
 
     # Homepage after login
-    path("homepage", homepage.homepage, name="homepage"),
+    path("homepage", homepage.homepage_request, name="homepage"),
 
     # Authors
     path("authors",
