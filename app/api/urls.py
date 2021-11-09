@@ -32,10 +32,13 @@ router.register(r'posts', posts.PostViewSet, basename='posts')
 urlpatterns = router.urls
 
 urlpatterns = [
-    # Authorization
+    # Default
     path("", auth.login_request, name="default"),
+
+    # Authorization
     path("login", auth.login_request, name="login"),
     path("signup", auth.signup_request, name="signup"),
+    path("logout", auth.logout_request, name="logout"),
 
     # Homepage after login
     path("homepage", homepage.homepage, name="homepage"),

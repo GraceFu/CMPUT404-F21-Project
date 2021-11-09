@@ -6,12 +6,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/header.css' %}">
+    <!--
     <title>Social Networks</title>
+    -->
+    <title>Homepage</title>
 </head>
 
 <body>
 
     {% include 'messages.html' %}
+
+    <header className="header" id="header">
+        <nav className="nav_container">
+
+            <label href="{% url 'homepage' %}" className="nav_logo">
+                <!--
+                <img src="" alt="" className="nav_logo_img"/>
+                -->
+                    Project Name
+            </label>
+
+            <form method="POST" id="form_logout" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <a href="" className="button_logout" onclick="document.getElementById('form_logout').submit()">Logout</a>
+            </form>
+
+        </nav>
+
+        <hr className="header"/>
+    </header>
 
     {% block content %}
 
