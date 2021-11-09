@@ -34,7 +34,7 @@ urlpatterns = router.urls
 urlpatterns = [
     # Authorization
     path("", auth.login_request, name="default"),
-path("login", auth.login_request, name="login"),
+    path("login", auth.login_request, name="login"),
     path("signup", auth.signup_request, name="signup"),
 
     # Homepage after login
