@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from ..models import Author
 from ..forms import NewUserForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from ..utils import generate_id
@@ -52,3 +52,8 @@ def login_request(request):
 
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
+
+def logout_request(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect(reverse("login"))
