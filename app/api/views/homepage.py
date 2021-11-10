@@ -9,6 +9,9 @@ def homepage_request(request):
     '''if request.user.is_anonymous and not request.user.is_active:
         return redirect(reverse('login'))'''
 
-    author = Author.objects.filter(user=request.user).first()
+    author = Author.objects.filter(authorID=request.user.author.authorID).first()
+    self_post = Post.objects.filter(author__exact=author).order_by('-published')
 
-    return render(request, "homepage.html", { 'author': author })
+    print(self_post)
+
+    return render(request, "homepage.html", { 'author': author, 'self_post': self_post })

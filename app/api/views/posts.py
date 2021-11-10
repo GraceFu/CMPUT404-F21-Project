@@ -202,16 +202,14 @@ def post_handler(request, authorID):
                     messages.error(
                         request, "Unsuccessful published. Invalid information.")
             elif request.POST.get("myCustom_method") == "GET":
-                pass
+                postID = request.POST.get("myCustom_postID")
             elif request.POST.get("myCustom_method") == "POST":
-                pass
+                postID = request.POST.get("myCustom_postID")
             elif request.POST.get("myCustom_method") == "DELETE":
-                pass
+                postID = request.POST.get("myCustom_postID")
                 
         else:
             messages.error(request, "Error. Unexpected user.")
-    elif request.method == "GET":
-        pass
     
     return redirect("homepage")
 
