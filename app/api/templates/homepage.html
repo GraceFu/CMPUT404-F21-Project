@@ -21,7 +21,7 @@
 
                 <!-- Body -->
                 <div class="modal-body">
-                    <form method="POST" id="form_create_post">
+                    <form method="POST" action="author/{{authorID}}/posts/">
                         {% csrf_token %}
                         <!-- Title -->
                         <div class="form-group">

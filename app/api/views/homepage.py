@@ -10,5 +10,6 @@ def homepage_request(request):
         return redirect(reverse('login'))'''
 
     author = Author.objects.filter(user=request.user).first()
+    authorID = author.authorID
 
-    return render(request, "homepage.html", { 'Author': author })
+    return render(request, "homepage.html", { 'Author': author, 'authorID': authorID })

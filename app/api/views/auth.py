@@ -52,9 +52,11 @@ def logout_request(request):
         logout(request)
         return redirect(reverse("login"))
 
+    return redirect("login")
+
 def default_page_request(request):
     if request.method == "GET":
-        if not request.user.is_anonymous and request.user.is_active:
+        if request.user.is_authenticated and request.user.is_active:
             return redirect(reverse("homepage"))
 
     return redirect(reverse("login"))
