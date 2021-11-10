@@ -19,15 +19,22 @@
 
 <body>
 
+    <!-- Include the Message -->
     {% include 'messages.html' %}
 
+    <!-- Customer Navbar -->
     <nav class="myCustom_nav">
         <div class="myCustom_container">
+
+            <!-- Logo and App name -->
             <div class="myCustom_logo">
                 <a href="{% url 'homepage' %}">Project Name</a>
             </div>
+
+            <!-- Customer list item -->
             <div id="mainListDiv" class="myCustom_main_list">
                 <ul class="myCustom_navlinks">
+                    <!-- Logout -->
                     <li>
                         <form method="POST" id="form_logout" action="{% url 'logout' %}">
                             {% csrf_token %}
@@ -36,6 +43,8 @@
                     </li>
                 </ul>
             </div>
+            
+            <!-- Mobile phone Views -->
             <span class="myCustom_navTrigger">
                 <i></i>
                 <i></i>
@@ -44,6 +53,7 @@
         </div>
     </nav>
 
+    <!-- Home background with Navbar -->
     <section class="myCustom_home"></section>
 
     {% block content %}
@@ -55,17 +65,19 @@
 
     <!-- Function used to shrink nav bar removing paddings and adding black background -->
     <script>
-
+        // Scroll event handler
         $(window).scroll(function() {
             if ($(document).scrollTop() > 50) {
                 $('.myCustom_nav').addClass('affix');
-                $('.myCustom_navTrigger').addClass('navTrigger_affix')
+                $('.myCustom_navTrigger').addClass('navTrigger_affix');
+                document.getElementById('messages_ul').style.display = "none";
             } else {
                 $('.myCustom_nav').removeClass('affix');
-                $('.myCustom_navTrigger').removeClass('navTrigger_affix')
+                $('.myCustom_navTrigger').removeClass('navTrigger_affix');
             }
         });
 
+        // Mobile phone views menus event handler
         $('.myCustom_navTrigger').click(function () {
             $(this).toggleClass('active');
             $("#mainListDiv").toggleClass("show_list");

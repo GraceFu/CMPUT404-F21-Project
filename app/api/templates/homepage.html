@@ -4,51 +4,71 @@
 
 <div class="container">
     <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
-</div>
-<div class="container">
-    <h1>This is our homepage (for now)</h1>
+
+    <!-- Button for create post window -->
+    <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#postModal">Create Post</a>
+
+    <!-- Create post modal window -->
+    <div class="modal fade" id="postModal" style="top: 15%;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <h4>Create Post</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form method="POST" id="form_create_post">
+                        {% csrf_token %}
+                        <!-- Title -->
+                        <div class="form-group">
+                            <input type="text" class="" placeholder="Title" required> 
+                        </div>
+                        <!-- Description -->
+                        <div class="form-group">
+                            <input type="text" class="" placeholder="Description">
+                        </div>
+                        <!-- Content -->
+                        <div class="form-group">
+                            <textarea type="text" class="" placeholder="Content"></textarea>
+                        </div>
+                        <!-- Image -->
+                        <div class="form-group">
+                            Image<input type="file" class="" placeholder="Image">
+                        </div>
+                        <!-- Categories -->
+                        <div class="form-group">
+                            <input type="text" class="" placeholder="Categories">
+                        </div>
+                        <!-- Visibility -->
+                        <div class="form-group">
+                            Public<input type="radio" class="" value="Public" name="post_visibility" checked>
+                            Friends<input type="radio" class="" value="Friends" name="post_visibility">
+                        </div>
+                        <!-- Unlisted -->
+                        <div class="form-group">
+                            Unlisted<input type="checkbox" class="" value="unlisted">
+                        </div>
+                        <!-- Source -->
+                        <div class="form-group">
+                            <input type="url" class="" placeholder="Source"> 
+                        </div>
+                        <!-- Origin -->
+                        <div class="form-group">
+                            <input type="url" class="" placeholder="Origin">
+                        </div>
+                        <!-- Post Button -->
+                        <input type="submit" class="btn btn-info" value="POST"></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}
