@@ -54,6 +54,7 @@ urlpatterns = [
     # FriendRequest
 
     # Post
+    path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
     path("author/<str:authorID>/posts/", posts.PostViewSet.as_view(
         {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),

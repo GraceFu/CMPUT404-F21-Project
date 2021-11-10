@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.urls.base import reverse
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -5,6 +7,7 @@ from rest_framework.response import Response
 from api.models import Author, Post, visibility_type
 from api.serializers import PostSerializer
 from api.utils import generate_id, methods
+from api.forms import NewPostForm
 
 from Social_network.settings import HOSTNAME
 
@@ -177,3 +180,80 @@ class PostViewSet(viewsets.ViewSet):
         # instance.visibility = data["visibility"]
         # instance.unlisted = data["unlisted"]
         instance.save()
+
+
+
+# View of post
+def post_handler(request, authorID):
+    # POST create a new post but generate a post_id
+    if request.method == "POST":
+        # Check the author is exist and the current user is the same author
+        if check_author_by_id(authorID) and authorID == str(request.user.author.authorID):
+            if request.POST.get("myCustom_method") == "PUT":
+                form = NewPostForm(request.POST)
+                print(NewPostForm(request.POST).errors)
+                if form.is_valid():
+                    instance = Post(postID=generate_id())
+                    instance.author = Author.objects.get(authorID=authorID)
+                    populate_post_data(form.cleaned_data, instance)
+                    messages.warning(
+                        request, "Congratulations! Your post has been published.")
+                else:
+                    messages.error(
+                        request, "Unsuccessful published. Invalid information.")
+            elif request.POST.get("myCustom_method") == "GET":
+                pass
+            elif request.POST.get("myCustom_method") == "POST":
+                pass
+            elif request.POST.get("myCustom_method") == "DELETE":
+                pass
+                
+        else:
+            messages.error(request, "Error. Unexpected user.")
+    elif request.method == "GET":
+        pass
+    
+    return redirect("homepage")
+
+
+def check_author_by_id(authorID):
+    """ check existence of an author """
+    try:
+        if Author.objects.get(authorID=authorID):
+            return True
+    except Author.DoesNotExist:
+        return False
+
+
+def populate_post_data(data, instance):
+    """ put request data into instance 
+    auto-set fields: postID, type, visibility, unlisted, count
+
+    example of an working data:
+
+    {
+    "title": "my title",
+    "source": "https://uofa-cmput404.github.io/",
+    "origin": "https://uofa-cmput404.github.io/",
+    "description": "my des",
+    "contentType": "text/plain",
+    "content": "my content",
+    "categories": ["web", "tutorial"]
+    }
+
+    """
+
+    instance.title = data["title"]
+    # DO NOT REMOVE uncomment field in this method
+    #instance.source = data["source"]  # TODO make it to url
+    #nstance.origin = data["origin"]  # TODO make it to url
+    instance.description = data["description"]
+    #instance.contentType = data["contentType"]
+    instance.content = data["content"]
+    # instance.author = authorID
+    instance.categories = data["categories"]
+    # instance.count = len(data["comment"])  # total number of comments for this post
+    instance.published = datetime.now().isoformat()
+    #instance.visibility = data["visibility"]
+    #instance.unlisted = data["unlisted"]
+    instance.save()

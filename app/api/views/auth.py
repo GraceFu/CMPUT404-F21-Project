@@ -12,6 +12,7 @@ from ..utils import generate_id
 def signup_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             user = form.save()
             author = Author(user=user, authorID=generate_id())
@@ -39,7 +40,7 @@ def login_request(request):
             if user is not None and user.is_active:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect(reverse("homepage"))
+                return redirect("homepage")
         else:
             messages.error(
                 request, "Invalid username or password. Or your account has not been approved yet.")
@@ -50,13 +51,13 @@ def login_request(request):
 def logout_request(request):
     if request.method == "POST":
         logout(request)
-        return redirect(reverse("login"))
+        return redirect("login")
 
     return redirect("login")
 
 def default_page_request(request):
     if request.method == "GET":
         if request.user.is_authenticated and request.user.is_active:
-            return redirect(reverse("homepage"))
+            return redirect("homepage")
 
-    return redirect(reverse("login"))
+    return redirect("login")

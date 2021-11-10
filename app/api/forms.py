@@ -26,7 +26,9 @@ class NewUserForm(UserCreationForm):
 
 
 class NewPostForm(forms.ModelForm):
+    title = forms.CharField(max_length=100, required=True)
+
     class Meta:
         model = Post
         fields = ['title', 'description',
-                  'content', 'categories', 'visibility']
+                  'content', 'categories']

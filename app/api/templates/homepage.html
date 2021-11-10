@@ -21,44 +21,45 @@
 
                 <!-- Body -->
                 <div class="modal-body">
-                    <form method="POST" action="author/{{authorID}}/posts/">
+                    <form method="POST" action="author/{{ author.authorID }}/posts">
+                        <input type="hidden" name="myCustom_method" value="PUT"/>
                         {% csrf_token %}
                         <!-- Title -->
                         <div class="form-group">
-                            <input type="text" class="" placeholder="Title" required> 
+                            <input type="text" name="title" class="" placeholder="Title" value="{{ title }}" required> 
                         </div>
                         <!-- Description -->
                         <div class="form-group">
-                            <input type="text" class="" placeholder="Description">
+                            <input type="text" name="description" class="" placeholder="Description">
                         </div>
                         <!-- Content -->
                         <div class="form-group">
-                            <textarea type="text" class="" placeholder="Content"></textarea>
+                            <textarea type="text" name="content" class="" placeholder="Content"></textarea>
                         </div>
                         <!-- Image -->
                         <div class="form-group">
-                            Image<input type="file" class="" placeholder="Image">
+                            Image<input type="file" name="image" class="" placeholder="Image">
                         </div>
                         <!-- Categories -->
                         <div class="form-group">
-                            <input type="text" class="" placeholder="Categories">
+                            <input type="text" name="categories" class="" placeholder="Categories">
                         </div>
-                        <!-- Visibility -->
+                        <!-- Visibility --><!--
                         <div class="form-group">
-                            Public<input type="radio" class="" value="Public" name="post_visibility" checked>
-                            Friends<input type="radio" class="" value="Friends" name="post_visibility">
-                        </div>
+                            Public<input type="radio" name="visibility" class="" value="Public" checked>
+                            Friends<input type="radio" name="visibility" class="" value="Friends">
+                        </div>-->
                         <!-- Unlisted -->
                         <div class="form-group">
-                            Unlisted<input type="checkbox" class="" value="unlisted">
+                            Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
                         </div>
                         <!-- Source -->
                         <div class="form-group">
-                            <input type="url" class="" placeholder="Source"> 
+                            <input type="url" name="source" class="" placeholder="Source"> 
                         </div>
                         <!-- Origin -->
                         <div class="form-group">
-                            <input type="url" class="" placeholder="Origin">
+                            <input type="url" name="origin" class="" placeholder="Origin">
                         </div>
                         <!-- Post Button -->
                         <input type="submit" class="btn btn-info" value="POST"></button>
