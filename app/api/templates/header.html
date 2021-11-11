@@ -14,7 +14,6 @@
 
     <!-- Custom -->
     <link rel="stylesheet" type="text/css" href="{% static 'styles/header.css' %}">
-    <title>Homepage</title>
 </head>
 
 <body>
@@ -34,6 +33,13 @@
             <!-- Customer list item -->
             <div id="mainListDiv" class="myCustom_main_list">
                 <ul class="myCustom_navlinks">
+                    <!-- My Posts -->
+                    <li>
+                        <form method="GET" id="form_my_posts" action="author/{{ author.authorID }}/posts">
+                            {% csrf_token %}
+                            <a onclick="document.getElementById('form_my_posts').submit()">MyPosts</a>
+                        </form>
+                    </li>
                     <!-- Logout -->
                     <li>
                         <form method="POST" id="form_logout" action="{% url 'logout' %}">

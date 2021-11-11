@@ -40,7 +40,7 @@ urlpatterns = [
     path("signup", auth.signup_request, name="signup"),
     path("logout", auth.logout_request, name="logout"),
 
-    # Homepage after login
+    # Homepage
     path("homepage", homepage.homepage_request, name="homepage"),
 
     # Authors
@@ -54,6 +54,9 @@ urlpatterns = [
     # FriendRequest
 
     # Post
+    # Currently author posts
+    path("my-posts", posts.my_posts_view, name="my-posts"),
+    # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
     path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
     path("author/<str:authorID>/posts/", posts.PostViewSet.as_view(

@@ -57,7 +57,10 @@ def logout_request(request):
 
 def default_page_request(request):
     if request.method == "GET":
-        if request.user.is_authenticated and request.user.is_active:
-            return redirect("homepage")
+        try:
+            if request.user.is_authenticated and request.user.is_active and request.user.author:
+                return redirect("homepage")
+        except:
+            return redirect("login")
 
     return redirect("login")

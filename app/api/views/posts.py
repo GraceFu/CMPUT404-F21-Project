@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls.base import reverse
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from api.models import Author, Post, visibility_type
 from api.serializers import PostSerializer
-from api.utils import generate_id, methods
+from api.utils import *
 from api.forms import NewPostForm
 
 from Social_network.settings import HOSTNAME
@@ -185,28 +185,39 @@ class PostViewSet(viewsets.ViewSet):
 
 # View of post
 def post_handler(request, authorID):
-    # POST create a new post but generate a post_id
+    # Check the user is invalid in view
+    if invalid_user_view(request): 
+        return redirect("login")
+    
+    # When the request method is POST
     if request.method == "POST":
         # Check the author is exist and the current user is the same author
         if check_author_by_id(authorID) and authorID == str(request.user.author.authorID):
             if request.POST.get("myCustom_method") == "PUT":
                 form = NewPostForm(request.POST)
-                print(NewPostForm(request.POST).errors)
+                print(dir(request.POST))
                 if form.is_valid():
                     instance = Post(postID=generate_id())
                     instance.author = Author.objects.get(authorID=authorID)
                     populate_post_data(form.cleaned_data, instance)
-                    messages.warning(
-                        request, "Congratulations! Your post has been published.")
+                    messages.warning(request, "Congratulations! Your post has been published.")
                 else:
-                    messages.error(
-                        request, "Unsuccessful published. Invalid information.")
+                    messages.error(request, "Unsuccessful published. Invalid information.")
             elif request.POST.get("myCustom_method") == "GET":
                 postID = request.POST.get("myCustom_postID")
             elif request.POST.get("myCustom_method") == "POST":
                 postID = request.POST.get("myCustom_postID")
             elif request.POST.get("myCustom_method") == "DELETE":
                 postID = request.POST.get("myCustom_postID")
+                
+        else:
+            messages.error(request, "Error. Unexpected user.")
+
+    # When the request method is GET
+    elif request.method == "GET":
+        # Check the author is exist and the current user is the same author
+        if check_author_by_id(authorID) and authorID == str(request.user.author.authorID):
+            return redirect("my-posts")
                 
         else:
             messages.error(request, "Error. Unexpected user.")
@@ -255,3 +266,19 @@ def populate_post_data(data, instance):
     #instance.visibility = data["visibility"]
     #instance.unlisted = data["unlisted"]
     instance.save()
+
+
+
+# View of my posts
+def my_posts_view(request):
+    # Check the user is invalid in view
+    if invalid_user_view(request):
+        return redirect("login")
+
+    content = {}
+
+    self_post = Post.objects.filter(author__exact=request.user.author).order_by('-published')
+
+    content['self_post'] = self_post
+
+    return render(request, "posts.html", content)

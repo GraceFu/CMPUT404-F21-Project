@@ -1,15 +1,19 @@
 {% extends "header.html" %}
 
+{% block title %}
+Homepage
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
     <h1>This is our homepage (for now)</h1>
 
     <!-- Button for create post window -->
-    <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#postModal">Create Post</a>
+    <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#create_post_modal">Create Post</a>
 
     <!-- Create post modal window -->
-    <div class="modal fade" id="postModal" style="top: 15%;">
+    <div class="modal fade" id="create_post_modal" style="top: 15%;">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -22,6 +26,7 @@
                 <!-- Body -->
                 <div class="modal-body">
                     <form method="POST" action="author/{{ author.authorID }}/posts">
+                        <!-- PUT - Create a post with generate post_id -->
                         <input type="hidden" name="myCustom_method" value="PUT"/>
                         {% csrf_token %}
                         <!-- Title -->
@@ -62,7 +67,7 @@
                             <input type="url" name="origin" class="" placeholder="Origin">
                         </div>
                         <!-- Post Button -->
-                        <input type="submit" class="btn btn-info" value="POST"></button>
+                        <input type="submit" class="btn btn-info" value="POST">
                     </form>
                 </div>
 
