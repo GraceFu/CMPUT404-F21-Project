@@ -7,15 +7,28 @@ My Posts
 {% block content %}
 
 <div class="container">
-    {% for post in self_post %}
 
+    {% if self_post %}
+    <div class="" style="text-align: center; margin-top: 20px;">
+        <h1>Here is your posts, =.=<h1>
+        <h2>You can manage them here by edit or delete.</h2>
+    </div>
+    {% else %}
+    <div class="" style="text-align: center; margin-top: 20px;">
+        <h1>It's empty here, =.=<h1>
+        <h2>You can go to Homepage to create some posts and then manage them here.</h2>
+    </div>
+    {% endif %}
+
+    {% for post in self_post %}
     <!-- Post -->
     <div class="" style="margin: 30px; padding: 20px; border: solid 2px; border-radius: 10px;">
+
         <!-- Header - Title and date -->
         <div class="post_title">
-            Post by {{ user.author.displayName }} <br>
-            Last release - {{ post.published }} <br>
-            <h2>{{ post.title }}<h3>
+            <h2>{{ post.title }}</h2>
+            Post by {{ post.author.displayName }} <br>
+            Last release - {{ post.published }}
         </div>
 
         <hr>
@@ -36,19 +49,23 @@ My Posts
 
         <!-- Footer - Button of operating -->
         <div class="management_button_area">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#edit_post_modal_{{ post.postID }}" disabled>Edit</button>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                data-bs-target="#edit_post_modal_{{ post.postID }}" disabled>Edit</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
         </div>
+        
     </div>
 
     <!-- Create post modal window -->
-    <div class="modal fade" id="edit_post_modal_{{ post.postID }}" style="top: 15%;">
+    <div class="modal fade" id="edit_post_modal_{{ post.postID }}" style="top: 15%;" 
+        aria-labelledby="edit_post_title_{{ post.postID }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Header -->
                 <div class="modal-header">
-                    <h4>Edit Post</h4>
+                    <h4 id="edit_post_title_{{ post.postID }}">Edit Post</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -107,13 +124,14 @@ My Posts
     </div>
 
     <!-- Create post modal window -->
-    <div class="modal fade" id="delete_post_modal_{{ post.postID }}" style="top: 30%;">
+    <div class="modal fade" id="delete_post_modal_{{ post.postID }}" style="top: 30%;" 
+        aria-labelledby="delete_post_title_{{ post.postID }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Header -->
                 <div class="modal-header">
-                    <h4>Delete Post</h4>
+                    <h4 id="delete_post_title_{{ post.postID }}">Delete Post</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -135,8 +153,8 @@ My Posts
             </div>
         </div>
     </div>
-
     {% endfor %}
+    
 </div>
 
 {% endblock %}

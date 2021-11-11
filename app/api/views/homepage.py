@@ -15,11 +15,11 @@ def homepage_request(request):
     content = {}
 
     author = Author.objects.filter(authorID=request.user.author.authorID).first()
-    self_post = Post.objects.filter(author__exact=author).order_by('-published')
+    public_post = Post.objects.filter(visibility__exact="PUBLIC").order_by('-published')
 
-    print(self_post)
+    print(public_post)
 
     content['author'] = author
-    content['self_post'] = self_post
+    content['public_post'] = public_post
 
     return render(request, "homepage.html", content)

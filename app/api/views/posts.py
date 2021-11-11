@@ -301,5 +301,6 @@ def my_posts_view(request):
     self_post = Post.objects.filter(author__exact=request.user.author).order_by('-published')
 
     content['self_post'] = self_post
+    content['my_posts_page'] = True
 
     return render(request, "posts.html", content)
