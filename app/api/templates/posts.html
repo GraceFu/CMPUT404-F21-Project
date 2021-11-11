@@ -9,14 +9,18 @@ My Posts
 <div class="container">
 
     {% if self_post %}
-    <div class="" style="text-align: center; margin-top: 20px;">
+    <div class="" style="text-align: center;">
+        <br><br>
         <h1>Here is your posts, =.=<h1>
         <h2>You can manage them here by edit or delete.</h2>
+        <br>
     </div>
     {% else %}
-    <div class="" style="text-align: center; margin-top: 20px;">
+    <div class="" style="text-align: center;">
+        <br><br>
         <h1>It's empty here, =.=<h1>
         <h2>You can go to Homepage to create some posts and then manage them here.</h2>
+        <br><br><br>
     </div>
     {% endif %}
 
@@ -50,7 +54,7 @@ My Posts
         <!-- Footer - Button of operating -->
         <div class="management_button_area">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                data-bs-target="#edit_post_modal_{{ post.postID }}" disabled>Edit</button>
+                data-bs-target="#edit_post_modal_{{ post.postID }}">Edit</button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
                 data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
         </div>
@@ -156,5 +160,7 @@ My Posts
     {% endfor %}
     
 </div>
+
+<br><br><br>
 
 {% endblock %}

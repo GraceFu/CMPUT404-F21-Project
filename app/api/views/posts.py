@@ -224,14 +224,14 @@ def post_handler(request, authorID):
                     form = NewPostForm(request.POST, instance=current_post)
                     if form.is_valid():
                         form.save()
-                        messages.info(request, "Your post '{postID}' has been update.")
+                        messages.info(request, f"Your post {postID} has been update.")
                     else:
                         messages.error(request, "Unsuccessful update. Invalid information.")
 
                 # DELETE - remove the post
                 elif request.POST.get("myCustom_method") == "DELETE":
                     current_post.delete()
-                    messages.info(request, f"Your post '{postID}' has been deleted.")
+                    messages.info(request, f"Your post {postID} has been deleted.")
 
             except:
                 messages.error(request, "Unexpected error...")
