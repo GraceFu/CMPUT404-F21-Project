@@ -8,3 +8,6 @@
 - CSS background: https://www.magicpattern.design/tools/css-backgrounds
 - Navbar HTML & CSS: https://blog.hubspot.com/website/bootstrap-navbar
 - Navbar background: https://wallpaperwaifu.com/landscape/reflection-of-city-night-lights-live-wallpaper/
+- Bootstrap: https://getbootstrap.com/docs/5.1/getting-started/introduction/
+- Bootstrap Modal: https://getbootstrap.com/docs/5.1/components/modal/
+- Bootstrap Collapse: https://getbootstrap.com/docs/5.1/components/collapse/
