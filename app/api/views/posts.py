@@ -188,41 +188,62 @@ def post_handler(request, authorID):
     # Check the user is invalid in view
     if invalid_user_view(request): 
         return redirect("login")
+
+    # Check the author is exist and the current user is the same author
+    if not check_author_by_id(authorID) and authorID != str(request.user.author.authorID):
+        messages.error(request, "Error. Unexpected user.")
+        return redirect("logout")
     
     # When the request method is POST
     if request.method == "POST":
-        # Check the author is exist and the current user is the same author
-        if check_author_by_id(authorID) and authorID == str(request.user.author.authorID):
-            if request.POST.get("myCustom_method") == "PUT":
-                form = NewPostForm(request.POST)
-                print(dir(request.POST))
-                if form.is_valid():
-                    instance = Post(postID=generate_id())
-                    instance.author = Author.objects.get(authorID=authorID)
-                    populate_post_data(form.cleaned_data, instance)
-                    messages.warning(request, "Congratulations! Your post has been published.")
-                else:
-                    messages.error(request, "Unsuccessful published. Invalid information.")
-            elif request.POST.get("myCustom_method") == "GET":
-                postID = request.POST.get("myCustom_postID")
-            elif request.POST.get("myCustom_method") == "POST":
-                postID = request.POST.get("myCustom_postID")
-            elif request.POST.get("myCustom_method") == "DELETE":
-                postID = request.POST.get("myCustom_postID")
-                
+        # PUT - create a post with generate post_id
+        if request.POST.get("myCustom_method") == "PUT":
+            form = NewPostForm(request.POST)
+            if form.is_valid():
+                instance = Post(postID=generate_id())
+                instance.author = Author.objects.get(authorID=authorID)
+                populate_post_data(form.cleaned_data, instance)
+                messages.info(request, "Congratulations! Your post has been published.")
+            else:
+                messages.error(request, "Unsuccessful published. Invalid information.")
+
+            return redirect("homepage")
+
+        # GET, POST, DELETE
         else:
-            messages.error(request, "Error. Unexpected user.")
+            try:
+                postID = request.POST.get("myCustom_postID")
+                current_post = Post.objects.filter(postID=postID).first()
+
+                # GET - get the public post
+                if request.POST.get("myCustom_method") == "GET":
+                    pass
+
+                # POST - update the post
+                elif request.POST.get("myCustom_method") == "POST":
+                    form = NewPostForm(request.POST, instance=current_post)
+                    if form.is_valid():
+                        form.save()
+                        messages.info(request, "Your post '{postID}' has been update.")
+                    else:
+                        messages.error(request, "Unsuccessful update. Invalid information.")
+
+                # DELETE - remove the post
+                elif request.POST.get("myCustom_method") == "DELETE":
+                    current_post.delete()
+                    messages.info(request, f"Your post '{postID}' has been deleted.")
+
+            except:
+                messages.error(request, "Unexpected error...")
+
+            return redirect("my-posts")
+        
 
     # When the request method is GET
     elif request.method == "GET":
-        # Check the author is exist and the current user is the same author
-        if check_author_by_id(authorID) and authorID == str(request.user.author.authorID):
-            return redirect("my-posts")
-                
-        else:
-            messages.error(request, "Error. Unexpected user.")
+        return redirect("my-posts")
     
-    return redirect("homepage")
+    return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def check_author_by_id(authorID):

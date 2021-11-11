@@ -10,26 +10,39 @@ My Posts
     {% for post in self_post %}
 
     <!-- Post -->
-    <div class="">
+    <div class="" style="margin: 30px; padding: 20px; border: solid 2px; border-radius: 10px;">
         <!-- Header - Title and date -->
         <div class="post_title">
-
+            Post by {{ user.author.displayName }} <br>
+            Last release - {{ post.published }} <br>
+            <h2>{{ post.title }}<h3>
         </div>
+
+        <hr>
 
         <!-- Body - Contents -->
         <div class="post_contents">
-            
+            Description: {{ post.description }} <br>
+            Content: {{ post.content }} <br>
+            Image: {{ post.image }} <br>
+            Categories: {{ post.categories }} <br>
+            Visibility: {{ post.visibility }} <br>
+            Unlisted: {{ post.unlisted }} <br>
+            Source: {{ post.source }} <br>
+            Origin: {{ post.origin }} <br>
         </div>
+
+        <hr>
 
         <!-- Footer - Button of operating -->
         <div class="management_button_area">
-            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#edit_post_modal">Edit</a>
-            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#delete_post_modal">Delete</a>
+            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#edit_post_modal_{{ post.postID }}">Edit</a>
+            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</a>
         </div>
     </div>
 
     <!-- Create post modal window -->
-    <div class="modal fade" id="edit_post_modal" style="top: 15%;">
+    <div class="modal fade" id="edit_post_modal_{{ post.postID }}" style="top: 15%;">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -57,7 +70,7 @@ My Posts
                         </div>
                         <!-- Content -->
                         <div class="form-group">
-                            <textarea type="text" name="content" class="" placeholder="Content" ></textarea>
+                            <textarea type="text" name="content" class="" placeholder="Content">{{ post.content }}</textarea>
                         </div>
                         <!-- Image -->
                         <div class="form-group">
@@ -94,7 +107,7 @@ My Posts
     </div>
 
     <!-- Create post modal window -->
-    <div class="modal fade" id="delete_post_modal" style="top: 15%;">
+    <div class="modal fade" id="delete_post_modal_{{ post.postID }}" style="top: 30%;">
         <div class="modal-dialog">
             <div class="modal-content">
 
