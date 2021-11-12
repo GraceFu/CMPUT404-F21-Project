@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, authors, followers, posts
+from api.views import auth, homepage, authors, followers, posts, profiles
 from api.utils import methods
 
 router = DefaultRouter()
@@ -48,6 +48,9 @@ urlpatterns = [
          authors.AuthorsViewSet.as_view({methods.GET: 'list_all'}), name="authors_list"),
     path("author/<str:authorID>",
          authors.ProfileViewSet.as_view({methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
+
+    # Profile
+    path("profile/<str:authorID>", profiles.profile_view, name="profile"),
 
     # Followers
 

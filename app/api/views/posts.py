@@ -1,18 +1,18 @@
 from django.shortcuts import redirect, render
 from django.urls.base import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from api.models import Author, Post, visibility_type
 from api.serializers import PostSerializer
-from api.utils import *
+from api.utils import methods, generate_id, invalid_user_view
 from api.forms import NewPostForm
 
 from Social_network.settings import HOSTNAME
-
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 
 from datetime import datetime
 
@@ -190,7 +190,7 @@ def post_handler(request, authorID):
         return redirect("login")
 
     # Check the author is exist and the current user is the same author
-    if not check_author_by_id(authorID) and authorID != str(request.user.author.authorID):
+    if authorID != str(request.user.author.authorID):
         messages.error(request, "Error. Unexpected user.")
         return redirect("logout")
     
@@ -243,16 +243,8 @@ def post_handler(request, authorID):
     elif request.method == "GET":
         return redirect("my-posts")
     
-    return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-def check_author_by_id(authorID):
-    """ check existence of an author """
-    try:
-        if Author.objects.get(authorID=authorID):
-            return True
-    except Author.DoesNotExist:
-        return False
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def populate_post_data(data, instance):
@@ -303,4 +295,4 @@ def my_posts_view(request):
     content['self_post'] = self_post
     content['my_posts_page'] = True
 
-    return render(request, "posts.html", content)
+    return render(request, "my_posts.html", content)

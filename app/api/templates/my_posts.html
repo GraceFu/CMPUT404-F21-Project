@@ -4,19 +4,24 @@
 My Posts
 {% endblock %}
 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/post_view.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
 
     {% if self_post %}
-    <div class="" style="text-align: center;">
+    <div class="text-center">
         <br><br>
         <h1>Here is your posts, =.=<h1>
         <h2>You can manage them here by edit or delete.</h2>
         <br>
     </div>
     {% else %}
-    <div class="" style="text-align: center;">
+    <div class="text-center">
         <br><br>
         <h1>It's empty here, =.=<h1>
         <h2>You can go to Homepage to create some posts and then manage them here.</h2>
@@ -26,39 +31,40 @@ My Posts
 
     {% for post in self_post %}
     <!-- Post -->
-    <div class="" style="margin: 30px; padding: 20px; border: solid 2px; border-radius: 10px;">
+    <div class="myCustom_card" style="margin: 30px;">
 
         <!-- Header - Title and date -->
-        <div class="post_title">
+        <div class="card-header">
             <h2>{{ post.title }}</h2>
-            Post by {{ post.author.displayName }} <br>
+            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+                style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>
 
-        <hr>
-
         <!-- Body - Contents -->
-        <div class="post_contents">
-            Description: {{ post.description }} <br>
-            Content: {{ post.content }} <br>
-            Image: {{ post.image }} <br>
-            Categories: {{ post.categories }} <br>
-            Visibility: {{ post.visibility }} <br>
-            Unlisted: {{ post.unlisted }} <br>
-            Source: {{ post.source }} <br>
-            Origin: {{ post.origin }} <br>
+        <div class="card-body">
+            <div class="post_contents">
+                Description: {{ post.description }} <br>
+                Content: {{ post.content }} <br>
+                Image: {{ post.image }} <br>
+                Categories: {{ post.categories }} <br>
+                Visibility: {{ post.visibility }} <br>
+                Unlisted: {{ post.unlisted }} <br>
+                Source: {{ post.source }} <br>
+                Origin: {{ post.origin }} <br>
+            </div>
+
+            <hr>
+
+            <!-- Footer - Button of operating -->
+            <div class="management_button_area">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                    data-bs-target="#edit_post_modal_{{ post.postID }}">Edit</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                    data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
+            </div>
         </div>
 
-        <hr>
-
-        <!-- Footer - Button of operating -->
-        <div class="management_button_area">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                data-bs-target="#edit_post_modal_{{ post.postID }}">Edit</button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
-        </div>
-        
     </div>
 
     <!-- Create post modal window -->

@@ -15,6 +15,11 @@
 
     <!-- Custom -->
     <link rel="stylesheet" type="text/css" href="{% static 'styles/header.css' %}">
+    <title>{% block title %}Homepage{% endblock %}</title>
+
+    {% block css %}
+    {% endblock %}
+
 </head>
 
 <body>
@@ -35,10 +40,10 @@
             <div id="mainListDiv" class="myCustom_main_list">
                 <ul class="myCustom_navlinks">
 
-                    {% if not my_profile_page %}
+                    {% if not my_profile %}
                     <!-- My Profile -->
                     <li>
-                        <form method="GET" id="form_my_profile" action="{% url 'homepage' %}">
+                        <form method="GET" id="form_my_profile" action="{% url 'profile' authorID=user.author.authorID %}">
                             {% csrf_token %}
                             <a onclick="document.getElementById('form_my_profile').submit()">Profile</a>
                         </form>
@@ -48,7 +53,7 @@
                     {% if not my_posts_page %}
                     <!-- My Posts -->
                     <li>
-                        <form method="GET" id="form_my_posts" action="author/{{ author.authorID }}/posts">
+                        <form method="GET" id="form_my_posts" action="{% url 'post_handler' authorID=user.author.authorID %}">
                             {% csrf_token %}
                             <a onclick="document.getElementById('form_my_posts').submit()">MyPosts</a>
                         </form>

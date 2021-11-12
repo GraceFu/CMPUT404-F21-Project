@@ -4,119 +4,122 @@
 Homepage
 {% endblock %}
 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/post_view.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<div class="container" style="margin-top: 30px;">
-    
-    <!-- Button for create post window -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-        data-bs-target="#create_post_modal">Create Post</button>
+<!-- Create post modal window -->
+<div class="modal fade" id="create_post_modal" style="top: 15%; text-align: left;" 
+    aria-labelledby="create_post_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-    <!-- Create post modal window -->
-    <div class="modal fade" id="create_post_modal" style="top: 15%;" 
-        aria-labelledby="create_post_title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Header -->
-                <div class="modal-header">
-                    <h4 id="create_post_title">Create Post</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body">
-                    <form method="POST" action="author/{{ author.authorID }}/posts">
-                        <!-- PUT - Create a post with generate post_id -->
-                        <input type="hidden" name="myCustom_method" value="PUT"/>
-                        {% csrf_token %}
-                        <!-- Title -->
-                        <div class="form-group">
-                            <input type="text" name="title" class="" placeholder="Title" required> 
-                        </div>
-                        <!-- Description -->
-                        <div class="form-group">
-                            <input type="text" name="description" class="" placeholder="Description">
-                        </div>
-                        <!-- Content -->
-                        <div class="form-group">
-                            <textarea type="text" name="content" class="" placeholder="Content"></textarea>
-                        </div>
-                        <!-- Image -->
-                        <div class="form-group">
-                            Image<input type="file" name="image" class="" placeholder="Image">
-                        </div>
-                        <!-- Categories -->
-                        <div class="form-group">
-                            <input type="text" name="categories" class="" placeholder="Categories">
-                        </div>
-                        <!-- Visibility --><!--
-                        <div class="form-group">
-                            Public<input type="radio" name="visibility" class="" value="Public" checked>
-                            Friends<input type="radio" name="visibility" class="" value="Friends">
-                        </div>-->
-                        <!-- Unlisted -->
-                        <div class="form-group">
-                            Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
-                        </div>
-                        <!-- Source -->
-                        <div class="form-group">
-                            <input type="url" name="source" class="" placeholder="Source"> 
-                        </div>
-                        <!-- Origin -->
-                        <div class="form-group">
-                            <input type="url" name="origin" class="" placeholder="Origin">
-                        </div>
-                        <!-- Post Button -->
-                        <input type="submit" class="btn btn-info" value="POST">
-                    </form>
-                </div>
-
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 id="create_post_title">Create Post</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="POST" action="author/{{ author.authorID }}/posts">
+                    <!-- PUT - Create a post with generate post_id -->
+                    <input type="hidden" name="myCustom_method" value="PUT"/>
+                    {% csrf_token %}
+                    <!-- Title -->
+                    <div class="form-group">
+                        <input type="text" name="title" class="" placeholder="Title" required> 
+                    </div>
+                    <!-- Description -->
+                    <div class="form-group">
+                        <input type="text" name="description" class="" placeholder="Description">
+                    </div>
+                    <!-- Content -->
+                    <div class="form-group">
+                        <textarea type="text" name="content" class="" placeholder="Content"></textarea>
+                    </div>
+                    <!-- Image -->
+                    <div class="form-group">
+                        Image<input type="file" name="image" class="" placeholder="Image">
+                    </div>
+                    <!-- Categories -->
+                    <div class="form-group">
+                        <input type="text" name="categories" class="" placeholder="Categories">
+                    </div>
+                    <!-- Visibility --><!--
+                    <div class="form-group">
+                        Public<input type="radio" name="visibility" class="" value="Public" checked>
+                        Friends<input type="radio" name="visibility" class="" value="Friends">
+                    </div>-->
+                    <!-- Unlisted -->
+                    <div class="form-group">
+                        Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
+                    </div>
+                    <!-- Source -->
+                    <div class="form-group">
+                        <input type="url" name="source" class="" placeholder="Source"> 
+                    </div>
+                    <!-- Origin -->
+                    <div class="form-group">
+                        <input type="url" name="origin" class="" placeholder="Origin">
+                    </div>
+                    <!-- Post Button -->
+                    <input type="submit" class="btn btn-info" value="POST">
+                </form>
+            </div>
+
         </div>
     </div>
+</div>
 
+<div class="container text-center" style="margin-top: 30px;">
+    
+    <!-- Button for create post window -->
+    <label role="button" class="btn btn-primary" data-bs-toggle="modal" 
+        data-bs-target="#create_post_modal">Create Post</label>
 
     {% for post in public_post %}
     <!-- Post -->
-    <div class="" style="margin: 30px; padding: 20px; border: solid 2px; border-radius: 10px;">
+    <div class="myCustom_card" style="margin: 30px;">
 
         <!-- Header - Title and date -->
-        <div class="post_title">
-            <h2>{{ post.title }}</h2>
-            Post by {{ post.author.displayName }} <br>
+        <div class="card-header">
+            <h2 style="margin-top: 10px;">{{ post.title }}</h2>
+            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+                style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>
 
-        <hr>
-
         <!-- Body - Contents -->
-        <div class="post_contents">
-            Description: {{ post.description }} <br>
-            Content: {{ post.content }} <br>
-            Image: {{ post.image }} <br>
-            Categories: {{ post.categories }} <br>
-            Visibility: {{ post.visibility }} <br>
-            Unlisted: {{ post.unlisted }} <br>
-            Source: {{ post.source }} <br>
-            Origin: {{ post.origin }} <br>
-        </div>
+        <div class="card-body">
+            <div class="post_contents">
+                Description: {{ post.description }} <br>
+                Content: {{ post.content }} <br>
+                Image: {{ post.image }} <br>
+                Categories: {{ post.categories }} <br>
+                Source: {{ post.source }} <br>
+                Origin: {{ post.origin }} <br>
+            </div>
 
-        <hr>
+            <hr>
 
-        <!-- Footer - Button of operating -->
-        <div class="management_button_area">
-            <button type="button" class="btn btn-primary">Share</button>
-            <button type="button" class="btn btn-primary">Like</button>
-            <a type="button" class="btn btn-primary" data-bs-toggle="collapse" 
-                href="#comment_post_{{ post.postID }}" aria-expanded="false" 
-                aria-controls="comment_post_{{ post.postID }}">Comment</a>
+            <!-- Footer - Button of operating -->
+            <div class="management_button_area">
+                <button type="button" class="btn btn-primary">Share</button>
+                <button type="button" class="btn btn-primary">Like</button>
+                <a type="button" class="btn btn-primary" data-bs-toggle="collapse" 
+                    href="#comment_post_{{ post.postID }}" aria-expanded="false" 
+                    aria-controls="comment_post_{{ post.postID }}">Comment</a>
 
-            <div class="collapse" id="comment_post_{{ post.postID }}">
-                <br>
-                <div class="card card-body">
-                    <input type="text" name="comment" class="" placeholder="Comment" required>
-                    Just for test, not complete yet.
+                <div class="collapse" id="comment_post_{{ post.postID }}">
+                    <br>
+                    <div class="myCustom_comment_card card-body">
+                        <input type="text" name="comment" class="" placeholder="Comment" required>
+                        Just for test, not complete yet.
+                    </div>
                 </div>
             </div>
         </div>
