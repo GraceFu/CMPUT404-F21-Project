@@ -12,7 +12,6 @@ from rest_framework.authentication import BasicAuthentication
 from api.models import Author, Post, visibility_type, Comment
 from api.serializers import CommentSerializer
 from api.utils import methods, generate_id, invalid_user_view
-from api.forms import NewCommentForm
 
 from Social_network.settings import HOSTNAME
 

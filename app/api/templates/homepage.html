@@ -117,7 +117,11 @@ Homepage
                 <div class="collapse" id="comment_post_{{ post.postID }}">
                     <br>
                     <div class="myCustom_comment_card card-body">
-                        <input type="text" name="comment" class="" placeholder="Comment" required>
+                        <div class="" id="write_a_comment_area">
+                            <input type="text" id="comment_input_{{post.postID}}" name="comment" class="" placeholder="Comment" required>
+                            <button type="button" class="btn btn-primary myCustom_comment_send" 
+                                    var="{{post.postID}}" value="{{post.author.authorID}}">Send</button>
+                        </div>
                         Just for test, not complete yet.
                     </div>
                 </div>
@@ -130,5 +134,39 @@ Homepage
 </div>
 
 <br><br><br>
+
+<script>
+    $("button.myCustom_comment_send").on("click", function () {
+        let postID = $(this).attr("var");
+        let authorID = $(this).attr("value");
+
+        let content = $("input#comment_input_" + postID).val();
+        var objects = { "content": content, "contentType": "text/plain" };
+
+        var request = new XMLHttpRequest();
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                try {
+                    if (request.status === 200) {
+                    }
+                }
+                catch (e) {
+                    alert('Error: ' + e.name);
+                }
+                if (request.status === 200) {
+                    return success(request.responseText);
+                } else {
+                    return fail(request.status);
+                }
+            } else {
+
+            }
+        }
+
+        request.open('POST', 'api/author/' + authorID + '/posts/' + postID + '/comments');
+        request.send(JSON.stringify(objects));
+    });
+</script>
 
 {% endblock %}
