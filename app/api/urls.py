@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, authors, followers, posts, profiles
+from api.views import auth, homepage, authors, followers, posts, profiles, comments
 from api.utils import methods
 
 router = DefaultRouter()
@@ -62,15 +62,18 @@ urlpatterns = [
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
     path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
-    path("author/<str:authorID>/posts/", posts.PostViewSet.as_view(
+    path("api/author/<str:authorID>/posts/", posts.PostViewSet.as_view(
         {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
     # TODO -> fix update_post to have authorID and able able update TODO {methods.PUT: 'get_public_posts'}
-    path("author/<str:authorID>/posts/<str:postID>", posts.PostViewSet.as_view(
-        {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post', methods.PUT: "create_post_with_existing_id"}), name="handle_existing_post")
+    path("api/author/<str:authorID>/posts/<str:postID>", posts.PostViewSet.as_view(
+        {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post', methods.PUT: "create_post_with_existing_id"}), name="handle_existing_post"),
     # TODO post
     #  stream
 
     # Comments
+    path("api/author/<str:authorID>/posts/<str:postID>/comments", comments.CommentAPISet.as_view(
+        {methods.GET: 'get_post_comment', methods.POST: 'create_comment_with_new_id'}), name="handle_new_comment"),
+    
 
     # Likes
 

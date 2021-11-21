@@ -110,9 +110,9 @@ class Comment(models.Model):
     content = models.CharField(max_length=500, null=True)
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, blank=False, null=False)
-    image = models.URLField()  # TODO Should be an url ?
+    #image = models.URLField()  # TODO Should be an url ?
     published = models.DateTimeField(default=timezone.now)
-    url = models.URLField(null=True, blank=True, editable=False)
+    #url = models.URLField(null=True, blank=True, editable=False)
 
 
 # Like ######### Doubt we need @context in the model (see proj description)
