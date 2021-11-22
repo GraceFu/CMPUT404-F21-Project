@@ -185,6 +185,7 @@ class PostViewSet(viewsets.ViewSet):
 
 # View of post
 def post_handler(request, authorID):
+    print(request)
     # Check the user is invalid in view
     if invalid_user_view(request): 
         return redirect("login")
