@@ -117,7 +117,7 @@ class Comment(models.Model):
 
 # Like ######### Doubt we need @context in the model (see proj description)
 class Like(models.Model):
-    context = models.URLField(null=True, blank=True, editable=False)
+    # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     summary = models.CharField(max_length=100)

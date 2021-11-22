@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, authors, followers, posts, profiles, comments
+from api.views import auth, homepage, authors, followers, posts, profiles, comments, likes
 from api.utils import methods
 
 router = DefaultRouter()
@@ -76,9 +76,11 @@ urlpatterns = [
     
 
     # Likes
-
+    path("api/author/<str:authorID>/posts/<str:postID>/likes", likes.LikeViewSet.as_view({methods.GET: 'get_post_likes'}), name="get_post_likes"),
+    path("api/author/<str:authorID>/posts/<str:postID>/comments/<str:commentID>/likes", likes.LikeViewSet.as_view({methods.GET: 'get_comment_likes'}), name="get_comment_likes"),
+    
     # Liked
-
+    path("api/author/<str:authorID>/liked", likes.LikeViewSet.as_view({methods.GET: 'get_author_liked'}), name="get_author_liked"),
     # Inbox
 
 ]
