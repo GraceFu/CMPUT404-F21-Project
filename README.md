@@ -28,6 +28,7 @@ Since we do not have a separate admin panel yet, admin can now approve new users
 
 Internal documentation is inside /docs folder. You can `cd docs` or visit the links below.
 
+- [API Endpoints Documentation](https://github.com/GraceFu/CMPUT404-F21-Project/blob/main/docs/api_endpoints.md)
 - [References](https://github.com/GraceFu/CMPUT404-F21-Project/blob/main/docs/references.md)
 
 ## License
