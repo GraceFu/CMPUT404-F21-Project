@@ -1,26 +1,20 @@
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from api.models import Author, Post
+
+from api.models import Author
 from api.serializers import AuthorSerializer
-from api.utils import methods
-from django.shortcuts import get_object_or_404
+from api.utils import methods, author_not_found
 
-
-# Create your models here.
-# https://www.django-rest-framework.org/api-guide/viewsets/
 
 class AuthorsViewSet(viewsets.ViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
 
     """
-    URL: ://service/authors/
+    URL: api/authors/
     GET: retrieve all profiles on the server paginated
-    page: how many pages
-    size: how big is a page
     """
-
     @action(methods=[methods.GET], detail=True)
     def list_all(self, request):
         queryset = Author.objects.all()
@@ -33,15 +27,14 @@ class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     """
-    URL: ://service/author/{authorID}/
+    URL: api/author/{authorID}/
     GET: retrieve their profile
     POST: update profile
     """
-
     @action(methods=[methods.GET], detail=True)
     def retrieve(self, request, authorID):
-        if not self.check_author_by_id(authorID):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         author = Author.objects.get(authorID=authorID)
         serializer = AuthorSerializer(author)
@@ -49,8 +42,8 @@ class ProfileViewSet(viewsets.ViewSet):
 
     @action(methods=[methods.POST], detail=True)
     def update(self, request, authorID):
-        if not self.check_author_by_id(authorID):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
@@ -63,7 +56,6 @@ class ProfileViewSet(viewsets.ViewSet):
 
     def populate_author_data(self, data, instance):
         """ put request data into instance 
-
         example of an working data:
 
         {
@@ -72,16 +64,6 @@ class ProfileViewSet(viewsets.ViewSet):
         }
 
         """
-
-        #instance.type = data["type"]
         instance.displayName = data["displayName"]
-        # instance.host = data["host"]
         instance.github = data["github"]
-
-    def check_author_by_id(self, authorID):
-        """ check existence of an author """
-        try:
-            if Author.objects.get(authorID=authorID):
-                return True
-        except Author.DoesNotExist:
-            return False
+        instance.save()

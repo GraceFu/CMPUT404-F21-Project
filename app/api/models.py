@@ -1,16 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils import timezone
-from django.db.models.fields import related
 from Social_network.settings import HOSTNAME
-from django.utils.translation import activate
-from django import forms
-
-# Create your models here.
-# https://docs.djangoproject.com/en/3.2/topics/db/models/
-# https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
 
 
 # Defined constant/enum fields
@@ -49,10 +40,10 @@ class Follow(models.Model):
         primary_key=True, editable=False, unique=True)
     # follow request from user
     followee = models.ForeignKey(
-        Author, on_delete=models.CASCADE, related_name="followee")
+        Author, on_delete=models.CASCADE, related_name="followee", blank=True)
     # follow request to user, person to be follow
     follower = models.ForeignKey(
-        Author, on_delete=models.CASCADE, related_name="follower")
+        Author, on_delete=models.CASCADE, related_name="follower", blank=True)
     time = models.DateTimeField(auto_now_add=True)
     acceptance = models.BooleanField(default=False)
 
@@ -73,7 +64,7 @@ class Friend(models.Model):
     acceptance = models.BooleanField(default=False)
 
 
-# Post ######### potentially missing comment field and list of comment field
+######### Post #########
 class Post(models.Model):
     type = models.CharField(default="post", max_length=100)
     postID = models.UUIDField(
@@ -86,7 +77,7 @@ class Post(models.Model):
         max_length=100, default=content_type.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
     image = models.URLField(
-        null=True, blank=True)  # TODO Should be an url ?
+        null=True, blank=True)
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, blank=True)
     categories = models.JSONField(null=True, blank=True)  # list of strings
@@ -115,22 +106,22 @@ class Comment(models.Model):
     #url = models.URLField(null=True, blank=True, editable=False)
 
 
-# Like ######### Doubt we need @context in the model (see proj description)
+######### Comment #########
 class Like(models.Model):
-    context = models.URLField(null=True, blank=True, editable=False)
+    # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
     summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
     object = models.URLField(null=True, blank=True, editable=False)
 
 
-# Inbox ######### potentially missing list of inbox object
+######### Inbox #########
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
     inboxID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
     items = models.JSONField(default=list)
 
 
@@ -138,8 +129,8 @@ class Inbox(models.Model):
 class Node(models.Model):
     url = models.URLField(default=HOSTNAME, max_length=100)
     host = models.UUIDField(
-        primary_key=True, editable=False, unique=True, blank=True)  # doubt we even need this,this class only looks for interfaceable servers/hosts
-    user = models.OneToOneField(  # so no need to generate unique id
+        primary_key=True, editable=False, unique=True, blank=True)
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     hostUsername = models.CharField(max_length=200, null=False)

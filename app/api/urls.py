@@ -17,7 +17,7 @@ Including another URLconf
 This class sets the api endpoints of the app. Refers to https://github.com/abramhindle/CMPUT404-project-socialdistribution/blob/master/project.org#objects
 Methods allowed: GET, POST, PUT, DELETE
 """
-# https://www.django-rest-framework.org/api-guide/viewsets/#example
+
 
 from django.contrib import admin
 from django.urls import path
@@ -26,6 +26,9 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from api.views import auth, homepage, authors, followers, posts, profiles, comments
 from api.utils import methods
+
+
+""" All api endpoints begain with api/ """
 
 router = DefaultRouter()
 router.register(r'posts', posts.PostViewSet, basename='posts')
@@ -44,10 +47,10 @@ urlpatterns = [
     path("homepage", homepage.homepage_request, name="homepage"),
 
     # Authors
-    path("authors",
-         authors.AuthorsViewSet.as_view({methods.GET: 'list_all'}), name="authors_list"),
-    path("author/<str:authorID>",
-         authors.ProfileViewSet.as_view({methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
+    path("api/authors/", authors.AuthorsViewSet.as_view(
+        {methods.GET: 'list_all'}), name="authors_list"),
+    path("api/author/<str:authorID>", authors.ProfileViewSet.as_view(
+        {methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
 
     # Profile
     path("profile/<str:authorID>", profiles.profile_view, name="profile"),
@@ -61,17 +64,14 @@ urlpatterns = [
     path("my-posts", posts.my_posts_view, name="my-posts"),
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
     path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
-    # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
+
     path("api/author/<str:authorID>/posts/", posts.PostViewSet.as_view(
         {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
-    # TODO -> fix update_post to have authorID and able able update TODO {methods.PUT: 'get_public_posts'}
     path("api/author/<str:authorID>/posts/<str:postID>", posts.PostViewSet.as_view(
         {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post', methods.PUT: "create_post_with_existing_id"}), name="handle_existing_post"),
-    # TODO post
-    #  stream
 
     # Comments
-    path("api/author/<str:authorID>/posts/<str:postID>/comments", comments.CommentAPISet.as_view(
+    path("api/author/<str:authorID>/posts/<str:postID>/comments", comments.CommentViewSet.as_view(
         {methods.GET: 'get_post_comment', methods.POST: 'create_comment_with_new_id'}), name="handle_new_comment"),
     
 
