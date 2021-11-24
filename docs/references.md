@@ -8,3 +8,12 @@
 - CSS background: https://www.magicpattern.design/tools/css-backgrounds
 - Navbar HTML & CSS: https://blog.hubspot.com/website/bootstrap-navbar
 - Navbar background: https://wallpaperwaifu.com/landscape/reflection-of-city-night-lights-live-wallpaper/
+- Bootstrap: https://getbootstrap.com/docs/5.1/getting-started/introduction/
+- Bootstrap Modal: https://getbootstrap.com/docs/5.1/components/modal/
+- Bootstrap Collapse: https://getbootstrap.com/docs/5.1/components/collapse/
+- Django Viewsets: https://www.django-rest-framework.org/api-guide/viewsets/
+- Django Class Based Views: https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
+- Django Model: https://docs.djangoproject.com/en/3.2/topics/db/models/
+- Django Model Choices: https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
+- Django Serializers: https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
+- Django Requests & Responses: https://www.django-rest-framework.org/tutorial/2-requests-and-responses/

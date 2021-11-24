@@ -1,10 +1,8 @@
-from .models import Author, Post, Follow, Friend, Comment, Like, Inbox
+from .models import Author, Post, Follow, Friend, Comment, Like, Inbox, Node
 from rest_framework import serializers
 
 
 # serializer translates python object to json representation
-# https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
-
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,6 +27,11 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ["type", "title", "postID", "source", "origin", "description", "contentType", "content",
-                  "author", "categories", "count", "published", "visibility", "unlisted"]
+                  "author", "categories", "count", "published", "visibility", "unlisted", "likes"]
 
-# TODO add more serializers
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["type", "commentID", "post", "author", "content",
+                  "contentType", "published"]

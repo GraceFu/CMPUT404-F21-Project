@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
 
-from ..models import Author
-from ..forms import NewUserForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+
+from ..models import Author
+from ..forms import NewUserForm
 from ..utils import generate_id
 
 
 def signup_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             user = form.save()
             author = Author(user=user, authorID=generate_id())
@@ -42,5 +44,23 @@ def login_request(request):
         else:
             messages.error(
                 request, "Invalid username or password. Or your account has not been approved yet.")
+
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
+
+def logout_request(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect("login")
+
+    return redirect("login")
+
+def default_page_request(request):
+    if request.method == "GET":
+        try:
+            if request.user.is_authenticated and request.user.is_active and request.user.author:
+                return redirect("homepage")
+        except:
+            return redirect("login")
+
+    return redirect("login")

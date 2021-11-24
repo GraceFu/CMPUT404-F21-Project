@@ -1,13 +1,22 @@
+{% block style %}
 <style>
-.messages {
-  padding: 15px;
-  background-color: #4446c5; /* Red */
-  color: white;
-  margin-bottom: 15px;
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #f7f7ff;
 }
 
-.msgtext {
+.myCustom_messages {
+  padding: 15px;
+  background-color: #4446c5; /* Red */
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.myCustom_msgtext {
     padding-left: 15px;
+    color: white;
     font-family: "Ubuntu", sans-serif;
 }
 
@@ -26,13 +35,32 @@
   color: black;
 }
 </style>
+{% endblock %}
 
 {% if messages %}
-<ul class="messages">
+<ul class="myCustom_messages" id="messages_ul">
     {% for message in messages %}
-    <li class="msgtext" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+    <li class="myCustom_msgtext" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
         <span class="closebtn" onclick="this.parentElement.parentElement.style.display='none';">&times;</span>
     </li>
+    <li class="myCustom_msgtext" id="messages_timer" {% if message.tags %} class="{{ message.tags }}" {% endif %}></li>
     {% endfor %}
 </ul>
 {% endif %}
+
+<script>
+  window.onload=function() {
+    var maxtime = 10;
+    var item = document.getElementById('messages_ul');
+    var timer = document.getElementById('messages_timer');
+
+    (function CountDown() {
+      timer.innerHTML = "Close after " + maxtime + " seconds";
+      if (--maxtime >= 0) {
+        setTimeout(CountDown,1000);
+      } else {
+        item.style.display = "none";
+      }
+    })();
+  }
+</script>

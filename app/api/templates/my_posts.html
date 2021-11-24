@@ -1,0 +1,172 @@
+{% extends "header.html" %}
+
+{% block title %}
+My Posts
+{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/post_view.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% if self_post %}
+    <div class="text-center">
+        <br><br>
+        <h1>Here is your posts, =.=<h1>
+        <h2>You can manage them here by edit or delete.</h2>
+        <br>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <br><br>
+        <h1>It's empty here, =.=<h1>
+        <h2>You can go to Homepage to create some posts and then manage them here.</h2>
+        <br><br><br>
+    </div>
+    {% endif %}
+
+    {% for post in self_post %}
+    <!-- Post -->
+    <div class="myCustom_card" style="margin: 30px;">
+
+        <!-- Header - Title and date -->
+        <div class="card-header">
+            <h2>{{ post.title }}</h2>
+            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+                style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
+            Last release - {{ post.published }}
+        </div>
+
+        <!-- Body - Contents -->
+        <div class="card-body">
+            <div class="post_contents">
+                Description: {{ post.description }} <br>
+                Content: {{ post.content }} <br>
+                Image: {{ post.image }} <br>
+                Categories: {{ post.categories }} <br>
+                Visibility: {{ post.visibility }} <br>
+                Unlisted: {{ post.unlisted }} <br>
+                Source: {{ post.source }} <br>
+                Origin: {{ post.origin }} <br>
+            </div>
+
+            <hr>
+
+            <!-- Footer - Button of operating -->
+            <div class="management_button_area">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                    data-bs-target="#edit_post_modal_{{ post.postID }}">Edit</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                    data-bs-target="#delete_post_modal_{{ post.postID }}">Delete</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Create post modal window -->
+    <div class="modal fade" id="edit_post_modal_{{ post.postID }}" style="top: 15%;" 
+        aria-labelledby="edit_post_title_{{ post.postID }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <h4 id="edit_post_title_{{ post.postID }}">Edit Post</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form method="POST" action="author/{{ user.author.authorID }}/posts">
+                        <!-- POST - Update the post -->
+                        <input type="hidden" name="myCustom_method" value="POST"/>
+                        <input type="hidden" name="myCustom_postID" value="{{ post.postID }}"/>
+
+                        {% csrf_token %}
+                        <!-- Title -->
+                        <div class="form-group">
+                            <input type="text" name="title" class="" placeholder="Title" value="{{ post.title }}" required> 
+                        </div>
+                        <!-- Description -->
+                        <div class="form-group">
+                            <input type="text" name="description" class="" placeholder="Description" value="{{ post.description }}">
+                        </div>
+                        <!-- Content -->
+                        <div class="form-group">
+                            <textarea type="text" name="content" class="" placeholder="Content">{{ post.content }}</textarea>
+                        </div>
+                        <!-- Image -->
+                        <div class="form-group">
+                            Image<input type="file" name="image" class="" placeholder="Image">
+                        </div>
+                        <!-- Categories -->
+                        <div class="form-group">
+                            <input type="text" name="categories" class="" placeholder="Categories" value="{{ post.categories }}">
+                        </div>
+                        <!-- Visibility --><!--
+                        <div class="form-group">
+                            Public<input type="radio" name="visibility" class="" value="Public" checked>
+                            Friends<input type="radio" name="visibility" class="" value="Friends">
+                        </div>-->
+                        <!-- Unlisted -->
+                        <div class="form-group">
+                            Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
+                        </div>
+                        <!-- Source -->
+                        <div class="form-group">
+                            <input type="url" name="source" class="" placeholder="Source" value="{{ post.source }}"> 
+                        </div>
+                        <!-- Origin -->
+                        <div class="form-group">
+                            <input type="url" name="origin" class="" placeholder="Origin" value="{{ post.origin }}">
+                        </div>
+                        <!-- Update Button -->
+                        <input type="submit" class="btn btn-info" value="Update">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Create post modal window -->
+    <div class="modal fade" id="delete_post_modal_{{ post.postID }}" style="top: 30%;" 
+        aria-labelledby="delete_post_title_{{ post.postID }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <h4 id="delete_post_title_{{ post.postID }}">Delete Post</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form method="POST" action="author/{{ user.author.authorID }}/posts">
+                        <!-- POST - Update the post -->
+                        <input type="hidden" name="myCustom_method" value="DELETE"/>
+                        <input type="hidden" name="myCustom_postID" value="{{ post.postID }}"/>
+
+                        {% csrf_token %}
+                        <!-- Message -->
+                        <p>Are you sure you want to delete this post? To confirm, please click Delete.</p>
+                        <!-- Delete Button -->
+                        <input type="submit" class="btn btn-info" value="Delete">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+
+<br><br><br>
+
+{% endblock %}

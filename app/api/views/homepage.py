@@ -1,5 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+from api.models import Author, Post, Comment
+from api.utils import invalid_user_view
 
-def homepage(request):
-    return render(request=request, template_name="homepage.html")
+# Source: https://docs.djangoproject.com/zh-hans/3.2/topics/auth/default/#the-login-required-decorator
+@login_required(login_url='login')
+def homepage_request(request):
+    # Check the user is invalid in view
+    if invalid_user_view(request): 
+        return redirect("login")
+
+    content = {}
+
+    author = Author.objects.get(authorID=request.user.author.authorID)
+    public_post = Post.objects.filter(visibility__exact="PUBLIC").order_by('-published')
+    comments = {}
+    for post in public_post:
+        comment = Comment.objects.filter(post__exact=post).order_by('-published')
+        post.comments = comment
+
+    print(comments)
+
+    content['author'] = author
+    content['public_post'] = public_post
+    content['comments'] = comments
+
+    return render(request, "homepage.html", content)
