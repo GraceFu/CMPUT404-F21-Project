@@ -11,10 +11,10 @@ from datetime import datetime
 
 
 class CommentViewSet(viewsets.ViewSet):
-    
+
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [BasicAuthentication]
-    
+
     @action(methods=[methods.GET], detail=True)
     def get_post_comment(self, request, authorID, postID):
         if author_not_found(authorID) or post_not_found(postID):
@@ -40,6 +40,7 @@ class CommentViewSet(viewsets.ViewSet):
             return Response(CommentSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             # return 400 response if the data was invalid/missing require field
+            print(serializer.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def populate_comment_data(self, data, instance):

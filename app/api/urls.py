@@ -24,7 +24,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, authors, followers, posts, profiles, comments
+from api.views import auth, homepage, authors, followers, posts, profiles, comments, likes
 from api.utils import methods
 
 
@@ -63,22 +63,30 @@ urlpatterns = [
     # Currently author posts
     path("my-posts", posts.my_posts_view, name="my-posts"),
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
-    path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
-
+    path("api/author/<str:authorID>/posts",
+         posts.post_handler, name="post_handler"),
+    # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
     path("api/author/<str:authorID>/posts/", posts.PostViewSet.as_view(
-        {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
+        {methods.GET: 'get_author_posts', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
+    # TODO -> fix update_post to have authorID and able able update TODO {methods.PUT: 'get_public_posts'}
     path("api/author/<str:authorID>/posts/<str:postID>", posts.PostViewSet.as_view(
         {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post', methods.PUT: "create_post_with_existing_id"}), name="handle_existing_post"),
 
     # Comments
     path("api/author/<str:authorID>/posts/<str:postID>/comments", comments.CommentViewSet.as_view(
         {methods.GET: 'get_post_comment', methods.POST: 'create_comment_with_new_id'}), name="handle_new_comment"),
-    
+
 
     # Likes
+    path("api/author/<str:authorID>/posts/<str:postID>/likes",
+         likes.LikeViewSet.as_view({methods.GET: 'get_post_likes'}), name="get_post_likes"),
+    path("api/author/<str:authorID>/posts/<str:postID>/comments/<str:commentID>/likes",
+         likes.LikeViewSet.as_view({methods.GET: 'get_comment_likes'}), name="get_comment_likes"),
 
     # Liked
-
+    path("api/author/<str:authorID>/liked", likes.LikeViewSet.as_view(
+        {methods.GET: 'get_author_liked'}), name="get_author_liked"),
     # Inbox
+
 
 ]

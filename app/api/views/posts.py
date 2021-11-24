@@ -23,7 +23,7 @@ class PostViewSet(viewsets.ViewSet):
     POST: create a new post but generate a postID
     """
     @action(methods=[methods.GET], detail=True)
-    def get_author_post(self, request, authorID):
+    def get_author_posts(self, request, authorID):
         """ list author posts """
         # return 401 response if the author does not exists
         if author_not_found(authorID):
@@ -46,6 +46,7 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             instance = Post(postID=generate_id())
             instance.author = Author.objects.get(authorID=authorID)
+            self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -68,15 +69,13 @@ class PostViewSet(viewsets.ViewSet):
         queryset = Post.objects.filter(
             postID=postID, visibility=visibility_type.PUBLIC)
         serializer = PostSerializer(queryset, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data)
-        else:
-            # return 400 response if the data was invalid/missing require field
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data)
 
     @action(methods=[methods.PUT], detail=True)
     def create_post_with_existing_id(self, request, authorID, postID):
         """ create a post """
+        if not post_not_found(postID):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         if author_not_found(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -84,6 +83,7 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             instance = Post(postID=postID)
             instance.author = Author.objects.get(authorID=authorID)
+            self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -112,7 +112,6 @@ class PostViewSet(viewsets.ViewSet):
             # return 400 response if the data was invalid/missing require field
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-  
     def populate_post_data(self, data, instance):
         """ put request data into instance 
         auto-set fields: type, postID, author, 
@@ -123,7 +122,6 @@ class PostViewSet(viewsets.ViewSet):
         {
         "title": "my title",
         "description": "my des",
-        "contentType": "text/plain",
         "content": "my content",
         "categories": ["web", "tutorial"]
         }
@@ -131,31 +129,52 @@ class PostViewSet(viewsets.ViewSet):
         """
 
         instance.title = data["title"]
-        # instance.source = data["source"]
-        # instance.origin = data["origin"]
         instance.description = data["description"]
-        instance.contentType = data["contentType"]
         instance.content = data["content"]
         instance.categories = data["categories"]
         # instance.count = len(data["comment"])  # total number of comments for this post
-        instance.published = datetime.now().isoformat()
-        # instance.visibility = data["visibility"]
-        # instance.unlisted = data["unlisted"]
         instance.save()
 
+    def populate_new_post_data(self, data, instance):
+        """ put request data into instance 
+        auto-set fields: postID, type, visibility, unlisted, count
+
+        example of an working data:
+
+        {
+        "title": "my title",
+        "source": "https://uofa-cmput404.github.io/",
+        "origin": "https://uofa-cmput404.github.io/",
+        "description": "my des",
+        "contentType": "text/plain",
+        "content": "my content",
+        "categories": ["web", "tutorial"],
+        "visibility": "PUBLIC",
+        "unlisted": false
+        }
+
+        """
+
+        instance.source = data["source"]  # TODO make it to url
+        instance.origin = data["origin"]  # TODO make it to url
+        instance.contentType = data["contentType"]
+        instance.published = datetime.now().isoformat()
+        instance.visibility = data["visibility"]
+        instance.unlisted = data["unlisted"]
+        instance.save()
 
 
 # View of post
 def post_handler(request, authorID):
     # Check the user is invalid in view
-    if invalid_user_view(request): 
+    if invalid_user_view(request):
         return redirect("login")
 
     # Check the author is exist and the current user is the same author
     if authorID != str(request.user.author.authorID):
         messages.error(request, "Error. Unexpected user.")
         return redirect("logout")
-    
+
     # When the request method is POST
     if request.method == "POST":
         # PUT - create a post with generate post_id
@@ -165,9 +184,11 @@ def post_handler(request, authorID):
                 instance = Post(postID=generate_id())
                 instance.author = Author.objects.get(authorID=authorID)
                 populate_post_data(form.cleaned_data, instance)
-                messages.info(request, "Congratulations! Your post has been published.")
+                messages.info(
+                    request, "Congratulations! Your post has been published.")
             else:
-                messages.error(request, "Unsuccessful published. Invalid information.")
+                messages.error(
+                    request, "Unsuccessful published. Invalid information.")
 
             return redirect("homepage")
 
@@ -186,25 +207,27 @@ def post_handler(request, authorID):
                     form = NewPostForm(request.POST, instance=current_post)
                     if form.is_valid():
                         form.save()
-                        messages.info(request, f"Your post {postID} has been update.")
+                        messages.info(
+                            request, f"Your post {postID} has been update.")
                     else:
-                        messages.error(request, "Unsuccessful update. Invalid information.")
+                        messages.error(
+                            request, "Unsuccessful update. Invalid information.")
 
                 # DELETE - remove the post
                 elif request.POST.get("myCustom_method") == "DELETE":
                     current_post.delete()
-                    messages.info(request, f"Your post {postID} has been deleted.")
+                    messages.info(
+                        request, f"Your post {postID} has been deleted.")
 
             except:
                 messages.error(request, "Unexpected error...")
 
             return redirect("my-posts")
-        
 
     # When the request method is GET
     elif request.method == "GET":
         return redirect("my-posts")
-    
+
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -226,6 +249,9 @@ def populate_post_data(data, instance):
     """
 
     instance.title = data["title"]
+    # DO NOT REMOVE uncomment field in this method
+    # instance.source = data["source"]  # TODO make it to url
+    # nstance.origin = data["origin"]  # TODO make it to url
     instance.description = data["description"]
     # instance.contentType = data["contentType"]
     instance.content = data["content"]
@@ -234,6 +260,8 @@ def populate_post_data(data, instance):
     instance.save()
 
 # View of my posts
+
+
 def my_posts_view(request):
     # Check the user is invalid in view
     if invalid_user_view(request):
@@ -241,7 +269,8 @@ def my_posts_view(request):
 
     content = {}
 
-    self_post = Post.objects.filter(author__exact=request.user.author).order_by('-published')
+    self_post = Post.objects.filter(
+        author__exact=request.user.author).order_by('-published')
 
     content['self_post'] = self_post
     content['my_posts_page'] = True
