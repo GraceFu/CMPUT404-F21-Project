@@ -1,1 +1,1 @@
-web: python manage.py
+web: gunicorn Social_network.wsgi
