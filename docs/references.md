@@ -11,6 +11,7 @@
 - Bootstrap: https://getbootstrap.com/docs/5.1/getting-started/introduction/
 - Bootstrap Modal: https://getbootstrap.com/docs/5.1/components/modal/
 - Bootstrap Collapse: https://getbootstrap.com/docs/5.1/components/collapse/
+- Profile HTML & CSS: https://www.bootdey.com/snippets/view/profile-edit-data-and-skills
 - Django Viewsets: https://www.django-rest-framework.org/api-guide/viewsets/
 - Django Class Based Views: https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
 - Django Model: https://docs.djangoproject.com/en/3.2/topics/db/models/
