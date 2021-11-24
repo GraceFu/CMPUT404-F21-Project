@@ -18,16 +18,11 @@ from Social_network.settings import HOSTNAME
 
 from datetime import datetime
 
-# References
-# https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
-# https://www.django-rest-framework.org/api-guide/viewsets/
-# https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
-
 
 class CommentAPISet(viewsets.ViewSet):
-    #permission_classes = [permissions.IsAuthenticated]
-    #authentication_classes = [BasicAuthentication]
-
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [BasicAuthentication]
+    
     @action(methods=[methods.GET], detail=True)
     def get_post_comment(self, request, authorID, postID):
         # return 401 response if the author does not exists
@@ -35,7 +30,7 @@ class CommentAPISet(viewsets.ViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         # get all comments that is owned by the post
-        post = Post.objects.get(postID=postID)
+        post = Post.objects.filter(postID=postID)
         comments = Comment.objects.filter(post__in=post).order_by('-published')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -45,16 +40,16 @@ class CommentAPISet(viewsets.ViewSet):
         # return 401 response if the author does not exists
         if not self.check_author_by_id(authorID) or not self.check_post_by_id(postID):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        print(request.data)
-        print("asdsadsadasdasdas")
-        print("???")
         # Check the comment is vaild or not
-        serializer = NewCommentForm(request.POST)
+        serializer = CommentSerializer(data=request.data)
+
         if serializer.is_valid():
             instance = Comment(commentID=generate_id())
             instance.author = Author.objects.get(authorID=authorID)
+
             instance.post = Post.objects.get(postID=postID)
             self.populate_comment_data(serializer.data, instance)
+
             return Response(CommentSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             # return 400 response if the data was invalid/missing require field
@@ -79,14 +74,13 @@ class CommentAPISet(viewsets.ViewSet):
 
     def populate_comment_data(self, data, instance):
         """ put request data into instance 
-        auto-set fields: commentID, type, visibility, unlisted, count
+        auto-set fields: commentID, type, published
 
         example of an working data:
 
         {
-        "content": content,
-        "contentType": "text/plain",
-        "published": time.object
+        "content": "comment content",
+        "contentType": "text/plain"
         }
 
         """
