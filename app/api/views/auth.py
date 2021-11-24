@@ -18,7 +18,7 @@ def signup_request(request):
             author = Author(user=user, authorID=generate_id())
             author.github = form.cleaned_data["github"]
             author.displayName = form.cleaned_data["displayName"]
-            author.url = author.host + "author/" + author.authorID
+            author.url = author.host + "/author/" + author.authorID
             author.save()
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
@@ -48,12 +48,14 @@ def login_request(request):
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
 
+
 def logout_request(request):
     if request.method == "POST":
         logout(request)
         return redirect("login")
 
     return redirect("login")
+
 
 def default_page_request(request):
     if request.method == "GET":

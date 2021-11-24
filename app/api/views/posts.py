@@ -33,7 +33,7 @@ class PostViewSet(viewsets.ViewSet):
     """
 
     @action(methods=[methods.GET], detail=True)
-    def get_author_post(self, request, authorID):
+    def get_author_posts(self, request, authorID):
         """ list author posts """
         # return 401 response if the author does not exists
         if self.check_author_by_id(authorID) is False:
@@ -57,6 +57,7 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             instance = Post(postID=generate_id())
             instance.author = Author.objects.get(authorID=authorID)
+            self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -80,11 +81,7 @@ class PostViewSet(viewsets.ViewSet):
         queryset = Post.objects.filter(
             postID=postID, visibility=visibility_type.PUBLIC)
         serializer = PostSerializer(queryset, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data)
-        else:
-            # return 400 response if the data was invalid/missing require field
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data)
 
     @action(methods=[methods.PUT], detail=True)
     def create_post_with_existing_id(self, request, authorID, postID):
@@ -92,11 +89,14 @@ class PostViewSet(viewsets.ViewSet):
         # DO NOT REMOVE this is a useful code
         if self.check_author_by_id(authorID) is False:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if self.check_post_by_id(postID):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             instance = Post(postID=postID)
             instance.author = Author.objects.get(authorID=authorID)
+            self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
         else:
@@ -107,7 +107,7 @@ class PostViewSet(viewsets.ViewSet):
     def delete_post(self, request, authorID, postID):
         # return 4xx response if neither author nor post exists
         if self.check_author_by_id(authorID) is False:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         if self.check_post_by_id(postID) is False:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -156,10 +156,7 @@ class PostViewSet(viewsets.ViewSet):
 
         {
         "title": "my title",
-        "source": "https://uofa-cmput404.github.io/",
-        "origin": "https://uofa-cmput404.github.io/",
         "description": "my des",
-        "contentType": "text/plain",
         "content": "my content",
         "categories": ["web", "tutorial"]
         }
@@ -167,18 +164,38 @@ class PostViewSet(viewsets.ViewSet):
         """
 
         instance.title = data["title"]
-        # DO NOT REMOVE uncomment field in this method
-        instance.source = data["source"]  # TODO make it to url
-        instance.origin = data["origin"]  # TODO make it to url
         instance.description = data["description"]
-        instance.contentType = data["contentType"]
         instance.content = data["content"]
-        # instance.author = authorID
         instance.categories = data["categories"]
         # instance.count = len(data["comment"])  # total number of comments for this post
+        instance.save()
+
+    def populate_new_post_data(self, data, instance):
+        """ put request data into instance 
+        auto-set fields: postID, type, visibility, unlisted, count
+
+        example of an working data:
+
+        {
+        "title": "my title",
+        "source": "https://uofa-cmput404.github.io/",
+        "origin": "https://uofa-cmput404.github.io/",
+        "description": "my des",
+        "contentType": "text/plain",
+        "content": "my content",
+        "categories": ["web", "tutorial"],
+        "visibility": "PUBLIC",
+        "unlisted": false
+        }
+
+        """
+
+        instance.source = data["source"]  # TODO make it to url
+        instance.origin = data["origin"]  # TODO make it to url
+        instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()
-        # instance.visibility = data["visibility"]
-        # instance.unlisted = data["unlisted"]
+        instance.visibility = data["visibility"]
+        instance.unlisted = data["unlisted"]
         instance.save()
 
 

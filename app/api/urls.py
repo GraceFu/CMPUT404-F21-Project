@@ -50,7 +50,7 @@ urlpatterns = [
          authors.ProfileViewSet.as_view({methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
 
     # Profile
-    path("api/profile/<str:authorID>", profiles.profile_view, name="profile"),
+    path("profile/<str:authorID>", profiles.profile_view, name="profile"),
 
     # Followers
 
@@ -64,7 +64,7 @@ urlpatterns = [
          posts.post_handler, name="post_handler"),
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
     path("api/author/<str:authorID>/posts/", posts.PostViewSet.as_view(
-        {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
+        {methods.GET: 'get_author_posts', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
     # TODO -> fix update_post to have authorID and able able update TODO {methods.PUT: 'get_public_posts'}
     path("api/author/<str:authorID>/posts/<str:postID>", posts.PostViewSet.as_view(
         {methods.GET: 'get_public_post', methods.POST: 'update_post', methods.DELETE: 'delete_post', methods.PUT: "create_post_with_existing_id"}), name="handle_existing_post"),

@@ -82,12 +82,13 @@ class CommentAPISet(viewsets.ViewSet):
         example of an working data:
 
         {
-        "content": "content test"
+        "content": "a comment",
+        "contentType": "text/plain"
         }
 
         """
 
         instance.content = data["content"]
-        # instance.contentType = data["contentType"]
+        instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()
         instance.save()

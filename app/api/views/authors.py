@@ -41,7 +41,7 @@ class ProfileViewSet(viewsets.ViewSet):
     @action(methods=[methods.GET], detail=True)
     def retrieve(self, request, authorID):
         if not self.check_author_by_id(authorID):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         author = Author.objects.get(authorID=authorID)
         serializer = AuthorSerializer(author)
@@ -50,7 +50,7 @@ class ProfileViewSet(viewsets.ViewSet):
     @action(methods=[methods.POST], detail=True)
     def update(self, request, authorID):
         if not self.check_author_by_id(authorID):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
@@ -77,6 +77,7 @@ class ProfileViewSet(viewsets.ViewSet):
         instance.displayName = data["displayName"]
         # instance.host = data["host"]
         instance.github = data["github"]
+        instance.save()
 
     def check_author_by_id(self, authorID):
         """ check existence of an author """
