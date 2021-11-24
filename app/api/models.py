@@ -105,8 +105,10 @@ class Comment(models.Model):
     type = models.CharField(default="comment", max_length=100)
     commentID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, null=True, blank=True)
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, null=True, blank=True)
     content = models.CharField(max_length=500, null=True)
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, blank=False, null=False)

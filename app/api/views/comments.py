@@ -48,17 +48,15 @@ class CommentAPISet(viewsets.ViewSet):
 
         # Check the comment is vaild or not
         serializer = CommentSerializer(data=request.data)
-        print("1")
         if serializer.is_valid():
             instance = Comment(commentID=generate_id())
             instance.author = Author.objects.get(authorID=authorID)
             instance.post = Post.objects.get(postID=postID)
-            print("2")
             self.populate_comment_data(serializer.data, instance)
-            print("3")
             return Response(CommentSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             # return 400 response if the data was invalid/missing require field
+            print(serializer.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def check_author_by_id(self, authorID):

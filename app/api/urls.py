@@ -44,13 +44,13 @@ urlpatterns = [
     path("homepage", homepage.homepage_request, name="homepage"),
 
     # Authors
-    path("authors",
+    path("api/authors",
          authors.AuthorsViewSet.as_view({methods.GET: 'list_all'}), name="authors_list"),
-    path("author/<str:authorID>",
+    path("api/author/<str:authorID>",
          authors.ProfileViewSet.as_view({methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
 
     # Profile
-    path("profile/<str:authorID>", profiles.profile_view, name="profile"),
+    path("api/profile/<str:authorID>", profiles.profile_view, name="profile"),
 
     # Followers
 
@@ -60,7 +60,8 @@ urlpatterns = [
     # Currently author posts
     path("my-posts", posts.my_posts_view, name="my-posts"),
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
-    path("author/<str:authorID>/posts", posts.post_handler, name="post_handler"),
+    path("api/author/<str:authorID>/posts",
+         posts.post_handler, name="post_handler"),
     # TODO -> {methods.GET: 'get_author_posts'}, -> 404 cuz we dont have a authorID
     path("api/author/<str:authorID>/posts/", posts.PostViewSet.as_view(
         {methods.GET: 'get_author_post', methods.POST: 'create_post_with_new_id'}), name="handle_new_post"),
@@ -73,14 +74,18 @@ urlpatterns = [
     # Comments
     path("api/author/<str:authorID>/posts/<str:postID>/comments", comments.CommentAPISet.as_view(
         {methods.GET: 'get_post_comment', methods.POST: 'create_comment_with_new_id'}), name="handle_new_comment"),
-    
+
 
     # Likes
-    path("api/author/<str:authorID>/posts/<str:postID>/likes", likes.LikeViewSet.as_view({methods.GET: 'get_post_likes'}), name="get_post_likes"),
-    path("api/author/<str:authorID>/posts/<str:postID>/comments/<str:commentID>/likes", likes.LikeViewSet.as_view({methods.GET: 'get_comment_likes'}), name="get_comment_likes"),
-    
+    path("api/author/<str:authorID>/posts/<str:postID>/likes",
+         likes.LikeViewSet.as_view({methods.GET: 'get_post_likes'}), name="get_post_likes"),
+    path("api/author/<str:authorID>/posts/<str:postID>/comments/<str:commentID>/likes",
+         likes.LikeViewSet.as_view({methods.GET: 'get_comment_likes'}), name="get_comment_likes"),
+
     # Liked
-    path("api/author/<str:authorID>/liked", likes.LikeViewSet.as_view({methods.GET: 'get_author_liked'}), name="get_author_liked"),
+    path("api/author/<str:authorID>/liked", likes.LikeViewSet.as_view(
+        {methods.GET: 'get_author_liked'}), name="get_author_liked"),
     # Inbox
+
 
 ]

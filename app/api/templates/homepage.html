@@ -88,7 +88,7 @@ Homepage
         <!-- Header - Title and date -->
         <div class="card-header">
             <h2 style="margin-top: 10px;">{{ post.title }}</h2>
-            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+            Post by <a href="{% url 'api/profile' authorID=post.author.authorID %}"
                 style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>
@@ -132,7 +132,7 @@ Homepage
                         {% for comment in post.comments %}
                         <hr>
                         <div class="">
-                            Comment by <a href="{% url 'profile' authorID=comment.author.authorID %}"
+                            Comment by <a href="{% url 'api/profile' authorID=comment.author.authorID %}"
                                 style="text-decoration: none; font-size: 14pt;">{{ comment.author.displayName }}</a> <br>
                             <p class="col-sm-12">{{ comment.content }}</p>
                         </div>
