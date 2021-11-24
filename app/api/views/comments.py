@@ -35,7 +35,7 @@ class CommentAPISet(viewsets.ViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         # get all comments that is owned by the post
-        post = Post.objects.get(postID=postID)
+        post = Post.objects.filter(postID=postID)
         comments = Comment.objects.filter(post__in=post).order_by('-published')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -45,21 +45,21 @@ class CommentAPISet(viewsets.ViewSet):
         # return 401 response if the author does not exists
         if not self.check_author_by_id(authorID) or not self.check_post_by_id(postID):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        print(request.data)
-        print("asdsadsadasdasdas")
-        print("???")
+
         # Check the comment is vaild or not
-        serializer = NewCommentForm(request.POST)
+        serializer = CommentSerializer(data=request.data)
+        print("1")
         if serializer.is_valid():
             instance = Comment(commentID=generate_id())
             instance.author = Author.objects.get(authorID=authorID)
             instance.post = Post.objects.get(postID=postID)
+            print("2")
             self.populate_comment_data(serializer.data, instance)
+            print("3")
             return Response(CommentSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             # return 400 response if the data was invalid/missing require field
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
     def check_author_by_id(self, authorID):
         """ check existence of an author """
@@ -84,14 +84,12 @@ class CommentAPISet(viewsets.ViewSet):
         example of an working data:
 
         {
-        "content": content,
-        "contentType": "text/plain",
-        "published": time.object
+        "content": "content test"
         }
 
         """
 
         instance.content = data["content"]
-        instance.contentType = data["contentType"]
+        # instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()
         instance.save()

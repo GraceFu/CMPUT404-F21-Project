@@ -110,7 +110,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=500, null=True)
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, blank=False, null=False)
-    #image = models.URLField()  # TODO Should be an url ?
+    # image = models.URLField()  # TODO Should be an url ?
     published = models.DateTimeField(default=timezone.now)
     #url = models.URLField(null=True, blank=True, editable=False)
 
@@ -119,7 +119,7 @@ class Comment(models.Model):
 class Like(models.Model):
     # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, unique=True)
     summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
     object = models.URLField(null=True, blank=True, editable=False)

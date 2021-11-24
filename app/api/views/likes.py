@@ -6,9 +6,12 @@ from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from api.models import Author, Post, Like, visibility_type
+from api.models import Author, Post, Like, Comment, visibility_type
 from api.serializers import LikeSerializer
 from api.utils import methods
+
+from Social_network.settings import HOSTNAME
+
 
 class LikeViewSet(viewsets.ViewSet):
 
@@ -20,7 +23,8 @@ class LikeViewSet(viewsets.ViewSet):
         if self.check_author_by_id(authorID) is False:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        queryset = Like.objects.filter(author__in=authorID)
+        author = Author.objects.filter(authorID=authorID)
+        queryset = Like.objects.filter(author__in=author)
         serializer = LikeSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -30,7 +34,8 @@ class LikeViewSet(viewsets.ViewSet):
         if self.check_post_by_id(postID) is False:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        queryset = Like.objects.filter(object=postID)
+        post_url = HOSTNAME + '/author/' + authorID + '/posts/' + postID
+        queryset = Like.objects.filter(object=post_url)
         serializer = LikeSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)
@@ -44,7 +49,9 @@ class LikeViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         # TODO do we need to check post id ?
 
-        queryset = Like.objects.filter(object=commentID)
+        comment_url = HOSTNAME + '/author/' + authorID + \
+            '/posts/' + postID + '/comments/' + commentID
+        queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)
         if serializer.is_valid:
             return Response(serializer.data)

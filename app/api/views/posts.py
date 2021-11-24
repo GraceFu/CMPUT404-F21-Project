@@ -182,19 +182,18 @@ class PostViewSet(viewsets.ViewSet):
         instance.save()
 
 
-
 # View of post
 def post_handler(request, authorID):
     print(request)
     # Check the user is invalid in view
-    if invalid_user_view(request): 
+    if invalid_user_view(request):
         return redirect("login")
 
     # Check the author is exist and the current user is the same author
     if authorID != str(request.user.author.authorID):
         messages.error(request, "Error. Unexpected user.")
         return redirect("logout")
-    
+
     # When the request method is POST
     if request.method == "POST":
         # PUT - create a post with generate post_id
@@ -204,9 +203,11 @@ def post_handler(request, authorID):
                 instance = Post(postID=generate_id())
                 instance.author = Author.objects.get(authorID=authorID)
                 populate_post_data(form.cleaned_data, instance)
-                messages.info(request, "Congratulations! Your post has been published.")
+                messages.info(
+                    request, "Congratulations! Your post has been published.")
             else:
-                messages.error(request, "Unsuccessful published. Invalid information.")
+                messages.error(
+                    request, "Unsuccessful published. Invalid information.")
 
             return redirect("homepage")
 
@@ -225,25 +226,27 @@ def post_handler(request, authorID):
                     form = NewPostForm(request.POST, instance=current_post)
                     if form.is_valid():
                         form.save()
-                        messages.info(request, f"Your post {postID} has been update.")
+                        messages.info(
+                            request, f"Your post {postID} has been update.")
                     else:
-                        messages.error(request, "Unsuccessful update. Invalid information.")
+                        messages.error(
+                            request, "Unsuccessful update. Invalid information.")
 
                 # DELETE - remove the post
                 elif request.POST.get("myCustom_method") == "DELETE":
                     current_post.delete()
-                    messages.info(request, f"Your post {postID} has been deleted.")
+                    messages.info(
+                        request, f"Your post {postID} has been deleted.")
 
             except:
                 messages.error(request, "Unexpected error...")
 
             return redirect("my-posts")
-        
 
     # When the request method is GET
     elif request.method == "GET":
         return redirect("my-posts")
-    
+
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -268,8 +271,8 @@ def populate_post_data(data, instance):
 
     instance.title = data["title"]
     # DO NOT REMOVE uncomment field in this method
-    #instance.source = data["source"]  # TODO make it to url
-    #nstance.origin = data["origin"]  # TODO make it to url
+    # instance.source = data["source"]  # TODO make it to url
+    # nstance.origin = data["origin"]  # TODO make it to url
     instance.description = data["description"]
     #instance.contentType = data["contentType"]
     instance.content = data["content"]
@@ -282,7 +285,6 @@ def populate_post_data(data, instance):
     instance.save()
 
 
-
 # View of my posts
 def my_posts_view(request):
     # Check the user is invalid in view
@@ -291,7 +293,8 @@ def my_posts_view(request):
 
     content = {}
 
-    self_post = Post.objects.filter(author__exact=request.user.author).order_by('-published')
+    self_post = Post.objects.filter(
+        author__exact=request.user.author).order_by('-published')
 
     content['self_post'] = self_post
     content['my_posts_page'] = True
