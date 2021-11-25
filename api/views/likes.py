@@ -26,26 +26,23 @@ class LikeViewSet(viewsets.ViewSet):
         author = Author.objects.filter(authorID=authorID)
         queryset = Like.objects.filter(author__in=author)
         serializer = LikeSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=[methods.GET], detail=True)
     def get_post_likes(self, request, authorID, postID):
         """ list a post's likes """
-        if self.check_post_by_id(postID) is False:
+        if self.check_post_by_id(postID) is False and not self.check_author_by_id(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         post_url = HOSTNAME + '/author/' + authorID + '/posts/' + postID
         queryset = Like.objects.filter(object=post_url)
         serializer = LikeSerializer(queryset, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=[methods.GET], detail=True)
     def get_comment_likes(self, request, authorID, postID, commentID):
         """ list a comment's likes """
-        if self.check_comment_by_id(commentID) is False:
+        if self.check_comment_by_id(commentID) is False and not self.check_post_by_id(postID) and not self.check_author_by_id(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
         # TODO do we need to check post id ?
 
@@ -54,7 +51,7 @@ class LikeViewSet(viewsets.ViewSet):
         queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)
         if serializer.is_valid:
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -103,7 +100,6 @@ class LikeViewSet(viewsets.ViewSet):
             return False
 
     def populate_post_data(self, data, instance):
-        instance.author = data["author"]
         instance.summary = data["summary"]
         instance.object = data["object"]
         instance.save()
