@@ -119,16 +119,16 @@ Homepage
                     <div class="myCustom_comment_card card-body">
                         <!-- Write a comment -->
                         <div class="" id="write_a_comment_area">
-                            <form method="POST" action="api/author/{{ author.authorID }}/posts/{{ post.postID }}/comments">
-                                <input type="text" id="comment_input_{{post.postID}}" name="content" class="" placeholder="Comment">
-                                <input type="hidden" name="contentType" value="text/plain">
-                                <!--<button type="button" class="btn btn-primary myCustom_comment_send" 
-                                    var="{{post.postID}}" value="{{post.author.authorID}}">Send</button>-->
-                                <input type="submit" class="btn btn-primary" value="SEND">
-                            </form>
+                            <input type="text" id="comment_input_{{ post.postID }}" name="content" class="" placeholder="Comment">
+                            <button type="button" class="btn btn-primary myCustom_comment_send" 
+                                var="{{ post.postID }}" value="{{ author.authorID }}_poster_{{ post.author.authorID }}">Send</button>
                         </div>
                         
                         <!-- Show comments -->
+                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}">
+
+                        </div>
+
                         {% for comment in post.comments %}
                         <hr>
                         <div class="">
