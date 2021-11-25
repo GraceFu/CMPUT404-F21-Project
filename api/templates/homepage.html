@@ -25,7 +25,7 @@ Homepage
 
             <!-- Body -->
             <div class="modal-body">
-                <form method="POST" action="author/{{ author.authorID }}/posts">
+                <form method="POST" action="api/author/{{ author.authorID }}/posts">
                     <!-- PUT - Create a post with generate post_id -->
                     <input type="hidden" name="myCustom_method" value="PUT"/>
                     {% csrf_token %}
