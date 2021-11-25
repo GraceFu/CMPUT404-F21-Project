@@ -18,3 +18,5 @@
 - Django Model Choices: https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
 - Django Serializers: https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
 - Django Requests & Responses: https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
+- AJAX request to API: https://www.jianshu.com/p/1e1bedf1f1ce
+- JQuery addition to HTML: https://cloud.tencent.com/developer/article/1544580
