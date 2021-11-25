@@ -16,15 +16,23 @@ $(".myCustom_comment_show").on("click", function () {
             url: "api/author/" + poster + "/posts/" + postID + "/comments",
             type: "GET",
             success: function(data) {
+                var count = 0;
+                var html = "";
+
                 for (var comment of data) {
-                    var html = "";
+                    count += 1;
                     html += "<hr>" + '<div class="">';
                     html += 'Comment by <a href="profile/' + comment['author'] + '" ';
                     html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
                     html += "</div>";
-                    $("#comment_" + postID + "_author_" + poster).append(html);
                 }
+
+                if (count == 0) {
+                    html = "<br><h4>No one Comment this post so far, T^T</h4>";
+                }
+                
+                $("#comment_" + postID + "_author_" + poster).html(html);
             }
         })
         
@@ -53,7 +61,6 @@ $("button.myCustom_comment_send").on("click", function () {
         data: { "content": content, "contentType": "text/plain" },
 
         success: function(data) {
-            $("#comment_" + postID + "_author_" + poster).empty();
             document.getElementById("comment_input_" + postID).value = "";
             
             $.ajax({
@@ -62,15 +69,15 @@ $("button.myCustom_comment_send").on("click", function () {
                 type: "GET",
 
                 success: function(data) {
+                    var html = "";
                     for (var comment of data) {
-                        var html = "";
                         html += "<hr>" + '<div class="">';
                         html += 'Comment by <a href="profile/' + comment['author'] + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
                         html += '<p class="col-sm-12">' + comment["content"] + '</p>';
                         html += "</div>";
-                        $("#comment_" + postID + "_author_" + poster).append(html);
                     }
+                    $("#comment_" + postID + "_author_" + poster).html(html);
                 }
             })
 

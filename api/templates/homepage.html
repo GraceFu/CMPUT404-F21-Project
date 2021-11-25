@@ -145,7 +145,7 @@ Homepage
                 <!-- View of Post Like SHOW -->
                 <!-- Create post modal window -->
                 <div class="modal fade" id="modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
-                    style="top: 15%; text-align: center;" aria-labelledby="like_post_title" aria-hidden="true">
+                    style="top: 15%;" aria-labelledby="like_post_title" aria-hidden="true">
                     <input type="hidden" id="myCustom_like_post_button_clicked_{{ post.postID }}" value="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -186,4 +186,5 @@ Homepage
 
 {% block script %}
 <script type="text/javascript" src="{% static 'scripts/comments.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/likes.js' %}"></script>
 {% endblock %}

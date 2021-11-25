@@ -11,7 +11,6 @@ $(".myCustom_like_post_show").on("click", function () {
         url: "api/author/" + poster + "/posts/" + postID + "/likes",
         type: "GET",
         success: function(data) {
-            alert(JSON.stringify(data));
             var count = 0;
             var html = "";
 
@@ -20,10 +19,10 @@ $(".myCustom_like_post_show").on("click", function () {
             }
 
             if (count == 0) {
-                html = "<h5>No one liked this post so far, T^T</h5>";
+                html = "<h5>No one Like this post so far, T^T</h5>";
             }
 
-            $("#like_post_" + postID).append(html);
+            $("#like_post_" + postID).html(html);
         }
     })
         
