@@ -109,7 +109,10 @@ Homepage
             <!-- Footer - Button of operating -->
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
-                <button type="button" class="btn btn-primary">Like</button>
+                <!-- Button of Post Like SHOW -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                    data-bs-target="#modal_post_like_{{ post.postID }}_{{ post.author.authorID }}">Like</button>
+                <!-- Button of Comment SHOW -->
                 <button type="button" class="btn btn-primary myCustom_comment_show" 
                     data-bs-toggle="collapse" 
                     data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
@@ -118,6 +121,7 @@ Homepage
                     Comment
                 </button>
 
+                <!-- View of Comment SHOW -->
                 <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
                     <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" value="false">
                     <br>
@@ -135,9 +139,33 @@ Homepage
                         
                         <!-- Show comments -->
                         <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}"></div>
-
                     </div>
                 </div>
+
+                <!-- View of Post Like SHOW -->
+                <!-- Create post modal window -->
+                <div class="modal fade" id="modal_post_like_{{ post.postID }}_{{ post.author.authorID }}" 
+                    style="top: 15%; text-align: center;" aria-labelledby="post_like_title" aria-hidden="true">
+                    <input type="hidden" id="myCustom_post_like_button_clicked_{{ post.postID }}" value="false">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Header -->
+                            <div class="modal-header">
+                                <h4 id="post_like_title">Likes of this Post</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <button type="button" class="btn btn-primary">I Like This Post</button>
+                                <div id="post_like_{{ post.postID }}_{{ author.authorID }}"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
