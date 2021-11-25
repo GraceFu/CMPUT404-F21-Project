@@ -110,11 +110,12 @@ Homepage
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
                 <button type="button" class="btn btn-primary">Like</button>
-                <a type="button" class="btn btn-primary" data-bs-toggle="collapse" 
-                    href="#comment_post_{{ post.postID }}" aria-expanded="false" 
-                    aria-controls="comment_post_{{ post.postID }}">Comment</a>
+                <button type="button" class="btn btn-primary myCustom_comment_show" data-bs-toggle="collapse" 
+                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" aria-expanded="false" 
+                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">Comment</button>
 
-                <div class="collapse" id="comment_post_{{ post.postID }}">
+                <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" value="false">
                     <br>
                     <div class="myCustom_comment_card card-body">
                         <!-- Write a comment -->
@@ -129,14 +130,14 @@ Homepage
 
                         </div>
 
-                        {% for comment in post.comments %}
+                        <!--{% for comment in post.comments %}
                         <hr>
                         <div class="">
                             Comment by <a href="{% url 'profile' authorID=comment.author.authorID %}"
                                 style="text-decoration: none; font-size: 14pt;">{{ comment.author.displayName }}</a> <br>
                             <p class="col-sm-12">{{ comment.content }}</p>
                         </div>
-                        {% endfor %}
+                        {% endfor %}-->
                     </div>
                 </div>
             </div>
