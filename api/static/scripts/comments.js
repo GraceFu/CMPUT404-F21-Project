@@ -10,6 +10,24 @@ $(".myCustom_comment_show").on("click", function () {
 
     if (clicked.value.match("false")) {
         clicked.value = "true";
+
+        $.ajax({
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            url: "api/author/" + poster + "/posts/" + postID + "/comments",
+            type: "GET",
+            success: function(data) {
+                for (var comment of data) {
+                    var html = "";
+                    html += "<hr>" + '<div class="">';
+                    html += 'Comment by <a href="profile/' + comment['author'] + '" ';
+                    html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
+                    html += '<p class="col-sm-12">' + comment["content"] + '</p>';
+                    html += "</div>";
+                    $("#comment_" + postID + "_author_" + poster).append(html);
+                }
+            }
+        })
+        
     }
     else {
         clicked.value = "false";
@@ -55,7 +73,7 @@ $("button.myCustom_comment_send").on("click", function () {
                     }
                 }
             })
-            
+
         }
 
     })
