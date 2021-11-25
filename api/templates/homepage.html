@@ -110,8 +110,8 @@ Homepage
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
                 <!-- Button of Post Like SHOW -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                    data-bs-target="#modal_post_like_{{ post.postID }}_{{ post.author.authorID }}">Like</button>
+                <button type="button" class="btn btn-primary myCustom_like_post_show" data-bs-toggle="modal" 
+                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}">Like</button>
                 <!-- Button of Comment SHOW -->
                 <button type="button" class="btn btn-primary myCustom_comment_show" 
                     data-bs-toggle="collapse" 
@@ -144,22 +144,28 @@ Homepage
 
                 <!-- View of Post Like SHOW -->
                 <!-- Create post modal window -->
-                <div class="modal fade" id="modal_post_like_{{ post.postID }}_{{ post.author.authorID }}" 
-                    style="top: 15%; text-align: center;" aria-labelledby="post_like_title" aria-hidden="true">
-                    <input type="hidden" id="myCustom_post_like_button_clicked_{{ post.postID }}" value="false">
+                <div class="modal fade" id="modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
+                    style="top: 15%; text-align: center;" aria-labelledby="like_post_title" aria-hidden="true">
+                    <input type="hidden" id="myCustom_like_post_button_clicked_{{ post.postID }}" value="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
 
                             <!-- Header -->
                             <div class="modal-header">
-                                <h4 id="post_like_title">Likes of this Post</h4>
+                                <h4 id="like_post_title">Likes of this Post</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
                             <!-- Body -->
                             <div class="modal-body">
-                                <button type="button" class="btn btn-primary">I Like This Post</button>
-                                <div id="post_like_{{ post.postID }}_{{ author.authorID }}"></div>
+                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
+                                <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}"
+                                    type="button" class="btn btn-primary">Like</button>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="modal-footer">
+                                <div id="like_post_{{ post.postID }}"></div>
                             </div>
 
                         </div>
