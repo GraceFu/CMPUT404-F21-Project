@@ -110,9 +110,13 @@ Homepage
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
                 <button type="button" class="btn btn-primary">Like</button>
-                <button type="button" class="btn btn-primary myCustom_comment_show" data-bs-toggle="collapse" 
-                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" aria-expanded="false" 
-                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">Comment</button>
+                <button type="button" class="btn btn-primary myCustom_comment_show" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
+                    aria-expanded="false" 
+                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    Comment
+                </button>
 
                 <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
                     <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" value="false">
@@ -121,23 +125,17 @@ Homepage
                         <!-- Write a comment -->
                         <div class="" id="write_a_comment_area">
                             <input type="text" id="comment_input_{{ post.postID }}" name="content" class="" placeholder="Comment">
-                            <button type="button" class="btn btn-primary myCustom_comment_send" 
-                                var="{{ post.postID }}" value="{{ author.authorID }}_poster_{{ post.author.authorID }}">Send</button>
+                            <button type="button" 
+                            class="btn btn-primary myCustom_comment_send" 
+                                var="{{ post.postID }}" 
+                                value="{{ author.authorID }}_poster_{{ post.author.authorID }}">
+                                Send
+                            </button>
                         </div>
                         
                         <!-- Show comments -->
-                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}">
+                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}"></div>
 
-                        </div>
-
-                        <!--{% for comment in post.comments %}
-                        <hr>
-                        <div class="">
-                            Comment by <a href="{% url 'profile' authorID=comment.author.authorID %}"
-                                style="text-decoration: none; font-size: 14pt;">{{ comment.author.displayName }}</a> <br>
-                            <p class="col-sm-12">{{ comment.content }}</p>
-                        </div>
-                        {% endfor %}-->
                     </div>
                 </div>
             </div>
