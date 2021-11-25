@@ -1,3 +1,22 @@
+// Handler of comment SHOW button click event
+$(".myCustom_comment_show").on("click", function () {
+    var clockedButtonInformation = $(this).attr("data-bs-target");
+    var postID_index = clockedButtonInformation.indexOf("post_");
+    var poster_index = clockedButtonInformation.indexOf("_author_");
+    var postID = clockedButtonInformation.substring(postID_index + 5, poster_index);
+    var poster = clockedButtonInformation.substring(poster_index + 8);
+
+    var clicked = document.getElementById("myCustom_comment_button_clicked_" + postID);
+
+    if (clicked.value.match("false")) {
+        clicked.value = "true";
+    }
+    else {
+        clicked.value = "false";
+        $("#comment_" + postID + "_author_" + poster).empty();
+    }
+});
+
 // Handler of comment SEND button click event
 $("button.myCustom_comment_send").on("click", function () {
     var postID = $(this).attr("var");
@@ -14,13 +33,16 @@ $("button.myCustom_comment_send").on("click", function () {
         url: "api/author/" + authorID + "/posts/" + postID + "/comments",
         type: "POST",
         data: { "content": content, "contentType": "text/plain" },
+
         success: function(data) {
             $("#comment_" + postID + "_author_" + poster).empty();
             document.getElementById("comment_input_" + postID).value = "";
+            
             $.ajax({
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 url: "api/author/" + poster + "/posts/" + postID + "/comments",
                 type: "GET",
+
                 success: function(data) {
                     for (var comment of data) {
                         var html = "";
@@ -33,6 +55,8 @@ $("button.myCustom_comment_send").on("click", function () {
                     }
                 }
             })
+            
         }
+
     })
 });
