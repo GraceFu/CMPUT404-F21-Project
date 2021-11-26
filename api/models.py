@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from Social_network.settings import HOSTNAME
+# from Social_network.settings import HOSTNAME
 
 
 # Defined constant/enum fields
@@ -26,7 +26,7 @@ class Author(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE)
     displayName = models.CharField(max_length=100, default="Someone")
-    host = models.CharField(default=HOSTNAME, max_length=500)
+    host = models.CharField(default="/", max_length=500)
     url = models.URLField(null=True, blank=True, editable=False)
     github = models.URLField(null=True, blank=True)
     # profile_picture = models.URLField(null=True, blank=True)
@@ -128,7 +128,7 @@ class Inbox(models.Model):
 
 ######### Node #########
 class Node(models.Model):
-    url = models.URLField(default=HOSTNAME, max_length=100)
+    url = models.URLField(primary_key=True, max_length=100)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     hostUsername = models.CharField(max_length=200, null=False)
