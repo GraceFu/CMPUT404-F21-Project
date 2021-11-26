@@ -7,6 +7,8 @@ $(".myCustom_comment_show").on("click", function () {
     var poster = clockedButtonInformation.substring(poster_index + 8);
 
     var clicked = document.getElementById("myCustom_comment_button_clicked_" + postID);
+    var authorID = $("#myCustom_comment_button_clicked_" + postID).attr("var");
+    var HOSTNAME = $("#like_post_hostname_" + postID).attr("value");
 
     if (clicked.value.match("false")) {
         clicked.value = "true";
@@ -25,6 +27,37 @@ $(".myCustom_comment_show").on("click", function () {
                     html += 'Comment by <a href="profile/' + comment['author'] + '" ';
                     html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
+
+                    // Button of Comment Like SHOW
+                    html += '<button type="button" class="btn btn-primary myCustom_like_comment_show" ';
+                    html += 'data-bs-toggle="modal" var="' + authorID + '" ';
+                    html += 'data-bs-target="#modal_like_post_' + postID + '_author_' + poster + '_comment_' + comment['commentID'] + '">';
+                    html += 'Likes</button>';
+
+                    // View of Post Like SHOW
+                    html += '<div class="modal fade" id="modal_like_post_' + postID + '_author_' + poster + '_comment_' + comment['commentID'] + '" ';
+                    html += 'style="top: 15%;" aria-labelledby="like_comment_title" aria-hidden="true">';
+                    html += '<input type="hidden" id="myCustom_like_comment_button_clicked_' + comment['commentID'] + '" value="false">';
+                    html += '<div class="modal-dialog">';
+                    html += '<div class="modal-content">';
+
+                    // Header
+                    html += '<div class="modal-header">';
+                    html += '<h4 id="like_comment_title">Likes of this Comment</h4>';
+                    html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+                    html += '</div>';
+
+                    // Body
+                    html += '<div class="modal-body">';
+                    html += '<h5 id="like_comment_content_' + comment['commentID'] + '">Click ' + "'Like'" + ' Button to Liked this Comment</h5>';
+                    html += '<input type="hidden" id="like_comment_hostname_' + comment['commentID'] + '" ';
+                    html += 'value="' + HOSTNAME + '" var="' + poster + '">';
+                    html += '<button id="button_like_post_' + postID + '_author_' + authorID + '_comment_' + comment['commentID'] + '" ';
+                    html += 'type="button" class="btn btn-primary myCustom_button_like_comment_send">Like</button>';
+
+                    html += '<div id="like_comment_' + comment['commentID'] + '"></div>';
+                    html += '</div></div></div></div>';
+
                     html += "</div>";
                 }
 

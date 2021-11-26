@@ -109,41 +109,13 @@ Homepage
             <!-- Footer - Button of operating -->
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
+
                 <!-- Button of Post Like SHOW -->
                 <button type="button" class="btn btn-primary myCustom_like_post_show" data-bs-toggle="modal" 
                     data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}"
                     var="{{ author.authorID }}">
                     Likes
                 </button>
-                <!-- Button of Comment SHOW -->
-                <button type="button" class="btn btn-primary myCustom_comment_show" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
-                    aria-expanded="false" 
-                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
-                    Comments
-                </button>
-
-                <!-- View of Comment SHOW -->
-                <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
-                    <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" value="false">
-                    <br>
-                    <div class="myCustom_comment_card card-body">
-                        <!-- Write a comment -->
-                        <div class="" id="write_a_comment_area">
-                            <input type="text" id="comment_input_{{ post.postID }}" name="content" class="" placeholder="Comment">
-                            <button type="button" 
-                            class="btn btn-primary myCustom_comment_send" 
-                                var="{{ post.postID }}" 
-                                value="{{ author.authorID }}_poster_{{ post.author.authorID }}">
-                                Send
-                            </button>
-                        </div>
-                        
-                        <!-- Show comments -->
-                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}"></div>
-                    </div>
-                </div>
 
                 <!-- View of Post Like SHOW -->
                 <div class="modal fade" id="modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
@@ -170,6 +142,39 @@ Homepage
                             </div>
 
                         </div>
+                    </div>
+                </div>
+
+                <!-- Button of Comment SHOW -->
+                <button type="button" class="btn btn-primary myCustom_comment_show" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
+                    aria-expanded="false" 
+                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    Comments
+                </button>
+
+                <!-- View of Comment SHOW -->
+                <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" 
+                        value="false" var="{{ author.authorID }}">
+
+                    <br>
+
+                    <div class="myCustom_comment_card card-body">
+                        <!-- Write a comment -->
+                        <div class="" id="write_a_comment_area">
+                            <input type="text" id="comment_input_{{ post.postID }}" name="content" class="" placeholder="Comment">
+                            <button type="button" 
+                            class="btn btn-primary myCustom_comment_send" 
+                                var="{{ post.postID }}" 
+                                value="{{ author.authorID }}_poster_{{ post.author.authorID }}">
+                                Send
+                            </button>
+                        </div>
+                        
+                        <!-- Show comments -->
+                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}"></div>
                     </div>
                 </div>
 

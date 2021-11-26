@@ -110,10 +110,10 @@ class Comment(models.Model):
 class Like(models.Model):
     # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    summary = models.CharField(max_length=100, null=True, blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
+    summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
-    object = models.CharField(max_length=500, null=True, blank=True)
+    object = models.CharField(max_length=500)
 
 
 ######### Inbox #########
