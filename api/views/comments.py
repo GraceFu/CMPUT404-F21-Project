@@ -55,7 +55,7 @@ class CommentViewSet(viewsets.ViewSet):
         }
 
         """
-        print(data)
+
         instance.content = data["content"]
         instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()
