@@ -24,7 +24,7 @@ HOSTNAME = 'localhost'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-61aaw#-3hhs_!ok)@4no@s5wrnzby!^^xwy9nv3kk*z=c9lx%-'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
