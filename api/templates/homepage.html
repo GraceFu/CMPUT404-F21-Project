@@ -111,14 +111,14 @@ Homepage
                 <button type="button" class="btn btn-primary">Share</button>
                 <!-- Button of Post Like SHOW -->
                 <button type="button" class="btn btn-primary myCustom_like_post_show" data-bs-toggle="modal" 
-                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}">Like</button>
+                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}">Likes</button>
                 <!-- Button of Comment SHOW -->
                 <button type="button" class="btn btn-primary myCustom_comment_show" 
                     data-bs-toggle="collapse" 
                     data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
                     aria-expanded="false" 
                     aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
-                    Comment
+                    Comments
                 </button>
 
                 <!-- View of Comment SHOW -->
@@ -159,12 +159,11 @@ Homepage
                             <!-- Body -->
                             <div class="modal-body">
                                 <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
+                                <input type="hidden" id="like_post_hostname_{{ post.postID }}" value="{{ HOSTNAME }}">
                                 <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}"
-                                    type="button" class="btn btn-primary">Like</button>
-                            </div>
+                                    type="button" class="btn btn-primary myCustom_button_like_post_send">Like</button>
 
-                            <!-- Footer -->
-                            <div class="modal-footer">
+                                <hr>
                                 <div id="like_post_{{ post.postID }}"></div>
                             </div>
 

@@ -99,7 +99,7 @@ class LikeViewSet(viewsets.ViewSet):
         except:
             return False
 
-    def populate_post_data(self, data, instance):
+    def populate_like_data(self, data, instance):
         instance.summary = data["summary"]
         instance.object = data["object"]
         instance.save()

@@ -106,7 +106,7 @@ class Comment(models.Model):
     #url = models.URLField(null=True, blank=True, editable=False)
 
 
-######### Comment #########
+######### Like #########
 class Like(models.Model):
     # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)

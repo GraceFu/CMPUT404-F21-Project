@@ -52,7 +52,6 @@ $("button.myCustom_comment_send").on("click", function () {
     var poster = clockedButtonInformation.substring(poster_index + 8);
 
     var content = $("input#comment_input_" + postID).val();
-    //let objects = { "content": content, "contentType": "text/plain" };
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
