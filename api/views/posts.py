@@ -34,7 +34,10 @@ class PostViewSet(viewsets.ViewSet):
         queryset = Post.objects.filter(
             author__in=author).order_by('-published')
         serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        res = {
+            "items": serializer.data
+        }
+        return Response(res, status=status.HTTP_200_OK)
 
     @action(methods=[methods.POST], detail=True)
     def create_post_with_new_id(self, request, authorID):

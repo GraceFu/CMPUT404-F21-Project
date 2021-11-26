@@ -128,13 +128,7 @@ class Inbox(models.Model):
 ######### Node #########
 class Node(models.Model):
     url = models.URLField(default=HOSTNAME, max_length=100)
-    host = models.UUIDField(
-        primary_key=True, editable=False, unique=True, blank=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
     hostUsername = models.CharField(max_length=200, null=False)
     hostPassword = models.CharField(max_length=200, null=False)
-    email = models.EmailField(
-        max_length=200, null=True, blank=True, default=None)
-    displayName = models.CharField(max_length=200, null=True, blank=True)
