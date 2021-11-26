@@ -111,7 +111,10 @@ Homepage
                 <button type="button" class="btn btn-primary">Share</button>
                 <!-- Button of Post Like SHOW -->
                 <button type="button" class="btn btn-primary myCustom_like_post_show" data-bs-toggle="modal" 
-                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}">Likes</button>
+                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}"
+                    var="{{ author.authorID }}">
+                    Likes
+                </button>
                 <!-- Button of Comment SHOW -->
                 <button type="button" class="btn btn-primary myCustom_comment_show" 
                     data-bs-toggle="collapse" 

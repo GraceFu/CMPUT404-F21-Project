@@ -6,6 +6,8 @@ $(".myCustom_like_post_show").on("click", function () {
     var postID = clockedButtonInformation.substring(postID_index + 5, poster_index);
     var poster = clockedButtonInformation.substring(poster_index + 8);
 
+    var authorID = $(this).attr("var");
+
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + poster + "/posts/" + postID + "/likes",
@@ -14,6 +16,7 @@ $(".myCustom_like_post_show").on("click", function () {
         success: function(data) {
             var count = 0;
             var html = "";
+            var AmILiked = false;
 
             for (var like of data) {
                 count += 1;
@@ -22,6 +25,12 @@ $(".myCustom_like_post_show").on("click", function () {
                 html += 'style="text-decoration: none; font-size: 14pt;">';
                 html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
                 html += "</a> Liked this Post</div>";
+
+                if (AmILiked == false && like['author'].match(authorID)) {
+                    $("#like_post_content_" + postID).html("You Liked This Post");
+                    $("#button_like_post_" + postID + "_author_" + authorID).attr('disabled', true);
+                    AmILiked = true;
+                }
             }
 
             if (count == 0) {
@@ -60,6 +69,7 @@ $(".myCustom_button_like_post_send").on("click", function () {
 
                 success: function(data) {
                     var html = "";
+                    var AmILiked = false;
 
                     for (var like of data) {
                         html += "<hr>" + '<div class="">';
@@ -67,6 +77,12 @@ $(".myCustom_button_like_post_send").on("click", function () {
                         html += 'style="text-decoration: none; font-size: 14pt;">';
                         html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
                         html += "</a> Liked this Post</div>";
+
+                        if (AmILiked == false && like['author'].match(authorID)) {
+                            $("#like_post_content_" + postID).html("You Liked This Post");
+                            $("#button_like_post_" + postID + "_author_" + authorID).attr('disabled', true);
+                            AmILiked = true;
+                        }
                     }
 
                     $("#like_post_" + postID).html(html);
