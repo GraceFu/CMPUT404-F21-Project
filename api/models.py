@@ -114,7 +114,7 @@ class Like(models.Model):
         Author, on_delete=models.CASCADE, unique=True, blank=True)
     summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
-    object = models.URLField(null=True, blank=True, editable=False)
+    object = models.CharField(max_length=500, null=True, blank=True)
 
 
 ######### Inbox #########

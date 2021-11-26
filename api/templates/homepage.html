@@ -143,7 +143,6 @@ Homepage
                 </div>
 
                 <!-- View of Post Like SHOW -->
-                <!-- Create post modal window -->
                 <div class="modal fade" id="modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
                     style="top: 15%;" aria-labelledby="like_post_title" aria-hidden="true">
                     <input type="hidden" id="myCustom_like_post_button_clicked_{{ post.postID }}" value="false">
@@ -159,11 +158,11 @@ Homepage
                             <!-- Body -->
                             <div class="modal-body">
                                 <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
-                                <input type="hidden" id="like_post_hostname_{{ post.postID }}" value="{{ HOSTNAME }}">
+                                <input type="hidden" id="like_post_hostname_{{ post.postID }}" 
+                                    value="{{ HOSTNAME }}" var="{{ post.author.authorID }}">
                                 <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}"
                                     type="button" class="btn btn-primary myCustom_button_like_post_send">Like</button>
 
-                                <hr>
                                 <div id="like_post_{{ post.postID }}"></div>
                             </div>
 
