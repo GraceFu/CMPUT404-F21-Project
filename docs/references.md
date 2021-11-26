@@ -20,3 +20,4 @@
 - Django Requests & Responses: https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 - AJAX request to API: https://www.jianshu.com/p/1e1bedf1f1ce
 - JQuery addition to HTML: https://cloud.tencent.com/developer/article/1544580
+- AJAX Dynamic Click Handler: https://blog.csdn.net/qq_37505609/article/details/80615152
