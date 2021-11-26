@@ -1,6 +1,6 @@
 import uuid
 
-from api.models import Author, Post
+from api.models import Author, Post, Node
 
 
 def generate_id():
@@ -38,4 +38,12 @@ def post_not_found(postID):
         if Post.objects.get(postID=postID):
             return False
     except:
+        return True
+
+def node_not_found(hostURL):
+    """ check existence of an author """
+    try:
+        if Node.objects.get(hostURL=hostURL):
+            return False
+    except Node.DoesNotExist:
         return True

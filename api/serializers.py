@@ -41,3 +41,11 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ["type", "author", "summary", "object"]
+
+
+
+
+class NodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ["hostURL", "hostName", "hostUsername", "hostPassword"]

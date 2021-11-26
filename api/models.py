@@ -110,7 +110,7 @@ class Comment(models.Model):
 class Like(models.Model):
     # context = models.URLField(null=True, blank=True, editable=False)
     type = models.CharField(default="like", max_length=100)
-    author = models.ForeignKey(
+    author = models.OneToOneField(
         Author, on_delete=models.CASCADE, unique=True, blank=True)
     summary = models.CharField(max_length=100)
     # object is the post object/link or the comment object/link that is liked
@@ -128,14 +128,7 @@ class Inbox(models.Model):
 
 ######### Node #########
 class Node(models.Model):
-    url = models.URLField(default=HOSTNAME, max_length=100)
-    host = models.UUIDField(
-        primary_key=True, editable=False, unique=True, blank=True)
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
+    hostURL = models.URLField(primary_key=True, unique = True)
+    hostName = models.CharField(max_length=200, default="foreignConnection")
     hostUsername = models.CharField(max_length=200, null=False)
     hostPassword = models.CharField(max_length=200, null=False)
-    email = models.EmailField(
-        max_length=200, null=True, blank=True, default=None)
-    displayName = models.CharField(max_length=200, null=True, blank=True)
