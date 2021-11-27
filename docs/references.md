@@ -11,9 +11,13 @@
 - Bootstrap: https://getbootstrap.com/docs/5.1/getting-started/introduction/
 - Bootstrap Modal: https://getbootstrap.com/docs/5.1/components/modal/
 - Bootstrap Collapse: https://getbootstrap.com/docs/5.1/components/collapse/
+- Profile HTML & CSS: https://www.bootdey.com/snippets/view/profile-edit-data-and-skills
 - Django Viewsets: https://www.django-rest-framework.org/api-guide/viewsets/
 - Django Class Based Views: https://www.django-rest-framework.org/tutorial/3-class-based-views/#rewriting-our-api-using-class-based-views
 - Django Model: https://docs.djangoproject.com/en/3.2/topics/db/models/
 - Django Model Choices: https://docs.djangoproject.com/en/3.2/ref/models/fields/#choices
 - Django Serializers: https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
 - Django Requests & Responses: https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
+- AJAX request to API: https://www.jianshu.com/p/1e1bedf1f1ce
+- JQuery addition to HTML: https://cloud.tencent.com/developer/article/1544580
+- AJAX Dynamic Click Handler: https://blog.csdn.net/qq_37505609/article/details/80615152
