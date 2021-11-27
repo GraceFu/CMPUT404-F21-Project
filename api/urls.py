@@ -82,6 +82,7 @@ urlpatterns = [
          likes.LikeViewSet.as_view({methods.GET: 'get_post_likes'}), name="get_post_likes"),
     path("api/author/<str:authorID>/posts/<str:postID>/comments/<str:commentID>/likes",
          likes.LikeViewSet.as_view({methods.GET: 'get_comment_likes'}), name="get_comment_likes"),
+    path("api/author/<str:authorID>/inbox/", likes.LikeViewSet.as_view({methods.POST: 'like_object'}), name="like_object"),
 
     # Liked
     path("api/author/<str:authorID>/liked", likes.LikeViewSet.as_view(

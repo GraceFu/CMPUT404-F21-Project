@@ -75,7 +75,7 @@ Homepage
     </div>
 </div>
 
-<div class="container text-center" style="margin-top: 30px;">
+<div class="container text-center" style="margin-top: 30px;" id="myCustom_container_area">
     
     <!-- Button for create post window -->
     <label role="button" class="btn btn-primary" data-bs-toggle="modal" 
@@ -109,36 +109,75 @@ Homepage
             <!-- Footer - Button of operating -->
             <div class="management_button_area">
                 <button type="button" class="btn btn-primary">Share</button>
-                <button type="button" class="btn btn-primary">Like</button>
-                <a type="button" class="btn btn-primary" data-bs-toggle="collapse" 
-                    href="#comment_post_{{ post.postID }}" aria-expanded="false" 
-                    aria-controls="comment_post_{{ post.postID }}">Comment</a>
 
-                <div class="collapse" id="comment_post_{{ post.postID }}">
+                <!-- Button of Post Like SHOW -->
+                <button type="button" class="btn btn-primary myCustom_like_post_show" data-bs-toggle="modal" 
+                    data-bs-target="#modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}"
+                    var="{{ author.authorID }}">
+                    Likes
+                </button>
+
+                <!-- View of Post Like SHOW -->
+                <div class="modal fade" id="modal_like_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
+                    style="top: 15%;" aria-labelledby="like_post_title" aria-hidden="true">
+                    <input type="hidden" id="myCustom_like_post_button_clicked_{{ post.postID }}" value="false">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Header -->
+                            <div class="modal-header">
+                                <h4 id="like_post_title">Likes of this Post</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
+                                <input type="hidden" id="like_post_hostname_{{ post.postID }}" 
+                                    value="{{ HOSTNAME }}" var="{{ post.author.authorID }}">
+                                <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}"
+                                    type="button" class="btn btn-primary myCustom_button_like_post_send">Like</button>
+
+                                <div id="like_post_{{ post.postID }}"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Button of Comment SHOW -->
+                <button type="button" class="btn btn-primary myCustom_comment_show" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#comment_post_{{ post.postID }}_author_{{ post.author.authorID }}" 
+                    aria-expanded="false" 
+                    aria-controls="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    Comments
+                </button>
+
+                <!-- View of Comment SHOW -->
+                <div class="collapse" id="comment_post_{{ post.postID }}_author_{{ post.author.authorID }}">
+                    <input type="hidden" id="myCustom_comment_button_clicked_{{ post.postID }}" 
+                        value="false" var="{{ author.authorID }}">
+
                     <br>
+
                     <div class="myCustom_comment_card card-body">
                         <!-- Write a comment -->
                         <div class="" id="write_a_comment_area">
-                            <form method="POST" action="api/author/{{ author.authorID }}/posts/{{ post.postID }}/comments">
-                                <input type="text" id="comment_input_{{post.postID}}" name="content" class="" placeholder="Comment">
-                                <input type="hidden" name="contentType" value="text/plain">
-                                <!--<button type="button" class="btn btn-primary myCustom_comment_send" 
-                                    var="{{post.postID}}" value="{{post.author.authorID}}">Send</button>-->
-                                <input type="submit" class="btn btn-primary" value="SEND">
-                            </form>
+                            <input type="text" id="comment_input_{{ post.postID }}" name="content" class="" placeholder="Comment">
+                            <button type="button" 
+                            class="btn btn-primary myCustom_comment_send" 
+                                var="{{ post.postID }}" 
+                                value="{{ author.authorID }}_poster_{{ post.author.authorID }}">
+                                Send
+                            </button>
                         </div>
                         
                         <!-- Show comments -->
-                        {% for comment in post.comments %}
-                        <hr>
-                        <div class="">
-                            Comment by <a href="{% url 'profile' authorID=comment.author.authorID %}"
-                                style="text-decoration: none; font-size: 14pt;">{{ comment.author.displayName }}</a> <br>
-                            <p class="col-sm-12">{{ comment.content }}</p>
-                        </div>
-                        {% endfor %}
+                        <div id="comment_{{ post.postID }}_author_{{ post.author.authorID }}"></div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -153,4 +192,5 @@ Homepage
 
 {% block script %}
 <script type="text/javascript" src="{% static 'scripts/comments.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/likes.js' %}"></script>
 {% endblock %}
