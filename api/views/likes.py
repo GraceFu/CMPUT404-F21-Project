@@ -10,7 +10,7 @@ from api.models import Author, Post, Like, Comment, visibility_type
 from api.serializers import LikeSerializer
 from api.utils import methods
 
-from Social_network.settings import HOSTNAME
+# from Social_network.settings import HOSTNAME
 
 
 class LikeViewSet(viewsets.ViewSet):
@@ -34,7 +34,7 @@ class LikeViewSet(viewsets.ViewSet):
         if self.check_post_by_id(postID) is False and not self.check_author_by_id(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        post_url = HOSTNAME + '/author/' + authorID + '/posts/' + postID
+        post_url = request.get_host() + '/author/' + authorID + '/posts/' + postID
         queryset = Like.objects.filter(object=post_url)
         serializer = LikeSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -46,7 +46,7 @@ class LikeViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         # TODO do we need to check post id ?
 
-        comment_url = HOSTNAME + '/author/' + authorID + \
+        comment_url = request.get_host() + '/author/' + authorID + \
             '/posts/' + postID + '/comments/' + commentID
         queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)

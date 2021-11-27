@@ -12,13 +12,12 @@ from ..utils import generate_id
 def signup_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             user = form.save()
             author = Author(user=user, authorID=generate_id())
             author.github = form.cleaned_data["github"]
             author.displayName = form.cleaned_data["displayName"]
-            author.url = author.host + "/api/author/" + author.authorID
+            author.url = request.get_host() + "/api/author/" + author.authorID
             author.save()
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
