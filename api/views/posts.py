@@ -13,9 +13,11 @@ from api.forms import NewPostForm
 from datetime import datetime
 
 
+POST_URL_TEMPLATE = "https://{}/api/author/{}/posts/{}"  
+
 class PostViewSet(viewsets.ViewSet):
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated] 
 
     """
     URL: api/author/{authorID}/posts/
@@ -47,7 +49,9 @@ class PostViewSet(viewsets.ViewSet):
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Post(postID=generate_id())
+            postID = generate_id()
+            instance = Post(postID=postID)
+            instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
             instance.author = Author.objects.get(authorID=authorID)
             self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
@@ -184,7 +188,9 @@ def post_handler(request, authorID):
         if request.POST.get("myCustom_method") == "PUT":
             form = NewPostForm(request.POST)
             if form.is_valid():
-                instance = Post(postID=generate_id())
+                postID = generate_id()
+                instance = Post(postID=postID)
+                instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
                 instance.author = Author.objects.get(authorID=authorID)
                 populate_post_data(form.cleaned_data, instance)
                 messages.info(

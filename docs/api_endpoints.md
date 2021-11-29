@@ -14,17 +14,17 @@
 
 - **GET**: Retrieve all profiles on the server
 
-  - Example request: GET ://api/authors/
+  - Example request: `GET ://api/authors/`
 
   - Example response:
     - 200 OK
 
-    ```
+    ```json
     [
         {
             "type": "author",
             "authorID": "34d9d2fa-d684-4c9e-a933-99dd491b1689",
-            "url": "localhost/author/34d9d2fad6844c9ea93399dd491b1689",
+            "url": "https://cmput404-proj-social-app.herokuapp.com/author/34d9d2fad6844c9ea93399dd491b1689",
             "host": "localhost",
             "displayName": "sss",
             "github": "https://github.com/dashboard"
@@ -32,7 +32,7 @@
         {
             "type": "author",
             "authorID": "3d716af0-898c-46ce-8087-253abc555ae0",
-            "url": "localhost/author/3d716af0898c46ce8087253abc555ae0",
+            "url": "https://cmput404-proj-social-app.herokuapp.com/author/3d716af0898c46ce8087253abc555ae0",
             "host": "localhost",
             "displayName": "fff",
             "github": "https://stackoverflow.com/questions/"
@@ -48,16 +48,16 @@
 
 - **GET**: Retrieve this author's profile
 
-  - Example request: GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/
+  - Example request: `GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/`
 
   - Example response: 
     - 200 OK
 
-    ```
+    ```json
     {
     "type": "author",
     "authorID": "34d9d2fa-d684-4c9e-a933-99dd491b1689",
-    "url": "localhost/author/34d9d2fad6844c9ea93399dd491b1689",
+    "url": "https://cmput404-proj-social-app.herokuapp.com/author/34d9d2fad6844c9ea93399dd491b1689",
     "host": "localhost",
     "displayName": "sss",
     "github": "https://github.com/dashboard"
@@ -67,8 +67,8 @@
 
 - **POST**: Update this author's profile
 
-  - Example request: POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/
-    ```
+  - Example request: `POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/`
+    ```json
     {
     "displayName": "sssf",
     "github": "https://github.com/dashboard/sssf"
@@ -77,11 +77,11 @@
 
   - Example response: 
     - 200 OK
-    ```
+    ```json
     {
     "type": "author",
     "authorID": "34d9d2fa-d684-4c9e-a933-99dd491b1689",
-    "url": "localhost/author/34d9d2fad6844c9ea93399dd491b1689",
+    "url": "https://cmput404-proj-social-app.herokuapp.com/author/34d9d2fad6844c9ea93399dd491b1689",
     "host": "localhost",
     "displayName": "sssf",
     "github": "https://github.com/dashboard/sssf"
@@ -98,12 +98,12 @@
 
 - **GET**: Retrieve recent posts of this author
 
-  - Example request: GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/
+  - Example request: `GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/`
 
   - Example response: 
     - 200 OK
 
-    ```
+    ```json
     [
       {
         "type": "post",
@@ -150,8 +150,8 @@
 
 - **POST**: Create a post with generated POST_ID
 
-  - Example request: POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/
-    ```
+  - Example request: `POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/`
+    ```json
     {
       "title": "the title",
       "source": "https://uofa-cmput404.github.io/",
@@ -170,7 +170,7 @@
 
   - Example response: 
     - 200 OK
-    ```
+    ```json
     {
       "type": "post",
       "title": "the title",
@@ -202,12 +202,12 @@
 
 - **GET**: Retrieve this public post
 
-  - Example request: GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/
+  - Example request: `GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/`
 
   - Example response: 
     - 200 OK
-
-    ```
+    
+    ```json
     [
       {
           "type": "post",
@@ -235,8 +235,8 @@
 
 - **POST**: Update this post
 
-  - Example request: POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/
-    ```
+  - Example request: `POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/`
+    ```json
     {
       "title": "the new title",
       "description": "my des 2.0",
@@ -250,7 +250,7 @@
 
   - Example response: 
     - 200 OK
-    ```
+    ```json
     {
       "type": "post",
       "title": "the new title",
@@ -277,7 +277,7 @@
 
 - **DELETE**: Delete this post
 
-  - Example request: DELETE ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/
+  - Example request: `DELETE ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/ed7c0f7ebff54458bb6c06d26a6797c4/`
 
   - Example response: 
     - 200 OK
@@ -286,8 +286,8 @@
 
 - **PUT**: Create a post with POST_ID
 
-  - Example request: PUT ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a208624e2a8473f57593753514/
-    ```
+  - Example request: `PUT ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a208624e2a8473f57593753514/`
+    ```json
     {
     "title": "your title",
     "source": "https://uofa-cmput404.github.io/",
@@ -303,7 +303,7 @@
 
   - Example response: 
     - 200 OK
-    ```
+    ```json
     {
       "type": "post",
       "title": "your title",
@@ -334,12 +334,12 @@
 
 - **GET**: Retrieve recent comments of this post
 
-  - Example request: GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a2-0862-4e2a-8473-f57593753514/comments
+  - Example request: `GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a2-0862-4e2a-8473-f57593753514/comments`
 
   - Example response: 
     - 200 OK
 
-    ```
+    ```json
     [
       {
         "type": "comment",
@@ -364,8 +364,8 @@
 
 - **POST**: Create a post with generated POST_ID
 
-  - Example request: POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a2-0862-4e2a-8473-f57593753514/comments
-    ```
+  - Example request: `POST ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/posts/f89712a2-0862-4e2a-8473-f57593753514/comments`
+    ```json
     {
       "content": "a comment",
       "contentType": "text/plain"
@@ -374,7 +374,7 @@
 
   - Example response: 
     - 200 OK
-    ```
+    ```json
     {
       "type": "comment",
       "commentID": "3baf717de0934dd1b94224f8d422a292",
@@ -395,12 +395,12 @@
 
 - **GET**: Retrieve all public things this author liked
 
-  - Example request: GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/liked/
+  - Example request: `GET ://api/author/34d9d2fa-d684-4c9e-a933-99dd491b1689/liked/`
 
   - Example response:
     - 200 OK
 
-    ```
+    ```json
     [
       {
         "type": "like",

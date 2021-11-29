@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from api.models import Author, Post
 from api.utils import invalid_user_view
 
-from Social_network.settings import HOSTNAME
+# from Social_network.settings import HOSTNAME
 
 # Source: https://docs.djangoproject.com/zh-hans/3.2/topics/auth/default/#the-login-required-decorator
 @login_required(login_url='login')
@@ -21,6 +21,6 @@ def homepage_request(request):
 
     content['author'] = author
     content['public_post'] = public_post
-    content['HOSTNAME'] = HOSTNAME
+    content['HOSTNAME'] = request.get_host()
 
     return render(request, "homepage.html", content)
