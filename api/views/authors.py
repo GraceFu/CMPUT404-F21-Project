@@ -8,6 +8,15 @@ from api.utils import methods, author_not_found
 # from paginaion import AuthorsPaginator
 
 
+""" put request data into instance 
+example of an working data:
+
+{
+    "displayName": "the name",
+    "github": "https://uofa-cmput404.github.io/"
+}
+
+"""
 class AuthorsViewSet(viewsets.ViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
@@ -61,15 +70,6 @@ class ProfileViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def populate_author_data(self, data, instance):
-        """ put request data into instance 
-        example of an working data:
-
-        {
-        "displayName": "the name",
-        "github": "https://uofa-cmput404.github.io/"
-        }
-
-        """
         instance.displayName = data["displayName"]
         instance.github = data["github"]
         instance.save()
