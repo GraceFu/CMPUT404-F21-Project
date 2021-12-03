@@ -36,6 +36,13 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         followers = Follower.objects.filter(followee=authorID)
         serializer = FollowSerializer(followers, many=True)
+
+        # Addition the displayName of the followers
+        index = 0
+        for item in serializer.data:
+            serializer.data[index]["followerDisplayName"] = Author.objects.get(authorID=item["follower"]).displayName
+            index += 1
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     """

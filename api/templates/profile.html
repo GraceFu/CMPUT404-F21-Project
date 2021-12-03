@@ -29,7 +29,7 @@ Profile - {{ author.displayName }}
 
             <!-- Body -->
             <div class="modal-body">
-                <div id="myCustom_followees"></div>
+                <div id="myCustom_followees" style="text-align: center;"></div>
             </div>
 
         </div>
@@ -50,7 +50,7 @@ Profile - {{ author.displayName }}
 
             <!-- Body -->
             <div class="modal-body">
-                <div id="myCustom_followers"></div>
+                <div id="myCustom_followers" style="text-align: center;"></div>
             </div>
 
         </div>
@@ -71,7 +71,7 @@ Profile - {{ author.displayName }}
 
             <!-- Body -->
             <div class="modal-body">
-                <div id="myCustom_friends"></div>
+                <div id="myCustom_friends" style="text-align: center;"></div>
             </div>
 
         </div>
@@ -101,14 +101,16 @@ Profile - {{ author.displayName }}
                         <hr class="my-4">
 
                         <div class="d-flex flex-column align-items-center text-center">
-                            <label role="button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" data-bs-toggle="modal" 
-                                data-bs-target="#followees_modal">Followees</label>
+                            <input type="hidden" id="myCustom_profile_user_info" value="{{ author.authorID }}" var="{{ HOSTNAME }}">
 
-                            <label role="button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" data-bs-toggle="modal" 
-                                data-bs-target="#followers_modal">Followers</label>
+                            <label role="button" id="myCustom_followees_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                                data-bs-toggle="modal" data-bs-target="#followees_modal">Followees</label>
 
-                            <label role="button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" data-bs-toggle="modal" 
-                                data-bs-target="#friends_modal">Friends</label>
+                            <label role="button" id="myCustom_followers_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                                data-bs-toggle="modal" data-bs-target="#followers_modal">Followers</label>
+
+                            <label role="button" id="myCustom_friends_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                                data-bs-toggle="modal" data-bs-target="#friends_modal">Friends</label>
                         </div>
 
                     </div>
