@@ -24,6 +24,13 @@ class CommentViewSet(viewsets.ViewSet):
         post = Post.objects.filter(postID=postID)
         comments = Comment.objects.filter(post__in=post).order_by('-published')
         serializer = CommentSerializer(comments, many=True)
+
+        # Addition the displayName of the comments author
+        index = 0
+        for item in serializer.data:
+            serializer.data[index]["displayName"] = Author.objects.get(authorID=item["author"]).displayName
+            index += 1
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=[methods.POST], detail=True)
