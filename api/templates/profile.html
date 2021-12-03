@@ -83,17 +83,28 @@ Profile - {{ author.displayName }}
     <div class="main-body">
         <div class="row">
 
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div class="myCustom_card">
                     <div class="card-body">
 
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="avatar" class="rounded-circle p-1 bg-primary" width="250">
-                            <div class="mt-3">
+                            <div class="my-4">
                                 <h1>{{ author.displayName }}</h1>
+
                                 {% if not my_profile %}
-                                <button class="btn btn-primary">Follow</button>
-                                <button class="btn btn-primary">Add Friend</button>
+                                <div class="mt-3">
+                                    <button class="btn btn-light btn-lg" style="width: 150px;" disabled>Follow</button>
+                                    <button class="btn btn-success btn-lg" style="width: 220px;">Following</button>
+                                    <button class="btn btn-danger btn-lg" style="width: 220px; display: none;">Unfollow</button>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <button class="btn btn-light btn-lg" style="width: 150px;" disabled>Friend</button>
+                                    <button class="btn btn-success btn-lg" style="width: 220px; display: none;">Add as Friend</button>
+                                    <button class="btn btn-secondary btn-lg" style="width: 220px; display: none;">Wait for Response</button>
+                                    <button class="btn btn-danger btn-lg" style="width: 220px; display: none;">Remove Friend</button>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -103,13 +114,13 @@ Profile - {{ author.displayName }}
                         <div class="d-flex flex-column align-items-center text-center">
                             <input type="hidden" id="myCustom_profile_user_info" value="{{ author.authorID }}" var="{{ HOSTNAME }}">
 
-                            <label role="button" id="myCustom_followees_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                            <label role="button" id="myCustom_followees_button" class="btn btn-outline-dark btn-lg" style="margin-bottom: 10px; width: 80%;" 
                                 data-bs-toggle="modal" data-bs-target="#followees_modal">Followees</label>
 
-                            <label role="button" id="myCustom_followers_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                            <label role="button" id="myCustom_followers_button" class="btn btn-outline-dark btn-lg" style="margin-bottom: 10px; width: 80%;" 
                                 data-bs-toggle="modal" data-bs-target="#followers_modal">Followers</label>
 
-                            <label role="button" id="myCustom_friends_button" class="btn btn-primary" style="margin-bottom: 10px; width: 120px;" 
+                            <label role="button" id="myCustom_friends_button" class="btn btn-outline-dark btn-lg" style="margin-bottom: 10px; width: 80%;" 
                                 data-bs-toggle="modal" data-bs-target="#friends_modal">Friends</label>
                         </div>
 
@@ -117,7 +128,7 @@ Profile - {{ author.displayName }}
                 </div>
             </div>
 
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="myCustom_card">
                     <div class="card-body">
                         <div class="row mb-3">

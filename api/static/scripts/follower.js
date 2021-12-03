@@ -12,12 +12,15 @@ $("#myCustom_followees_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<a href="../profile/' + follow['followee'] + '" ';
+                html += '<hr><a href="../profile/' + follow['followee'] + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followeeDisplayName"] + '</a>';
             }
 
             if (count == 0) {
                 html = "<br><h4>His/Her has no followees, T^T</h4><br>";
+            }
+            else {
+                html = html.substring(html.indexOf("<hr>") + 4);
             }
             
             $("#myCustom_followees").html(html);
@@ -39,12 +42,15 @@ $("#myCustom_followers_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<a href="../profile/' + follow['follower'] + '" ';
+                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
             }
 
             if (count == 0) {
                 html = "<br><h4>His/Her has no followers, T^T</h4><br>";
+            }
+            else {
+                html = html.substring(html.indexOf("<hr>") + 4);
             }
             
             $("#myCustom_followers").html(html);
@@ -66,12 +72,15 @@ $("#myCustom_friends_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<a href="../profile/' + follow['follower'] + '" ';
+                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
             }
 
             if (count == 0) {
                 html = "<br><h4>His/Her has no friends, T^T</h4><br>";
+            } 
+            else {
+                html = html.substring(html.indexOf("<hr>") + 4);
             }
             
             $("#myCustom_friends").html(html);
