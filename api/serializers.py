@@ -1,4 +1,4 @@
-from .models import Author, Post, Follow, Friend, Comment, Like, Inbox, Node
+from .models import Author, Post, Follower, Friend, Comment, Like, Inbox, Node
 from rest_framework import serializers
 
 
@@ -41,3 +41,15 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ["type", "author", "summary", "object"]
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follower
+        fields = ["type", "followee", "follower"]
+
+
+class FriendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friend
+        fields = ["type", "actor", "object", "summary", "time"]

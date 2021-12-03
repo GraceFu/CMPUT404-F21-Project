@@ -33,26 +33,21 @@ class Author(models.Model):
     # TODO set profile picture properly
 
 
-######### Follow #########
-class Follow(models.Model):
+######### Follower #########
+class Follower(models.Model):
     type = models.CharField(default="followers", max_length=100)
-    requestID = models.UUIDField(
-        primary_key=True, editable=False, unique=True)
-    # follow request from user
+    """ author is the followee, foreignAuthor is the follower """
     followee = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="followee", blank=True)
-    # follow request to user, person to be follow
     follower = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="follower", blank=True)
-    time = models.DateTimeField(auto_now_add=True)
-    acceptance = models.BooleanField(default=False)
+    class Meta:
+        unique_together = ('followee', 'follower')
 
 
 ######### Friend #########
 class Friend(models.Model):
     type = models.CharField(default="friend", max_length=100)
-    requestID = models.UUIDField(
-        primary_key=True, editable=False, unique=True)
     # friend request from user
     actor = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="actor")
