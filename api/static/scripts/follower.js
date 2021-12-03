@@ -51,3 +51,30 @@ $("#myCustom_followers_button").click(function () {
         }
     })
 });
+
+// Handler of Friends SHOW button click event
+$("#myCustom_friends_button").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + authorID + "/friends",
+        type: "GET",
+        success: function(data) {
+            var count = 0;
+            var html = "";
+
+            for (var follow of data) {
+                count += 1;
+                html += '<a href="../profile/' + follow['follower'] + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+            }
+
+            if (count == 0) {
+                html = "<br><h4>His/Her has no friends, T^T</h4><br>";
+            }
+            
+            $("#myCustom_friends").html(html);
+        }
+    })
+});
