@@ -9,6 +9,11 @@ Homepage
 <link rel="stylesheet" type="text/css" href="{% static 'styles/post_view.css' %}">
 {% endblock %}
 
+{% block script %}
+<script type="text/javascript" src="{% static 'scripts/comments.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/likes.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <!-- Create post modal window -->
@@ -189,9 +194,4 @@ Homepage
 
 <br><br><br>
 
-{% endblock %}
-
-{% block script %}
-<script type="text/javascript" src="{% static 'scripts/comments.js' %}"></script>
-<script type="text/javascript" src="{% static 'scripts/likes.js' %}"></script>
 {% endblock %}
