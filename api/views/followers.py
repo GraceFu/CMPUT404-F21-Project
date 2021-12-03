@@ -29,6 +29,27 @@ class FollowersViewSet(viewsets.ViewSet):
     GET: get a list of authors who are their followers
     """
     @action(methods=[methods.GET], detail=True)
+    def get_author_followees(self, request, authorID):
+        """ get a list of followers of author """
+        """ author is the followee, foreignAuthor is the follower """
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        followees = Follower.objects.filter(follower=authorID)
+        serializer = FollowSerializer(followees, many=True)
+
+        # Addition the displayName of the followers
+        index = 0
+        for item in serializer.data:
+            serializer.data[index]["followeeDisplayName"] = Author.objects.get(authorID=item["followee"]).displayName
+            index += 1
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    """
+    URL: api/author/{AUTHOR_ID}/followers
+    GET: get a list of authors who are their followers
+    """
+    @action(methods=[methods.GET], detail=True)
     def get_author_followers(self, request, authorID):
         """ get a list of followers of author """
         """ author is the followee, foreignAuthor is the follower """

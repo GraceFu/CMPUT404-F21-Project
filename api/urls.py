@@ -53,6 +53,10 @@ urlpatterns = [
     path("profile/<str:authorID>", profiles.profile_view, name="profile"),
 
     # Followers
+    # Get Followees
+    path("api/author/<str:authorID>/followees", followers.FollowersViewSet.as_view(
+        {methods.GET: 'get_author_followees'}), name="author_followees"),
+    # Get Followers
     path("api/author/<str:authorID>/followers", followers.FollowersViewSet.as_view(
         {methods.GET: 'get_author_followers'}), name="author_followers"),
     path("api/author/<str:authorID>/followers/<str:foreignAuthorID>", followers.FollowersViewSet.as_view(
