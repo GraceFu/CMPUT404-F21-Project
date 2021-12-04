@@ -86,6 +86,54 @@ Profile - {{ author.displayName }}
     </div>
 </div>
 
+<!-- Create Follow modal window -->
+<div class="modal fade" id="follow_post_modal" style="top: 30%;" 
+    aria-labelledby="follow_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 id="follow_title">Following Him/Her</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Message -->
+                <p>Are you sure you want to following this author? To confirm, please click Following.</p>
+                <!-- Delete Button -->
+                <button id="myCustom_following_button_clicked" type="button" class="btn btn btn-outline-success" style="width: 120px;">Following</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Create Unfollow modal window -->
+<div class="modal fade" id="unfollow_post_modal" style="top: 30%;" 
+    aria-labelledby="unfollow_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 id="unfollow_title">Unfollow This Author</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Message -->
+                <p>Are you sure you want to unfollow this author? To confirm, please click Unfollow.</p>
+                <!-- Delete Button -->
+                <button id="myCustom_unfollow_button_clicked" type="button" class="btn btn btn-outline-danger" style="width: 120px;">Unfollow</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Main Content -->
 <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <div class="main-body">
@@ -105,9 +153,11 @@ Profile - {{ author.displayName }}
                                 {% if not my_profile %}
                                 <div class="mt-3">
                                     <button class="btn btn-light btn-lg" style="width: 150px;" disabled>Follow</button>
-                                    <button id="myCustom_following_button_id" class="btn btn-success btn-lg" 
+                                    <button id="myCustom_following_button_id" class="btn btn-success btn-lg"
+                                        data-bs-toggle="modal" data-bs-target="#follow_post_modal"
                                         style="width: 220px; display: none;">Following</button>
-                                    <button id="myCustom_unfollow_button_id" class="btn btn-danger btn-lg" 
+                                    <button id="myCustom_unfollow_button_id" class="btn btn-danger btn-lg"
+                                        data-bs-toggle="modal" data-bs-target="#unfollow_post_modal"
                                         style="width: 220px; display: none;">Unfollow</button>
                                 </div>
                                 

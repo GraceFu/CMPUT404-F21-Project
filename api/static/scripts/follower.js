@@ -1,5 +1,5 @@
 // Handler of Following button click event
-$("#myCustom_following_button_id").click(function () {
+$("#myCustom_following_button_clicked").click(function () {
     var authorID = $("#myCustom_profile_user_info").attr("value");
     var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
 
@@ -27,8 +27,9 @@ $("#myCustom_following_button_id").click(function () {
                     } else {
                         document.getElementById("myCustom_following_button_id").style.display = 'none';
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
-                        alert("Following successful");
                     }
+
+                    $("#follow_post_modal").modal('toggle');
                 }
             })
 

@@ -156,6 +156,7 @@ class FollowersViewSet(viewsets.ViewSet):
         instance.followee = Author.objects.get(authorID=authorID)
         instance.follower = Author.objects.get(authorID=foreignAuthorID)
         instance.save()
+        
         return Response(
             {
                 "detail": foreignAuthorID + " is now following " + authorID
