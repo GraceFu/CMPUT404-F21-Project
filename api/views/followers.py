@@ -165,10 +165,10 @@ class FollowersViewSet(viewsets.ViewSet):
                 status=status.HTTP_200_OK)
         except:
             return Response(
-                #{
-                    #"detail": foreignAuthorID + " is now following " + authorID
-                #}, 
-                status=status.HTTP_400_BAD_REQUEST)
+                {
+                    "detail": foreignAuthorID + " is now following " + authorID
+                }, 
+                status=status.HTTP_200_OK)
 
     @action(methods=[methods.DELETE], detail=True)
     def unfollow(self, request, authorID, foreignAuthorID):
@@ -199,4 +199,4 @@ class FollowersViewSet(viewsets.ViewSet):
                 {
                     "detail": foreignAuthorID + " is not a follower of " + authorID
                 }, 
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_200_OK)
