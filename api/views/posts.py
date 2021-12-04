@@ -41,6 +41,7 @@ class PostViewSet(viewsets.GenericViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PostSerializer
+    queryset = {}
 
     """
     URL: api/author/{authorID}/posts/

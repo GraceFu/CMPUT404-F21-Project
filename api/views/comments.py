@@ -37,17 +37,30 @@ class CommentViewSet(viewsets.GenericViewSet):
 
         # get all comments that is owned by the post
         post = Post.objects.filter(postID=postID)
+        postURL = post[0].url
+        commentURL = postURL + "/comments"
         queryset = Comment.objects.filter(post__in=post).order_by('-published')
         pagination = CustomPagiantor()
         qs = pagination.paginate_queryset(queryset, request)
         serializer = CommentSerializer(qs, many=True)
+
+        # if no page/size params provided, fill response with default values
+        if request.GET.get("page") == None:
+            page = 1
+        else:
+            page = request.GET.get("page")
+
+        if request.GET.get("size") == None:
+            size = 5
+        else:
+            size = request.GET.get("size")
+
         res = {
             "type": "comments",
-            "page": request.GET.get("page"),
-            "size": request.GET.get("size"),
-            # TODO
-            # "post":
-            # "id":
+            "page": page,
+            "size": size,
+            "post": postURL,
+            "id": commentURL,
             "comments": serializer.data
         }
         return Response(res, status=status.HTTP_200_OK)

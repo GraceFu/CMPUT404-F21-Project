@@ -24,8 +24,8 @@ $(".myCustom_comment_show").click(function () {
                 for (var comment of data.comments) {
                     count += 1;
                     html += "<hr>" + '<div class="">';
-                    html += 'Comment by <a href="profile/' + comment['author'] + '" ';
-                    html += 'style="text-decoration: none; font-size: 14pt;">' + comment["displayName"] + '</a> <br>';
+                    html += 'Comment by <a href="profile/' + comment['author'].authorID + '" ';
+                    html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
                     // Button of Comment Like SHOW
@@ -104,10 +104,10 @@ $("button.myCustom_comment_send").click(function () {
 
                 success: function(data) {
                     var html = "";
-                    for (var comment of data) {
+                    for (var comment of data.comments) {
                         html += "<hr>" + '<div class="">';
-                        html += 'Comment by <a href="profile/' + comment['author'] + '" ';
-                        html += 'style="text-decoration: none; font-size: 14pt;">' + comment["displayName"] + '</a> <br>';
+                        html += 'Comment by <a href="profile/' + comment['author'].authorID + '" ';
+                        html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                         html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
                         // Button of Comment Like SHOW

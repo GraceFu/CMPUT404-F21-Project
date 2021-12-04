@@ -24,6 +24,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(required=False)
+
     class Meta:
         model = Post
         fields = ["type", "title", "postID", "url", "author", "source", "origin", "description", "contentType", "content",
@@ -31,25 +33,35 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(required=False)
+
     class Meta:
         model = Comment
         fields = ["type", "commentID", "content",
-                  "author", "post", "contentType"]
+                  "author", "contentType", "published"]
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(required=False)
+
     class Meta:
         model = Like
         fields = ["type", "author", "summary", "object"]
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    followee = AuthorSerializer(required=False)
+    follower = AuthorSerializer(required=False)
+
     class Meta:
         model = Follower
         fields = ["type", "followee", "follower"]
 
 
 class FriendSerializer(serializers.ModelSerializer):
+    actor = AuthorSerializer(required=False)
+    object = AuthorSerializer(required=False)
+
     class Meta:
         model = Friend
         fields = ["type", "actor", "object", "summary", "time"]
