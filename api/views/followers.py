@@ -151,17 +151,24 @@ class FollowersViewSet(viewsets.ViewSet):
                     "detail": foreignAuthorID + " is not found "
                 }, 
                 status=status.HTTP_404_NOT_FOUND)
-            
-        instance = Follower()
-        instance.followee = Author.objects.get(authorID=authorID)
-        instance.follower = Author.objects.get(authorID=foreignAuthorID)
-        instance.save()
         
-        return Response(
-            {
-                "detail": foreignAuthorID + " is now following " + authorID
-            }, 
-            status=status.HTTP_200_OK)
+        try:
+            instance = Follower()
+            instance.followee = Author.objects.get(authorID=authorID)
+            instance.follower = Author.objects.get(authorID=foreignAuthorID)
+            instance.save()
+            
+            return Response(
+                {
+                    "detail": foreignAuthorID + " is now following " + authorID
+                }, 
+                status=status.HTTP_200_OK)
+        except:
+            return Response(
+                #{
+                    #"detail": foreignAuthorID + " is now following " + authorID
+                #}, 
+                status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=[methods.DELETE], detail=True)
     def unfollow(self, request, authorID, foreignAuthorID):
@@ -192,4 +199,4 @@ class FollowersViewSet(viewsets.ViewSet):
                 {
                     "detail": foreignAuthorID + " is not a follower of " + authorID
                 }, 
-                status=status.HTTP_400_OK)
+                status=status.HTTP_400_BAD_REQUEST)
