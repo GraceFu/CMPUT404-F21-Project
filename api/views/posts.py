@@ -13,6 +13,26 @@ from api.forms import NewPostForm
 from datetime import datetime
 
 
+""" 
+put request data into instance 
+auto-set fields: postID, type, visibility, unlisted, comments
+
+example of an working data:
+
+{
+    "title": "my title",
+    "source": "https://uofa-cmput404.github.io/",
+    "origin": "https://uofa-cmput404.github.io/",
+    "description": "my des",
+    "contentType": "text/plain",
+    "content": "my content",
+    "categories": ["web", "tutorial"],
+    "visibility": "PUBLIC",
+    "unlisted": false
+}
+
+"""
+
 POST_URL_TEMPLATE = "https://{}/api/author/{}/posts/{}"  
 
 class PostViewSet(viewsets.ViewSet):
@@ -53,6 +73,7 @@ class PostViewSet(viewsets.ViewSet):
             instance = Post(postID=postID)
             instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
             instance.author = Author.objects.get(authorID=authorID)
+            instance.comments = instance.url + "/comments"
             self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
@@ -90,6 +111,8 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             instance = Post(postID=postID)
             instance.author = Author.objects.get(authorID=authorID)
+            instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
+            instance.comments = instance.url + "/comments"
             self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
             return Response(PostSerializer(instance).data, status=status.HTTP_200_OK)
@@ -143,27 +166,8 @@ class PostViewSet(viewsets.ViewSet):
         instance.save()
 
     def populate_new_post_data(self, data, instance):
-        """ put request data into instance 
-        auto-set fields: postID, type, visibility, unlisted, count
-
-        example of an working data:
-
-        {
-        "title": "my title",
-        "source": "https://uofa-cmput404.github.io/",
-        "origin": "https://uofa-cmput404.github.io/",
-        "description": "my des",
-        "contentType": "text/plain",
-        "content": "my content",
-        "categories": ["web", "tutorial"],
-        "visibility": "PUBLIC",
-        "unlisted": false
-        }
-
-        """
-
-        instance.source = data["source"]  # TODO make it to url
-        instance.origin = data["origin"]  # TODO make it to url
+        instance.source = data["source"]
+        instance.origin = data["origin"]
         instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()
         instance.visibility = data["visibility"]
@@ -192,6 +196,7 @@ def post_handler(request, authorID):
                 instance = Post(postID=postID)
                 instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
                 instance.author = Author.objects.get(authorID=authorID)
+                instance.comments = instance.url + "/comments"
                 populate_post_data(form.cleaned_data, instance)
                 messages.info(
                     request, "Congratulations! Your post has been published.")
@@ -242,21 +247,6 @@ def post_handler(request, authorID):
 
 
 def populate_post_data(data, instance):
-    """ put request data into instance 
-    example of an working data:
-
-    {
-    "title": "my title",
-    "source": "https://uofa-cmput404.github.io/",
-    "origin": "https://uofa-cmput404.github.io/",
-    "description": "my des",
-    "contentType": "text/plain",
-    "content": "my content",
-    "categories": ["web", "tutorial"]
-    }
-
-    """
-
     instance.title = data["title"]
     # DO NOT REMOVE uncomment field in this method
     # instance.source = data["source"]  # TODO make it to url

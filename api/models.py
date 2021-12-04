@@ -71,8 +71,6 @@ class Post(models.Model):
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
-    image = models.URLField(
-        null=True, blank=True)
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, blank=True)
     categories = models.JSONField(null=True, blank=True)  # list of strings
@@ -83,7 +81,7 @@ class Post(models.Model):
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
-    # TODO list of comment object ? -> list of comment id maybe
+    comments = models.URLField(null=True, blank=True, editable=False, max_length=500)
 
 
 ######### Comment #########
