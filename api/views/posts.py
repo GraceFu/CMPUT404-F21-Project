@@ -9,6 +9,7 @@ from api.models import Author, Post, Comment, visibility_type
 from api.serializers import PostSerializer
 from api.utils import methods, generate_id, invalid_user_view, author_not_found, post_not_found
 from api.forms import NewPostForm
+from api.paginaion import CustomPagiantor
 
 from datetime import datetime
 
@@ -33,11 +34,14 @@ example of an working data:
 
 """
 
-POST_URL_TEMPLATE = "https://{}/api/author/{}/posts/{}"  
+POST_URL_TEMPLATE = "https://{}/api/author/{}/posts/{}"
 
-class PostViewSet(viewsets.ViewSet):
 
-    permission_classes = [permissions.IsAuthenticated] 
+class PostViewSet(viewsets.GenericViewSet):
+
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = {}
 
     """
     URL: api/author/{authorID}/posts/
@@ -55,7 +59,9 @@ class PostViewSet(viewsets.ViewSet):
         author = Author.objects.filter(authorID=authorID)
         queryset = Post.objects.filter(
             author__in=author).order_by('-published')
-        serializer = PostSerializer(queryset, many=True)
+        pagination = CustomPagiantor()
+        qs = pagination.paginate_queryset(queryset, request)
+        serializer = PostSerializer(qs, many=True)
         res = {
             "items": serializer.data
         }
@@ -71,7 +77,8 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             postID = generate_id()
             instance = Post(postID=postID)
-            instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
+            instance.url = POST_URL_TEMPLATE.format(
+                request.get_host(), authorID, postID)
             instance.author = Author.objects.get(authorID=authorID)
             instance.comments = instance.url + "/comments"
             self.populate_new_post_data(serializer.data, instance)
@@ -111,7 +118,8 @@ class PostViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             instance = Post(postID=postID)
             instance.author = Author.objects.get(authorID=authorID)
-            instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
+            instance.url = POST_URL_TEMPLATE.format(
+                request.get_host(), authorID, postID)
             instance.comments = instance.url + "/comments"
             self.populate_new_post_data(serializer.data, instance)
             self.populate_post_data(serializer.data, instance)
@@ -194,7 +202,8 @@ def post_handler(request, authorID):
             if form.is_valid():
                 postID = generate_id()
                 instance = Post(postID=postID)
-                instance.url = POST_URL_TEMPLATE.format(request.get_host(), authorID, postID)
+                instance.url = POST_URL_TEMPLATE.format(
+                    request.get_host(), authorID, postID)
                 instance.author = Author.objects.get(authorID=authorID)
                 instance.comments = instance.url + "/comments"
                 populate_post_data(form.cleaned_data, instance)

@@ -6,6 +6,8 @@ from rest_framework.authentication import BasicAuthentication
 from api.models import Author, Post, Comment
 from api.serializers import CommentSerializer
 from api.utils import methods, generate_id, author_not_found, post_not_found
+from api.paginaion import CustomPagiantor
+
 
 from datetime import datetime
 
@@ -20,10 +22,13 @@ example of an working data:
 }
 
 """
-class CommentViewSet(viewsets.ViewSet):
+
+
+class CommentViewSet(viewsets.GenericViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [BasicAuthentication]
+    serializer_class = CommentSerializer
 
     @action(methods=[methods.GET], detail=True)
     def get_post_comment(self, request, authorID, postID):
@@ -32,16 +37,33 @@ class CommentViewSet(viewsets.ViewSet):
 
         # get all comments that is owned by the post
         post = Post.objects.filter(postID=postID)
-        comments = Comment.objects.filter(post__in=post).order_by('-published')
-        serializer = CommentSerializer(comments, many=True)
+        postURL = post[0].url
+        commentURL = postURL + "/comments"
+        queryset = Comment.objects.filter(post__in=post).order_by('-published')
+        pagination = CustomPagiantor()
+        qs = pagination.paginate_queryset(queryset, request)
+        serializer = CommentSerializer(qs, many=True)
 
-        # Addition the displayName of the comments author
-        index = 0
-        for item in serializer.data:
-            serializer.data[index]["displayName"] = Author.objects.get(authorID=item["author"]).displayName
-            index += 1
+        # if no page/size params provided, fill response with default values
+        if request.GET.get("page") == None:
+            page = 1
+        else:
+            page = request.GET.get("page")
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.GET.get("size") == None:
+            size = 5
+        else:
+            size = request.GET.get("size")
+
+        res = {
+            "type": "comments",
+            "page": page,
+            "size": size,
+            "post": postURL,
+            "id": commentURL,
+            "comments": serializer.data
+        }
+        return Response(res, status=status.HTTP_200_OK)
 
     @action(methods=[methods.POST], detail=True)
     def create_comment_with_new_id(self, request, authorID, postID):
