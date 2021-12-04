@@ -87,3 +87,88 @@ $("#myCustom_friends_button").click(function () {
         }
     })
 });
+
+// Handler of Friends SHOW button click event
+$("#myCustom_friends_button").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + authorID + "/friends",
+        type: "GET",
+        success: function(data) {
+            var count = 0;
+            var html = "";
+
+            for (var follow of data) {
+                count += 1;
+                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+            }
+
+            if (count == 0) {
+                html = "<br><h4>His/Her has no friends, T^T</h4><br>";
+            } 
+            else {
+                html = html.substring(html.indexOf("<hr>") + 4);
+            }
+            
+            $("#myCustom_friends").html(html);
+        }
+    })
+});
+
+function check_follow_and_friend() {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "GET",
+        success: function(data) {
+            var count = 0;
+
+            for (var follow of data) {
+                count += 1;
+            }
+
+            if (count == 0) {
+                document.getElementById("myCustom_following_button_id").style.display = 'inline';
+                document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+
+                document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+            }
+            else {
+                document.getElementById("myCustom_following_button_id").style.display = 'none';
+                document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+
+                $.ajax({
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    url: "../api/author/" + authorID + "/followers/" + currentLoginAuthorID,
+                    type: "GET",
+                    success: function(data) {
+                        var count = 0;
+            
+                        for (var follow of data) {
+                            count += 1;
+                        }
+            
+                        if (count == 0) {
+                            document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                            document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        }
+                        else {
+                            document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                            document.getElementById("myCustom_remove_friend_button_id").style.display = 'inline';
+                        }
+                    }
+                })
+            }
+        }
+    })
+}

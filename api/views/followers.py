@@ -86,7 +86,7 @@ class FollowersViewSet(viewsets.ViewSet):
                 return Response(status=status.HTTP_404_NOT_FOUND)
                 
             try:
-                follow_back = Follower.objects.get(Q(followee=item.follower.authorID) & Q(follower=authorID))
+                follow_back = Follower.objects.filter(Q(followee=item.follower.authorID) & Q(follower=authorID))
             except:
                 followers = followers.exclude(follower=item.follower.authorID)
 
@@ -125,14 +125,14 @@ class FollowersViewSet(viewsets.ViewSet):
                 status=status.HTTP_404_NOT_FOUND)
 
         try:
-            followed = Follower.objects.get(Q(followee=authorID) & Q(follower=foreignAuthorID))
+            followed = Follower.objects.filter(Q(followee=authorID) & Q(follower=foreignAuthorID))
             serializer = FollowSerializer(followed, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(
-                {
-                    "detail": foreignAuthorID + " is not a follower of " + authorID
-                }, 
+                #{
+                #    "detail": foreignAuthorID + " is not a follower of " + authorID
+                #}, 
                 status=status.HTTP_200_OK)
 
     @action(methods=[methods.PUT], detail=True)
