@@ -86,7 +86,7 @@ class FollowersViewSet(viewsets.ViewSet):
                 return Response(status=status.HTTP_404_NOT_FOUND)
                 
             try:
-                follow_back = Follower.objects.filter(Q(followee=item.follower.authorID) & Q(follower=authorID))
+                follow_back = Follower.objects.get(Q(followee=item.follower.authorID) & Q(follower=authorID))
             except:
                 followers = followers.exclude(follower=item.follower.authorID)
 
@@ -192,4 +192,4 @@ class FollowersViewSet(viewsets.ViewSet):
                 {
                     "detail": foreignAuthorID + " is not a follower of " + authorID
                 }, 
-                status=status.HTTP_200_OK)
+                status=status.HTTP_400_OK)

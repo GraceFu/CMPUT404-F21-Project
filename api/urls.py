@@ -63,7 +63,7 @@ urlpatterns = [
     path("api/author/<str:authorID>/friends", followers.FollowersViewSet.as_view(
         {methods.GET: 'get_author_friends'}), name="author_friends"),
     path("api/author/<str:authorID>/followers/<str:foreignAuthorID>", followers.FollowersViewSet.as_view(
-        {methods.GET: 'check_if_follower', methods.PUT: 'follow', methods.DELETE: 'follow'}), name="handle_follower"),
+        {methods.GET: 'check_if_follower', methods.PUT: 'follow', methods.DELETE: 'unfollow'}), name="handle_follower"),
 
     # FriendRequest
 
