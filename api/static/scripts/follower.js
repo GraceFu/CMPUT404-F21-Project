@@ -1,3 +1,43 @@
+// Handler of Following button click event
+$("#myCustom_following_button_id").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "PUT",
+        success: function(data) {
+            
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+                type: "GET",
+                success: function(data) {
+                    var count = 0;
+
+                    for (var follow of data) {
+                        count += 1;
+                    }
+
+                    if (count == 0) {
+                        document.getElementById("myCustom_following_button_id").style.display = 'inline';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+                        alert("Following Failed");
+                    } else {
+                        document.getElementById("myCustom_following_button_id").style.display = 'none';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+                        alert("Following successful");
+                    }
+                }
+            })
+
+        }
+    })
+});
+
+// Handler of Unfollow button click event
+
 // Handler of Followees SHOW button click event
 $("#myCustom_followees_button").click(function () {
     var authorID = $("#myCustom_profile_user_info").attr("value");
@@ -118,6 +158,7 @@ $("#myCustom_friends_button").click(function () {
     })
 });
 
+// Handler of checking the current Author is following and friending to giving Author
 function check_follow_and_friend() {
     var authorID = $("#myCustom_profile_user_info").attr("value");
     var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
@@ -140,8 +181,7 @@ function check_follow_and_friend() {
                 document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
                 document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
                 document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
-            }
-            else {
+            } else {
                 document.getElementById("myCustom_following_button_id").style.display = 'none';
                 document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
 
@@ -168,7 +208,9 @@ function check_follow_and_friend() {
                         }
                     }
                 })
+
             }
         }
     })
+
 }
