@@ -44,7 +44,6 @@
                     <!-- My Profile -->
                     <li>
                         <form method="GET" id="form_my_profile" action="{% url 'profile' authorID=user.author.authorID %}">
-                            {% csrf_token %}
                             <a onclick="document.getElementById('form_my_profile').submit()">Profile</a>
                         </form>
                     </li>
@@ -54,7 +53,6 @@
                     <!-- My Posts -->
                     <li>
                         <form method="GET" id="form_my_posts" action="{% url 'post_handler' authorID=user.author.authorID %}">
-                            {% csrf_token %}
                             <a onclick="document.getElementById('form_my_posts').submit()">MyPosts</a>
                         </form>
                     </li>

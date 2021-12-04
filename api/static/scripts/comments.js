@@ -25,12 +25,12 @@ $(".myCustom_comment_show").click(function () {
                     count += 1;
                     html += "<hr>" + '<div class="">';
                     html += 'Comment by <a href="profile/' + comment['author'] + '" ';
-                    html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
+                    html += 'style="text-decoration: none; font-size: 14pt;">' + comment["displayName"] + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
                     // Button of Comment Like SHOW
                     html += '<button type="button" class="btn btn-primary myCustom_like_comment_show" ';
-                    html += 'data-bs-toggle="modal" var="' + authorID + '" ';
+                    html += 'data-bs-toggle="modal" style="width: 100px;" var="' + authorID + '" ';
                     html += 'data-bs-target="#modal_like_post_' + postID + '_author_' + poster + '_comment_' + comment['commentID'] + '">';
                     html += 'Likes</button>';
 
@@ -53,7 +53,7 @@ $(".myCustom_comment_show").click(function () {
                     html += '<input type="hidden" id="like_comment_hostname_' + comment['commentID'] + '" ';
                     html += 'value="' + HOSTNAME + '" var="' + poster + '">';
                     html += '<button id="button_like_post_' + postID + '_author_' + authorID + '_comment_' + comment['commentID'] + '" ';
-                    html += 'type="button" class="btn btn-primary myCustom_button_like_comment_send">Like</button>';
+                    html += 'type="button" class="btn btn-outline-success myCustom_button_like_comment_send" style="width: 100px;">Like</button>';
 
                     html += '<div id="like_comment_' + comment['commentID'] + '"></div>';
                     html += '</div></div></div></div>';
@@ -107,12 +107,12 @@ $("button.myCustom_comment_send").click(function () {
                     for (var comment of data) {
                         html += "<hr>" + '<div class="">';
                         html += 'Comment by <a href="profile/' + comment['author'] + '" ';
-                        html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"] + '</a> <br>';
+                        html += 'style="text-decoration: none; font-size: 14pt;">' + comment["displayName"] + '</a> <br>';
                         html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
                         // Button of Comment Like SHOW
                         html += '<button type="button" class="btn btn-primary myCustom_like_comment_show" ';
-                        html += 'data-bs-toggle="modal" var="' + authorID + '" ';
+                        html += 'data-bs-toggle="modal" style="width: 100px; var="' + authorID + '" ';
                         html += 'data-bs-target="#modal_like_post_' + postID + '_author_' + poster + '_comment_' + comment['commentID'] + '">';
                         html += 'Likes</button>';
 
@@ -135,7 +135,7 @@ $("button.myCustom_comment_send").click(function () {
                         html += '<input type="hidden" id="like_comment_hostname_' + comment['commentID'] + '" ';
                         html += 'value="' + HOSTNAME + '" var="' + poster + '">';
                         html += '<button id="button_like_post_' + postID + '_author_' + authorID + '_comment_' + comment['commentID'] + '" ';
-                        html += 'type="button" class="btn btn-primary myCustom_button_like_comment_send">Like</button>';
+                        html += 'type="button" class="btn btn-outline-success myCustom_button_like_comment_send" style="width: 100px;">Like</button>';
 
                         html += '<div id="like_comment_' + comment['commentID'] + '"></div>';
                         html += '</div></div></div></div>';
