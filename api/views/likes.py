@@ -50,10 +50,7 @@ class LikeViewSet(viewsets.ViewSet):
             '/posts/' + postID + '/comments/' + commentID
         queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=[methods.POST], detail=True)
     def like_object(self, request, authorID):

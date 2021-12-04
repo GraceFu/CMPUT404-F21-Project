@@ -53,12 +53,13 @@ $(".myCustom_button_like_post_send").click(function () {
 
     var HOSTNAME = $("#like_post_hostname_" + postID).attr("value");
     var poster = $("#like_post_hostname_" + postID).attr("var");
+    var displayName = $("#myCustom_current_author_displayName").attr("value");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": authorID + " Likes your post", "object": HOSTNAME + '/author/' + poster + '/posts/' + postID },
+        data: { "summary": displayName + " Likes your post", "object": HOSTNAME + '/author/' + poster + '/posts/' + postID },
 
         success: function(data) {
             
@@ -153,12 +154,13 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
     var HOSTNAME = $("#like_comment_hostname_" + commentID).attr("value");
     var poster = $("#like_comment_hostname_" + commentID).attr("var");
+    var displayName = $("#myCustom_current_author_displayName").attr("value");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": authorID + " Likes your comment", 
+        data: { "summary": displayName + " Likes your comment", 
             "object": HOSTNAME + '/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
 
         success: function(data) {

@@ -11,6 +11,18 @@ from api.paginaion import CustomPagiantor
 
 from datetime import datetime
 
+""" put request data into instance 
+auto-set fields: type, commentID, post, author
+
+example of an working data:
+
+{
+    "content": "comment content",
+    "contentType": "text/plain"
+}
+
+"""
+
 
 class CommentViewSet(viewsets.GenericViewSet):
 
@@ -58,18 +70,6 @@ class CommentViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def populate_comment_data(self, data, instance):
-        """ put request data into instance 
-        auto-set fields: type, commentID, post, author
-
-        example of an working data:
-
-        {
-        "content": "comment content",
-        "contentType": "text/plain"
-        }
-
-        """
-
         instance.content = data["content"]
         instance.contentType = data["contentType"]
         instance.published = datetime.now().isoformat()

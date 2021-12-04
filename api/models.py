@@ -33,26 +33,21 @@ class Author(models.Model):
     # TODO set profile picture properly
 
 
-######### Follow #########
-class Follow(models.Model):
+######### Follower #########
+class Follower(models.Model):
     type = models.CharField(default="followers", max_length=100)
-    requestID = models.UUIDField(
-        primary_key=True, editable=False, unique=True)
-    # follow request from user
+    """ author is the followee, foreignAuthor is the follower """
     followee = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="followee", blank=True)
-    # follow request to user, person to be follow
     follower = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="follower", blank=True)
-    time = models.DateTimeField(auto_now_add=True)
-    acceptance = models.BooleanField(default=False)
+    class Meta:
+        unique_together = ('followee', 'follower')
 
 
 ######### Friend #########
 class Friend(models.Model):
     type = models.CharField(default="friend", max_length=100)
-    requestID = models.UUIDField(
-        primary_key=True, editable=False, unique=True)
     # friend request from user
     actor = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="actor")
@@ -76,8 +71,6 @@ class Post(models.Model):
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, null=True, blank=True)
     content = models.CharField(max_length=500, null=True, blank=True)
-    image = models.URLField(
-        null=True, blank=True)
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, blank=True)
     categories = models.JSONField(null=True, blank=True)  # list of strings
@@ -88,7 +81,7 @@ class Post(models.Model):
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
-    # TODO list of comment object ? -> list of comment id maybe
+    comments = models.URLField(null=True, blank=True, editable=False, max_length=500)
 
 
 ######### Comment #########

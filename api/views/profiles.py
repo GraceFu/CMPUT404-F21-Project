@@ -47,5 +47,6 @@ def profile_view(request, authorID):
     author_post = Post.objects.filter(author__exact=author, visibility__exact="PUBLIC").order_by('-published')
     content['author'] = author
     content['author_post'] = author_post
+    content['current_authorID'] = request.user.author.authorID
 
     return render(request, "profile.html", content)
