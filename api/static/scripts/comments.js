@@ -21,7 +21,7 @@ $(".myCustom_comment_show").click(function () {
                 var count = 0;
                 var html = "";
 
-                for (var comment of data) {
+                for (var comment of data.comments) {
                     count += 1;
                     html += "<hr>" + '<div class="">';
                     html += 'Comment by <a href="profile/' + comment['author'] + '" ';
