@@ -21,7 +21,7 @@ Methods allowed: GET, POST, PUT, DELETE
 
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from api.views import auth, homepage, authors, followers, posts, profiles, comments, likes
+from api.views import auth, homepage, authors, followers, posts, profiles, comments, likes, inbox
 from api.utils import methods
 
 
@@ -94,6 +94,8 @@ urlpatterns = [
         {methods.GET: 'get_author_liked'}), name="get_author_liked"),
     
     # Inbox
-
+    path("api/author/<str:authorID>/inbox", inbox.InboxViewSet.as_view(
+        {methods.GET: 'get_inbox_items', methods.POST: 'add_item_to_inbox'}), name="hindle_inbox"),
+    
 
 ]

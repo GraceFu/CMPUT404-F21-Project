@@ -112,10 +112,9 @@ class Like(models.Model):
 ######### Inbox #########
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
-    inboxID = models.UUIDField(
-        primary_key=True, editable=False, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
-    items = models.JSONField(default=list)
+    object = models.CharField(max_length=500, null=False)
+    published = models.DateTimeField(default=timezone.now)
 
 
 ######### Node #########

@@ -53,3 +53,9 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ["type", "actor", "object", "summary", "time"]
+
+
+class InboxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inbox
+        fields = ["type", "author"]
