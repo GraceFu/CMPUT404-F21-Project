@@ -3,11 +3,11 @@
 [Author](#author) <br>
 [Post](#post) <br>
 [Comment](#comment) <br>
-[Follower & Friend](#follower-friend) <br>
 [Liked & likes](#liked-&-likes) <br>
+[Follower & Friend](#follower-friend) <br>
 [Inbox](#inbox) <br>
 
-## Author List
+## Author
 
 ### URL: ://api/authors/
 
@@ -424,6 +424,7 @@
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
 
+
 ## Comment
 
 ### URL: ://api/author/{AUTHOR_ID}/posts/{POST_ID}/comments
@@ -526,34 +527,36 @@
     - 200 OK
 
     ```json
-    [
-        {
-            "type": "like",
-            "author": {
-                "type": "author",
-                "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
-                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
-                "host": "https://cmput404-proj-social-app.herokuapp.com/",
-                "displayName": "team19",
-                "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+    {
+        "items": [
+            {
+                "type": "like",
+                "author": {
+                    "type": "author",
+                    "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
+                    "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
+                    "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                    "displayName": "team19",
+                    "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+                },
+                "summary": "team19 Likes your comment",
+                "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b/comments/6b94e09e-4181-4940-88a5-4d81e10d2cdb"
             },
-            "summary": "team19 Likes your comment",
-            "object": "cmput404-proj-social-app.herokuapp.com/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b/comments/6b94e09e-4181-4940-88a5-4d81e10d2cdb"
-        },
-        {
-            "type": "like",
-            "author": {
-                "type": "author",
-                "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
-                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
-                "host": "https://cmput404-proj-social-app.herokuapp.com/",
-                "displayName": "team19",
-                "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
-            },
-            "summary": "team19 Likes your post",
-            "object": "cmput404-proj-social-app.herokuapp.com/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
-        }
-    ]
+            {
+                "type": "like",
+                "author": {
+                    "type": "author",
+                    "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
+                    "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
+                    "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                    "displayName": "team19",
+                    "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+                },
+                "summary": "team19 Likes your post",
+                "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
+            }
+        ]
+    }
     ```
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
@@ -582,7 +585,7 @@ Getting a list of likes from other authors on a post /author/{AUTHOR_ID}/post/{P
                 "github": "https://github.com/tester19.com"
             },
             "summary": "tester19 Likes your post",
-            "object": "cmput404-proj-social-app.herokuapp.com/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
+            "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
         },
         {
             "type": "like",
@@ -595,23 +598,153 @@ Getting a list of likes from other authors on a post /author/{AUTHOR_ID}/post/{P
                 "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
             },
             "summary": "team19 Likes your post",
-            "object": "cmput404-proj-social-app.herokuapp.com/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
+            "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b"
         }
     ]
     ```
 
 ### URL: ://author/{AUTHOR_ID}/post/{POST_ID}/comments/{COMMENT_ID}/likes
 
-- **GET**: Get all likes of a post
+- **GET**: Get all likes of a comment
 
-  - Example request: `GET /api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/bf2c76dc-bcde-400a-9564-4fb062bf0ce6/likes`
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5/likes`
 
   - Example response:
     - 200 OK
 
     ```json
-    
+    {
+        "items": [
+            {
+                "type": "like",
+                "author": {
+                    "type": "author",
+                    "authorID": "1cd4b70d-b38b-4f45-bb75-4d2940d24532",
+                    "url": "https://cmput404-proj-social-app/api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/",
+                    "host": "https://cmput404-proj-social-app/",
+                    "displayName": "andiTester",
+                    "github": "https://github.com/zhininghjl.com"
+                },
+                "summary": "andiTester Likes your comment",
+                "object": "https://cmput404-proj-social-app/api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5"
+            }
+        ]
+    }
     ```
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
 
+
+## Follower & Friend
+
+### URL: ://author/{AUTHOR_ID}/followers
+
+- **GET**: Get author's followers
+
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/followers`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+
+### URL: ://author/{AUTHOR_ID}/followees
+
+- **GET**: Get author's followees
+
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/followees`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+
+### URL: ://author/{AUTHOR_ID}/friends
+
+- **GET**: Get author's friends (follow for follow)
+
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/friends`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+
+### URL: ://author/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+
+- **GET**: Check if the foreign author is a follower of the author
+
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/followers/`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+    
+- **PUT**: Foreign author followers author / foreign author send a friend request to the author
+
+  - Example request: `PUT /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/followers/`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+
+- **DELETE**: Foreign author unfollowers author / delete friend relationship between two authors
+
+  - Example request: `DELETE /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/followers/`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+
+    ```
+
+
+## Inbox
+
+### URL: ://author/{AUTHOR_ID}/inbox
+
+- **GET**: Get all object of author's inbox *(NO pagenation)*
+
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5/likes`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+    {
+        "type": "inbox",
+        "author": "https://cmput404-proj-social-app/api/author/3af2be83-2191-45e8-9ca2-2a8ae83b042c/",
+        "items": []
+    }
+    ```
+    - 401 Unauthorized (if not logged in)
+    - 404 Not Found (if this author does not exist)
+
+- **POST**: Add an object to author's inbox
+
+  - Example request: `POST /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5/likes`
+
+  - Example response:
+    - 200 OK
+
+    ```json
+    {
+        "type": "post",
+        "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b",
+    }
+    ```
+    - 401 Unauthorized (if not logged in)
+    - 404 Not Found (if this author does not exist)
