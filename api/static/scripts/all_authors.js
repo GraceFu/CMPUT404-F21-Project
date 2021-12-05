@@ -4,12 +4,11 @@ function page_ctrl(data_obj) {
     var per_num = (data_obj.per_num !== undefined) ? parseInt(data_obj.per_num) : 5; //Default num of authors per page
     var current_page = (data_obj.current_page !== undefined) ? parseInt(data_obj.current_page) : 1; //Current page
     var total_page = Math.ceil(total_item / per_num); //Compute the num of pages
-    if (total_page < 2) { return; }
 
     // Adding the content
     $(obj_box).append('<div class="page_content"></div>');
     // Adding the page manage
-    $(obj_box).append('<div class="page_ctrl"></div>');
+    $(obj_box).append('<div class="page_ctrl text-center"></div>');
 
     function page_even() {
         // Loding the data
@@ -24,54 +23,66 @@ function page_ctrl(data_obj) {
 
         change_content();
 
-        var inp_val = (current_page == total_page) ? 1 : current_page + 1; //jump page
-        var append_html = '<button class="prev_page">Previous Page</button>';
+        var append_html = '<button class="prev_page btn btn-primary" style="width: 100px; margin: 0 5px;">Previous</button>';
 
         for (var i = 0; i < total_page - 1; i++) {
-            if (total_page > 8 && current_page > 6 && i < current_page - 3) {
-                if (i < 2) {
-                    append_html += '<button class="page_num">' + (i + 1) + '</button>';
+            var end_lefts = 3;
+            if (current_page > total_page - 5) {
+                end_lefts = 7 - total_page + current_page;
+            }
+
+            if (total_page > 8 && current_page > 5 && i < current_page - end_lefts) {
+                if (i < 1) {
+                    append_html += '<button class="page_num btn btn-outline-primary">' + (i + 1) + '</button>';
                 }
-                else if (i == 2) {
-                    append_html += '<span class="page_dot">~~~</span>';
+                else if (i == 1) {
+                    append_html += '<span class="page_dot">•••</span>';
                 }
             }
-            else if (total_page > 8 && current_page < total_page - 3 && i > current_page + 1) {
-                if (current_page > 6 && i == current_page + 2) {
+            else if (total_page > 8 && current_page < total_page - 4 && i > current_page + 1) {
+                if (current_page > 5 && i == current_page + 3) {
                     append_html += '<span class="page_dot">•••</span>';
-                } else if (current_page < 7) {
-                    if (i < 8) {
-                        append_html += '<button class="page_num">' + (i + 1) + '</button>';
-                    } else if (i == 8) {
+                } 
+                else if (current_page < 6) {
+                    if (i < 7) {
+                        append_html += '<button class="page_num btn btn-outline-primary">' + (i + 1) + '</button>';
+                    } 
+                    else if (i == 7) {
                         append_html += '<span class="page_dot">•••</span>';
                     }
                 }
             }
             else {
                 if (i == current_page - 1) {
-                    append_html += '<button class="page_num current_page">' + (i + 1) + '</button>';
+                    append_html += '<button class="page_num btn btn-outline-primary current_page">' + (i + 1) + '</button>';
                 }
                 else {
-                    append_html += '<button class="page_num">' + (i + 1) + '</button>';
+                    append_html += '<button class="page_num btn btn-outline-primary">' + (i + 1) + '</button>';
                 }
             }
         }
+
         if (current_page == total_page) {
-            append_html += '<button class="page_num current_page">' + (i + 1) + '</button>';
-        } else {
-            append_html += '<button class="page_num">' + (i + 1) + '</button>';
+            append_html += '<button class="page_num btn btn-outline-primary current_page">' + (i + 1) + '</button>';
+        } 
+        else {
+            append_html += '<button class="page_num btn btn-outline-primary">' + (i + 1) + '</button>';
         }
-        append_html += '<button class="next_page">Next Page</button><span class="page_total">Total ' + total_page 
-        append_html += ' Page, To</span><input class="input_page_num" type="text" value="' + inp_val + '"><span class="page_text">Page</span><button class="to_page_num">Confirm</button>';
+
+        append_html += '<button class="next_page btn btn-primary" style="width: 100px; margin: 0 5px;">Next</button><span class="page_total">';
         $(obj_box).children('.page_ctrl').append(append_html);
+
         if (current_page == 1) {
             $(obj_box + ' .page_ctrl .prev_page').attr('disabled', 'disabled').addClass('btn_dis');
-        } else {
+        } 
+        else {
             $(obj_box + ' .page_ctrl .prev_page').removeAttr('disabled').removeClass('btn_dis');
         }
+
         if (current_page == total_page) {
             $(obj_box + ' .page_ctrl .next_page').attr('disabled', 'disabled').addClass('btn_dis');
-        } else {
+        } 
+        else {
             $(obj_box + ' .page_ctrl .next_page').removeAttr('disabled').removeClass('btn_dis');
         }
     }
