@@ -9,7 +9,7 @@ from .models import Comment
 from .models import Like
 from .models import Follower
 # from .models import Friend  # need to implement
-from .models import Inbox
+from .models import Inbox, InboxObject
 from .models import Node
 
 #from .views.adminviews.adminlistview import signup_request_admin_list_view
@@ -24,6 +24,7 @@ class AuthorInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (AuthorInline, )
 
+
 # Register your models here.
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
@@ -34,6 +35,7 @@ admin.site.register(Like)
 admin.site.register(Follower)
 # admin.site.register(Friend)
 admin.site.register(Inbox)
+admin.site.register(InboxObject)
 admin.site.register(Node)
 
 # custom register

@@ -1,5 +1,5 @@
-from .models import Author, Post, Follower, Friend, Comment, Like, Inbox, Node
-from rest_framework import serializers
+from .models import Author, InboxObject, Post, Follower, Friend, Comment, Like, Inbox, Node
+from rest_framework import fields, serializers
 
 
 # serializer translates python object to json representation
@@ -65,3 +65,11 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ["type", "actor", "object", "summary", "time"]
+
+
+class InboxObjectSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(required=False)
+
+    class Meta:
+        model = InboxObject
+        fields = ["type", "author", "object"]

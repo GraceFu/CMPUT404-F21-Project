@@ -34,7 +34,8 @@ class LikeViewSet(viewsets.ViewSet):
         if self.check_post_by_id(postID) is False and not self.check_author_by_id(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        post_url = request.get_host() + '/author/' + authorID + '/posts/' + postID
+        post_url = "https://" + request.get_host() + '/author/' + \
+            authorID + '/posts/' + postID
         queryset = Like.objects.filter(object=post_url)
         serializer = LikeSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -46,7 +47,7 @@ class LikeViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         # TODO do we need to check post id ?
 
-        comment_url = request.get_host() + '/author/' + authorID + \
+        comment_url = "https://" + request.get_host() + '/author/' + authorID + \
             '/posts/' + postID + '/comments/' + commentID
         queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)
