@@ -35,6 +35,13 @@
             <div class="myCustom_logo">
                 <a href="{% url 'homepage' %}">Project Name</a>
             </div>
+            
+            {% if not all_authors %}
+            <!-- All the Authors -->
+            <div class="myCustom_all_authors">
+                <a href="{% url 'authors' %}">Authors</a>
+            </div>
+            {% endif %}
 
             <!-- Customer list item -->
             <div id="mainListDiv" class="myCustom_main_list">
