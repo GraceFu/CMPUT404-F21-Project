@@ -210,6 +210,49 @@ $("#myCustom_friend_wait_button_clicked").click(function () {
     })
 });
 
+// Handler of Remove Friend button click event
+$("#myCustom_friend_remove_button_clicked").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "DELETE",
+        success: function(data) {
+            
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+                type: "GET",
+                success: function(data) {
+                    var count = 0;
+
+                    for (var follow of data) {
+                        count += 1;
+                    }
+
+                    if (count == 0) {
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+                        document.getElementById("myCustom_following_button_id").style.display = 'inline';
+
+                        document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                    } else {
+                        document.getElementById("myCustom_following_button_id").style.display = 'none';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+                        alert("Unfollow Failed");
+                    }
+
+                    $("#friend_remove_modal").modal('toggle');
+                }
+            })
+
+        }
+    })
+});
+
 // Handler of Followees SHOW button click event
 $("#myCustom_followees_button").click(function () {
     var authorID = $("#myCustom_profile_user_info").attr("value");
