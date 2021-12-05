@@ -8,7 +8,7 @@ function page_ctrl(data_obj) {
     var total_page = Math.ceil(total_item / per_num); //Compute the num of pages
 
     // Adding the content
-    $(obj_box).append('<hr><div class="page_content text-center"></div><hr>');
+    $(obj_box).append('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
     // Adding the page manage
     $(obj_box).append('<div class="page_ctrl text-center"></div>');
 
@@ -19,7 +19,7 @@ function page_ctrl(data_obj) {
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 url: "api/authors/",
                 type: "GET",
-                data: {},
+                data: {"page": current_page},
                 success: function(data) {
                     var count = 0;
                     var html = '';
