@@ -58,6 +58,15 @@
                     </li>
                     {% endif %}
 
+                    {% if not my_inbox_page %}
+                    <!-- My Posts -->
+                    <li>
+                        <form method="GET" id="form_my_inbox" action="{% url 'my-inbox' authorID=user.author.authorID %}">
+                            <a onclick="document.getElementById('form_my_inbox').submit()">Inbox</a>
+                        </form>
+                    </li>
+                    {% endif %}
+
                     <!-- Logout -->
                     <li>
                         <form method="POST" id="form_logout" action="{% url 'logout' %}">

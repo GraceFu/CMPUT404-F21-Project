@@ -90,8 +90,8 @@ $("#myCustom_followees_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
+                html += '<hr><a href="../profile/' + follow['followee'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followee"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -120,8 +120,8 @@ $("#myCustom_followers_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
+                html += '<hr><a href="../profile/' + follow['follower'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["follower"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -150,38 +150,8 @@ $("#myCustom_friends_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
-            }
-
-            if (count == 0) {
-                html = "<br><h4>His/Her has no friends, T^T</h4><br>";
-            } 
-            else {
-                html = html.substring(html.indexOf("<hr>") + 4);
-            }
-            
-            $("#myCustom_friends").html(html);
-        }
-    })
-});
-
-// Handler of Friends SHOW button click event
-$("#myCustom_friends_button").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-
-    $.ajax({
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/friends",
-        type: "GET",
-        success: function(data) {
-            var count = 0;
-            var html = "";
-
-            for (var follow of data) {
-                count += 1;
-                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
+                html += '<hr><a href="../profile/' + follow['follower'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["follower"].displayName + '</a>';
             }
 
             if (count == 0) {
