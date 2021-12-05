@@ -4,12 +4,17 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 
-from api.models import Author, Like, Post, Follower, InboxObject
+from api.models import Author, Like, Post, Follower, InboxObject, Inbox
 from api.serializers import PostSerializer, InboxObjectSerializer
 from api.utils import methods, generate_id, author_not_found, post_not_found
 from api.paginaion import CustomPagiantor
+from api.utils import invalid_user_view
 
-from datetime import datetime
+
+from django.shortcuts import redirect, render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 """ put request data into instance 
 auto-set fields: 
@@ -71,3 +76,18 @@ class InboxViewSet(viewsets.GenericViewSet):
             return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required(login_url='login')
+def my_inbox_view(request):
+    # Check the user is invalid in view
+    if invalid_user_view(request):
+        return redirect("login")
+
+    content = {}
+    content['my_inbox_page'] = True
+
+    inbox = Inbox.objects.get(author=request.user.author)
+    content['items'] = inbox.items[::-1]
+
+    return render(request, "inbox.html", content)

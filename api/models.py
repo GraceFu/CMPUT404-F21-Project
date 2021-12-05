@@ -115,7 +115,8 @@ class Like(models.Model):
 ######### Inbox #########
 class Inbox(models.Model):
     type = models.CharField(default="inbox", max_length=100)
-    author = models.URLField(primary_key=True)
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, primary_key=True)
     items = models.JSONField(default=list)
 
 

@@ -48,6 +48,7 @@ urlpatterns = [
         {methods.GET: 'list_all'}), name="authors_list"),
     path("api/author/<str:authorID>", authors.ProfileViewSet.as_view(
         {methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
+    path("authors", authors.AuthorsViewSet.all_authors_view, name="authors"),
 
     # Profile
     path("profile/<str:authorID>", profiles.profile_view, name="profile"),
@@ -97,5 +98,6 @@ urlpatterns = [
     # Inbox
     path("api/author/<str:authorID>/inbox", inbox.InboxViewSet.as_view(
         {methods.GET: 'get_inbox_items', methods.POST: 'add_item_to_inbox'}), name="handle_inbox"),
+    path("my-inbox", inbox.my_inbox_view, name="my-inbox"),
 
 ]

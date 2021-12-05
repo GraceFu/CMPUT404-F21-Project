@@ -6,6 +6,9 @@ from api.models import Author
 from api.serializers import AuthorSerializer
 from api.utils import methods, author_not_found
 from api.paginaion import CustomPagiantor
+from api.utils import invalid_user_view
+
+from django.shortcuts import redirect, render
 
 
 """ put request data into instance 
@@ -39,6 +42,16 @@ class AuthorsViewSet(viewsets.GenericViewSet):
             "items": serializer.data
         }
         return Response(res, status=status.HTTP_200_OK)
+
+    def all_authors_view(self, request):
+        # Check the user is invalid in view
+        if invalid_user_view(request):
+            return redirect("login")
+
+        content = {}
+        content['all_authors'] = True
+
+        return render(request, "all_authors.html", content)
 
 
 class ProfileViewSet(viewsets.ViewSet):
