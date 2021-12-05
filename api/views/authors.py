@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from api.models import Author
 from api.serializers import AuthorSerializer
 from api.utils import methods, author_not_found
-# from paginaion import AuthorsPaginator
+from api.paginaion import CustomPagiantor
 
 
 """ put request data into instance 
@@ -17,10 +17,11 @@ example of an working data:
 }
 
 """
-class AuthorsViewSet(viewsets.ViewSet):
+
+
+class AuthorsViewSet(viewsets.GenericViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
-    # pagination_class = AuthorsPaginator
 
     """
     URL: api/authors/
@@ -28,8 +29,11 @@ class AuthorsViewSet(viewsets.ViewSet):
     """
     @action(methods=[methods.GET], detail=True)
     def list_all(self, request):
+
         queryset = Author.objects.all()
-        serializer = AuthorSerializer(queryset, many=True)
+        pagination = CustomPagiantor()
+        qs = pagination.paginate_queryset(queryset, request)
+        serializer = AuthorSerializer(qs, many=True)
         res = {
             "type": "authors",
             "items": serializer.data

@@ -21,12 +21,11 @@ $(".myCustom_like_post_show").click(function () {
             for (var like of data) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
-                html += '<a href="profile/' + like['author'] + '" ';
+                html += '<a href="profile/' + like['author'].authorID + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">';
-                html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
-                html += "</a> Liked this Post</div>";
+                html += like['author'].displayName + "</a> Liked this Post</div>";
 
-                if (AmILiked == false && like['author'].match(authorID)) {
+                if (AmILiked == false && like['author'].authorID.match(authorID)) {
                     $("#like_post_content_" + postID).html("You Liked This Post");
                     $("#button_like_post_" + postID + "_author_" + authorID).remove();
                     AmILiked = true;
@@ -52,6 +51,7 @@ $(".myCustom_button_like_post_send").click(function () {
     var authorID = clockedButtonInformation.substring(authorID_index + 8);
 
     var HOSTNAME = $("#like_post_hostname_" + postID).attr("value");
+    console.log(HOSTNAME)
     var poster = $("#like_post_hostname_" + postID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
@@ -74,12 +74,11 @@ $(".myCustom_button_like_post_send").click(function () {
 
                     for (var like of data) {
                         html += "<hr>" + '<div class="">';
-                        html += '<a href="profile/' + like['author'] + '" ';
+                        html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
-                        html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
-                        html += "</a> Liked this Post</div>";
+                        html += like['author'].displayName + "</a> Liked this Post</div>";
 
-                        if (AmILiked == false && like['author'].match(authorID)) {
+                        if (AmILiked == false && like['author'].authorID.match(authorID)) {
                             $("#like_post_content_" + postID).html("You Liked This Post");
                             $("#button_like_post_" + postID + "_author_" + authorID).remove();
                             AmILiked = true;
@@ -120,12 +119,11 @@ $("#myCustom_container_area").on("click", ".myCustom_like_comment_show", functio
             for (var like of data) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
-                html += '<a href="profile/' + like['author'] + '" ';
+                html += '<a href="profile/' + like['author'].authorID + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">';
-                html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
-                html += "</a> Liked this Comment</div>";
+                html += like['author'].displayName + "</a> Liked this Post</div>";
 
-                if (AmILiked == false && like['author'].match(authorID)) {
+                if (AmILiked == false && like['author'].authorID.match(authorID)) {
                     $("#like_comment_content_" + commentID).html("You Liked This Comment");
                     $("#button_like_post_" + postID + "_author_" + authorID + "_comment_" + commentID).remove();
                     AmILiked = true;
@@ -176,12 +174,11 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
                     for (var like of data) {
                         html += "<hr>" + '<div class="">';
-                        html += '<a href="profile/' + like['author'] + '" ';
+                        html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
-                        html += like['summary'].substring(0, like['summary'].indexOf(" Like"));
-                        html += "</a> Liked this Comment</div>";
+                        html += like['author'].displayName + "</a> Liked this Post</div>";
 
-                        if (AmILiked == false && like['author'].match(authorID)) {
+                        if (AmILiked == false && like['author'].authorID.match(authorID)) {
                             $("#like_comment_content_" + commentID).html("You Liked This Comment");
                             $("#button_like_post_" + postID + "_author_" + authorID + "_comment_" + commentID).remove();
                             AmILiked = true;

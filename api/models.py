@@ -41,6 +41,7 @@ class Follower(models.Model):
         Author, on_delete=models.CASCADE, related_name="followee", blank=True)
     follower = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name="follower", blank=True)
+
     class Meta:
         unique_together = ('followee', 'follower')
 
@@ -81,7 +82,8 @@ class Post(models.Model):
     unlisted = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
     url = models.URLField(null=True, blank=True, editable=False)
-    comments = models.URLField(null=True, blank=True, editable=False, max_length=500)
+    comments = models.URLField(
+        null=True, blank=True, editable=False, max_length=500)
 
 
 ######### Comment #########
@@ -90,7 +92,8 @@ class Comment(models.Model):
     commentID = models.UUIDField(
         primary_key=True, editable=False, unique=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, blank=True)
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, blank=True, null=True)
     content = models.CharField(max_length=500, null=True)
     contentType = models.CharField(
         max_length=100, default=content_type.PLAIN, blank=False, null=False)
