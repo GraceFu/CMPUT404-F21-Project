@@ -52,7 +52,7 @@
                     {% if not my_posts_page %}
                     <!-- My Posts -->
                     <li>
-                        <form method="GET" id="form_my_posts" action="{% url 'post_handler' authorID=user.author.authorID %}">
+                        <form method="GET" id="form_my_posts" action="{% url 'my-posts' %}">
                             <a onclick="document.getElementById('form_my_posts').submit()">MyPosts</a>
                         </form>
                     </li>
@@ -61,7 +61,7 @@
                     {% if not my_inbox_page %}
                     <!-- My Posts -->
                     <li>
-                        <form method="GET" id="form_my_inbox" action="{% url 'my-inbox' authorID=user.author.authorID %}">
+                        <form method="GET" id="form_my_inbox" action="{% url 'my-inbox' %}">
                             <a onclick="document.getElementById('form_my_inbox').submit()">Inbox</a>
                         </form>
                     </li>

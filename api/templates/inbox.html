@@ -3,3 +3,62 @@
 {% block title %}
 My Inbox
 {% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% if items %}
+    <div class="text-center">
+        <br><br>
+        <h1>Here is your inbox, =.=<h1>
+        <br>
+    </div>
+
+    <div class="text-center">
+        <!-- Button for create post window -->
+        <label role="button" class="btn btn-danger btn-lg" style="width: 40%;" data-bs-toggle="modal" 
+            data-bs-target="#clear_inbox_modal">Clear Inbox</label>
+    </div>
+
+    <!-- Create Clear modal window -->
+    <div class="modal fade" id="clear_inbox_modal" style="top: 30%;" 
+        aria-labelledby="clear_inbox_title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <h4 id="clear_inbox_title">Clear The Inbox</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <!-- Message -->
+                    <p>Are you sure you want to clear the inbox? To confirm, please click Clear.</p>
+                    <!-- Delete Button -->
+                    <button id="myCustom_clear_inbox_button_clicked" type="button" 
+                        class="btn btn btn-outline-danger" style="width: 120px;">Clear</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <br><br>
+        <h1>It's empty here, =.=<h1>
+        <br><br><br>
+    </div>
+    {% endif %}
+
+    {% for item in items %}
+    <div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
