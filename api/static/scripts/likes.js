@@ -51,7 +51,6 @@ $(".myCustom_button_like_post_send").click(function () {
     var authorID = clockedButtonInformation.substring(authorID_index + 8);
 
     var HOSTNAME = $("#like_post_hostname_" + postID).attr("value");
-    console.log(HOSTNAME)
     var poster = $("#like_post_hostname_" + postID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
