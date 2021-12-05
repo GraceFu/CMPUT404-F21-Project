@@ -43,6 +43,8 @@ class AuthorsViewSet(viewsets.GenericViewSet):
         }
         return Response(res, status=status.HTTP_200_OK)
 
+    # View of all authors page
+    @action(methods=[methods.GET], detail=True)
     def all_authors_view(self, request):
         # Check the user is invalid in view
         if invalid_user_view(request):
@@ -52,6 +54,18 @@ class AuthorsViewSet(viewsets.GenericViewSet):
         content['all_authors'] = True
 
         return render(request, "all_authors.html", content)
+
+    # Return the total number of authors
+    @action(methods=[methods.GET], detail=True)
+    def get_num_of_authors(self, request):
+        # Check the user is invalid in view
+        if invalid_user_view(request):
+            return redirect("login")
+
+        total = Author.objects.all().count()
+        res = {"total_item": total}
+
+        return Response(res, status=status.HTTP_200_OK)
 
 
 class ProfileViewSet(viewsets.ViewSet):

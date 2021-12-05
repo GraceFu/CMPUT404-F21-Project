@@ -48,7 +48,10 @@ urlpatterns = [
         {methods.GET: 'list_all'}), name="authors_list"),
     path("api/author/<str:authorID>", authors.ProfileViewSet.as_view(
         {methods.GET: 'retrieve', methods.POST: 'update'}), name="author_profile"),
-    path("authors", authors.AuthorsViewSet.all_authors_view, name="authors"),
+    path("authors", authors.AuthorsViewSet.as_view(
+        {methods.GET: 'all_authors_view'}), name="authors"),
+    path("api/get_num_of_authors", authors.AuthorsViewSet.as_view(
+        {methods.GET: 'get_num_of_authors'}), name="get_num_of_authors"),
 
     # Profile
     path("profile/<str:authorID>", profiles.profile_view, name="profile"),
