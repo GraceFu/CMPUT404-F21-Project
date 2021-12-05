@@ -1,3 +1,5 @@
+// Handler of Page Turning
+// Source: https://blog.csdn.net/a_hui_tai_lang/article/details/84137847
 function page_ctrl(data_obj) {
     var obj_box = (data_obj.obj_box !== undefined) ? data_obj.obj_box : function () { return; }; //Page Dom Object
     var total_item = (data_obj.total_item !== undefined) ? parseInt(data_obj.total_item) : 0; //Total num of authors
@@ -6,19 +8,38 @@ function page_ctrl(data_obj) {
     var total_page = Math.ceil(total_item / per_num); //Compute the num of pages
 
     // Adding the content
-    $(obj_box).append('<div class="page_content"></div>');
+    $(obj_box).append('<hr><div class="page_content text-center"></div><hr>');
     // Adding the page manage
     $(obj_box).append('<div class="page_ctrl text-center"></div>');
 
     function page_even() {
         // Loding the data
         function change_content() {
-            var page_content = '<ul style="width: 300px;margin: 10px auto;">';
-            for (var i = 0; i < per_num; i++) {
-                page_content += '<li>' + ((current_page - 1) * per_num + i + 1) + ',item</li>';
-            }
-            page_content += '</ul>';
-            $(obj_box).children('.page_content').html(page_content);
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "api/authors/",
+                type: "GET",
+                data: {},
+                success: function(data) {
+                    var count = 0;
+                    var html = '';
+
+                    for (var author of data.items) {
+                        count += 1;
+                        html += '<hr><a href="../profile/' + author['authorID'] + '" ';
+                        html += 'style="text-decoration: none; font-size: 14pt;">' + author["displayName"] + '</a>';
+                    }
+
+                    if (count == 0) {
+                        html = "<br><h4>Server has no Authors, T.T</h4><br>";
+                    }
+                    else {
+                        html = html.substring(html.indexOf("<hr>") + 4);
+                    }
+
+                    $(obj_box).children('.page_content').html(html);
+                }
+            })
         }
 
         change_content();

@@ -6,6 +6,7 @@ All Authors
 
 {% load static %}
 {% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile.css' %}">
 <style>
     .page_num {
         margin: 0 5px;
@@ -27,18 +28,24 @@ All Authors
 {% block content %}
 
 <div class="container">
+    <br><br>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm"></div>
+
+        <div class="col-sm-6">
             <div class="myCustom_card" style="padding: 10px;">
-                <br><br>
-
-                <h2 class="text-center">All the Authors on the Server</h2>
-                <div id="page_area"></div>
-
-                <br><br><br>
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <h2 class="text-center">All the Authors on the Server</h2>
+                        <div id="page_area"></div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="col-sm"></div>
     </div>
+    <br><br><br>
 </div>
 
 {% endblock %}
