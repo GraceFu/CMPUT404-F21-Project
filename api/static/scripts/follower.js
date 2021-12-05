@@ -27,6 +27,30 @@ $("#myCustom_following_button_clicked").click(function () {
                     } else {
                         document.getElementById("myCustom_following_button_id").style.display = 'none';
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+
+                        $.ajax({
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            url: "../api/author/" + authorID + "/followers/" + currentLoginAuthorID,
+                            type: "GET",
+                            success: function(data) {
+                                var count = 0;
+                    
+                                for (var follow of data) {
+                                    count += 1;
+                                }
+                    
+                                if (count == 0) {
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'inline';
+                                }
+                                else {
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'inline';
+                                }
+                            }
+                        })
                     }
 
                     $("#follow_modal").modal('toggle');
@@ -62,6 +86,10 @@ $("#myCustom_unfollow_button_clicked").click(function () {
                     if (count == 0) {
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
                         document.getElementById("myCustom_following_button_id").style.display = 'inline';
+
+                        document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
                     } else {
                         document.getElementById("myCustom_following_button_id").style.display = 'none';
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
@@ -205,9 +233,9 @@ function check_follow_and_friend() {
                         }
             
                         if (count == 0) {
-                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
                             document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
-                            document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                            document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'inline';
                         }
                         else {
                             document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
