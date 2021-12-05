@@ -90,8 +90,8 @@ $("#myCustom_followees_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['followee'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followeeDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -120,8 +120,8 @@ $("#myCustom_followers_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -150,8 +150,8 @@ $("#myCustom_friends_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -180,8 +180,8 @@ $("#myCustom_friends_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['author'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["author"].displayName + '</a>';
             }
 
             if (count == 0) {

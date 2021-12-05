@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-from ..models import Author
+from ..models import Author, Inbox
 from ..forms import NewUserForm
 from ..utils import generate_id
 
@@ -20,6 +20,10 @@ def signup_request(request):
             author.host = "https://" + request.get_host() + "/"
             author.url = author.host + "api/author/" + author.authorID + "/"
             author.save()
+
+            inbox = Inbox(author=author)
+            inbox.save()
+
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
         else:
