@@ -40,7 +40,7 @@ class InboxViewSet(viewsets.GenericViewSet):
         res = {
             "type": "inbox",
             "author": author[0].url,
-            "items": serializers.data
+            "items": [io["object"] for io in serializers.data]
         }
         return Response(res, status=status.HTTP_200_OK)
 
