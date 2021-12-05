@@ -134,14 +134,6 @@ class FollowersViewSet(viewsets.ViewSet):
             instance.followee = followee_author
             instance.follower = follower_author
             instance.save()
-
-            inbox = Inbox.objects.get(author=foreignAuthorID)
-            items = inbox.items
-            item = serializers.serialize("json", [ instance ])[1:-1]
-            item = json.loads(item)
-            items.append(item["fields"])
-            inbox.items = items
-            inbox.save()
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -184,19 +176,6 @@ class FollowersViewSet(viewsets.ViewSet):
                 friendRequest.save()
             else:
                 friendRequest.delete()
-
-            inbox = Inbox.objects.get(author=foreignAuthorID)
-            items = inbox.items
-
-            index = 0
-            for item in items:
-                if item["type"] == "followers" and item["followee"] == authorID and item["follower"] == foreignAuthorID:
-                    items.pop(index)
-                    break
-                index += 1
-
-            inbox.items = items
-            inbox.save()
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

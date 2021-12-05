@@ -21,9 +21,6 @@ def signup_request(request):
             author.url = author.host + "api/author/" + author.authorID + "/"
             author.save()
 
-            inbox = Inbox(author=author)
-            inbox.save()
-
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
         else:
