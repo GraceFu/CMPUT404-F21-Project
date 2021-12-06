@@ -37,7 +37,7 @@ function page_ctrl(data_obj) {
                             let single_post_url = item["url"].replace('api/', '');
                             html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
                             html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
-                            html += 'share a <a href="' + single_post_url + '"> post</a> ' + single_post_url +' with you</h4>';
+                            html += ' share a <a style="text-decoration: none;" href="' + single_post_url + '">post</a> with you</h4>';
                         }
                         else if (item["type"].match("follow")) {
                             html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '"';
