@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 
-from api.models import Author, Follower, Friend, Inbox
+from api.models import Author, Follower, Friend
 from api.serializers import FollowSerializer
 from api.utils import methods, author_not_found
 
@@ -22,6 +22,7 @@ example of an working:
     }
 """
 
+
 class FollowersViewSet(viewsets.ViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
@@ -39,7 +40,7 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         followees = Follower.objects.filter(follower=authorID)
         serializer = FollowSerializer(followees, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     """
@@ -54,7 +55,7 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         followers = Follower.objects.filter(followee=authorID)
         serializer = FollowSerializer(followers, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     """
@@ -75,16 +76,17 @@ class FollowersViewSet(viewsets.ViewSet):
         for item in followers:
             if author_not_found(item.follower.authorID):
                 return Response(status=status.HTTP_404_NOT_FOUND)
-                
+
             try:
-                follow_back = Follower.objects.get(Q(followee=item.follower.authorID) & Q(follower=authorID))
+                follow_back = Follower.objects.get(
+                    Q(followee=item.follower.authorID) & Q(follower=authorID))
             except:
                 followers = followers.exclude(follower=item.follower.authorID)
 
             index += 1
 
         serializer = FollowSerializer(followers, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     """
@@ -101,17 +103,18 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(
                 {
                     "detail": authorID + " is not found "
-                }, 
+                },
                 status=status.HTTP_404_NOT_FOUND)
         if author_not_found(foreignAuthorID):
             return Response(
                 {
                     "detail": foreignAuthorID + " is not found "
-                }, 
+                },
                 status=status.HTTP_404_NOT_FOUND)
 
         try:
-            followed = Follower.objects.filter(Q(followee=authorID) & Q(follower=foreignAuthorID))
+            followed = Follower.objects.filter(
+                Q(followee=authorID) & Q(follower=foreignAuthorID))
             serializer = FollowSerializer(followed, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
@@ -128,7 +131,7 @@ class FollowersViewSet(viewsets.ViewSet):
 
         followee_author = Author.objects.get(authorID=authorID)
         follower_author = Author.objects.get(authorID=foreignAuthorID)
-        
+
         try:
             instance = Follower()
             instance.followee = followee_author
@@ -137,8 +140,9 @@ class FollowersViewSet(viewsets.ViewSet):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        try: 
-            friendRequest = Friend.objects.get((Q(actor=authorID) & Q(object=foreignAuthorID)) | (Q(actor=foreignAuthorID) & Q(object=authorID)))
+        try:
+            friendRequest = Friend.objects.get((Q(actor=authorID) & Q(
+                object=foreignAuthorID)) | (Q(actor=foreignAuthorID) & Q(object=authorID)))
             friendRequest.acceptance = True
             friendRequest.save()
         except:
@@ -146,14 +150,14 @@ class FollowersViewSet(viewsets.ViewSet):
                 instance = Friend()
                 instance.actor = followee_author
                 instance.object = follower_author
-                instance.summary = followee_author.displayName + " wants to follow " + follower_author.displayName
+                instance.summary = followee_author.displayName + \
+                    " wants to follow " + follower_author.displayName
                 instance.time = datetime.now().isoformat()
                 instance.save()
             except:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
-
 
     @action(methods=[methods.DELETE], detail=True)
     def unfollow(self, request, authorID, foreignAuthorID):
@@ -165,12 +169,14 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         try:
-            Follower.objects.get(Q(followee=authorID) & Q(follower=foreignAuthorID)).delete()
+            Follower.objects.get(Q(followee=authorID) & Q(
+                follower=foreignAuthorID)).delete()
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            friendRequest = Friend.objects.get((Q(actor=authorID) & Q(object=foreignAuthorID)) | (Q(actor=foreignAuthorID) & Q(object=authorID)))
+            friendRequest = Friend.objects.get((Q(actor=authorID) & Q(
+                object=foreignAuthorID)) | (Q(actor=foreignAuthorID) & Q(object=authorID)))
             if friendRequest.acceptance:
                 friendRequest.acceptance = False
                 friendRequest.save()

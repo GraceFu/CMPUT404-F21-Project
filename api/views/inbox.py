@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 
-from api.models import Author, Like, Post, Follower, InboxObject, Inbox
+from api.models import Author, Like, Post, Follower, InboxObject
 from api.serializers import PostSerializer, InboxObjectSerializer
 from api.utils import methods, generate_id, author_not_found, post_not_found
 from api.paginaion import CustomPagiantor

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Post, Author, Comment, Like, Follower, Inbox, Node, Friend, InboxObject
+from .models import Post, Author, Comment, Like, Follower, Node, Friend, InboxObject
 
 #from .views.adminviews.adminlistview import signup_request_admin_list_view
 
@@ -25,7 +25,6 @@ admin.site.register(Comment)
 admin.site.register(Like)
 admin.site.register(Follower)
 admin.site.register(Friend)
-admin.site.register(Inbox)
 admin.site.register(InboxObject)
 admin.site.register(Node)
 

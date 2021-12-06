@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-from ..models import Author, Inbox
+from ..models import Author
 from ..forms import NewUserForm
 from ..utils import generate_id
 
