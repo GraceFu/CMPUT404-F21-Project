@@ -1,0 +1,55 @@
+{% extends "header.html" %}
+
+{% block title %}
+Profile - {{ author.displayName }}
+{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile.css' %}">
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'scripts/follower.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="myCustom_card" style="padding: 10px;">
+                            <div class="card-body" style="margin: 10px;">
+
+                                <!-- Header - Title and date -->
+                                <div class="post_title">
+                                    <h2 style="float: center;">{{ post.title }}</h2>
+                                    Last release - {{ post.published }}
+                                </div>
+
+                                <hr>
+
+                                <!-- Body - Contents -->
+                                <div class="post_contents">
+                                    Description: {{ post.description }} <br>
+                                    Content: {{ post.content }} <br>
+                                    Image: {{ post.image }} <br>
+                                    Categories: {{ post.categories }} <br>
+                                    Source: {{ post.source }} <br>
+                                    Origin: {{ post.origin }} <br>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

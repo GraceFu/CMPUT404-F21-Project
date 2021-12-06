@@ -73,6 +73,7 @@ urlpatterns = [
     # Post
     # Currently author posts
     path("my-posts", posts.my_posts_view, name="my-posts"),
+    path("author/<str:authorID>/posts/<str:postID>", posts.single_post_view, name="single-post"),
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
     path("api/author/<str:authorID>/posts",
          posts.post_handler, name="post_handler"),

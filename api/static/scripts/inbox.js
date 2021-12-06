@@ -27,13 +27,17 @@ function page_ctrl(data_obj) {
                 type: "GET",
                 data: {"page": current_page},
                 success: function(data) {
+                    console.log(data)
                     var count = 0;
                     var html = '<div class="text-center"><br><br><h1>Here is your inbox, =.=<h1><br></div>';
 
                     for (var item of data.items) {
                         count += 1;
                         if (item["type"].match("post")) {
-                            // TODO
+                            let single_post_url = item["url"].replace('api/', '');
+                            html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
+                            html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
+                            html += 'share a <a href="' + single_post_url + '"> post</a> ' + single_post_url +' with you</h4>';
                         }
                         else if (item["type"].match("follow")) {
                             html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '"';
@@ -45,7 +49,7 @@ function page_ctrl(data_obj) {
                         else if (item["type"].match("like")) {
                             html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
                             html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
-                            html += item["summary"].substring(item["summary"].indexOf(" Likes")) + '</h4>';
+                            html += item["summary"].substring(item["summary"].indexOf(" likes")) + '</h4>';
                         }
                     }
 

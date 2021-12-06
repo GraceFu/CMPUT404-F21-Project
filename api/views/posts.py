@@ -13,6 +13,7 @@ from api.paginaion import CustomPagiantor
 
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 
 """ 
 put request data into instance 
@@ -285,3 +286,23 @@ def my_posts_view(request):
     content['my_posts_page'] = True
 
     return render(request, "my_posts.html", content)
+
+
+@login_required(login_url='login')
+def single_post_view(request, authorID, postID):
+    # Check the user is invalid in view
+    if invalid_user_view(request): 
+        return redirect("login")
+
+    content = {}
+
+    if author_not_found(authorID) or post_not_found(postID):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    author = Author.objects.get(authorID=request.user.author.authorID)
+    post = Post.objects.filter(postID=postID)
+
+    content['author'] = author
+    content['posts'] = post
+    content['HOSTNAME'] = request.get_host()
+
+    return render(request, "post.html", content)
