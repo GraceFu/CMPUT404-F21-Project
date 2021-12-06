@@ -18,7 +18,7 @@ $(".myCustom_like_post_show").click(function () {
             var html = "";
             var AmILiked = false;
 
-            for (var like of data) {
+            for (var like of data.items) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
@@ -71,7 +71,7 @@ $(".myCustom_button_like_post_send").click(function () {
                     var html = "";
                     var AmILiked = false;
 
-                    for (var like of data) {
+                    for (var like of data.items) {
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
@@ -115,7 +115,7 @@ $("#myCustom_container_area").on("click", ".myCustom_like_comment_show", functio
             var html = "";
             var AmILiked = false;
 
-            for (var like of data) {
+            for (var like of data.items) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
@@ -171,7 +171,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
                     var html = "";
                     var AmILiked = false;
 
-                    for (var like of data) {
+                    for (var like of data.items) {
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
