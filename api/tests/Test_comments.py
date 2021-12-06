@@ -14,7 +14,10 @@ USER_PROFILE_URL = reverse('author_profile')
 
 
 class TestCommentView(APITestCase):
-
+    
+    """
+        This method will run before any test. It will create users
+    """
 
     def setUp(self):
         
@@ -70,7 +73,7 @@ class TestCommentView(APITestCase):
         )
 
 
-        self.test_post1_author1.save()
+        self.test_post1_author.save()
 
         #create comment on test post
         self.test_post_to_comment = Post.objects.create(

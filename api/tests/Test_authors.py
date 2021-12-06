@@ -13,7 +13,9 @@ USER_LOGOUT_URL = reverse('author_logout')
 
 class TestAuthorView(APITestCase):
     
-
+    """
+        This method will run before any test. It will create users
+    """
 
     def setUp(self):
 

@@ -11,7 +11,10 @@ USER_LOGIN_URL = reverse('author_login')
 
 
 class TestFollow(APITestCase):
-    
+    """
+        This method will run before any test. It will create a user.
+    """
+
     def setUp(self):
 
         self.test_user1 = User.objects.create_user(
