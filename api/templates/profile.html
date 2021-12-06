@@ -278,21 +278,37 @@ Profile - {{ author.displayName }}
                                 <h6 class="mb-0">Full Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
+                                {% if my_profile %}
                                 <input type="text" class="form-control" value="{{ author.displayName }}">
+                                {% endif %}
+                                {% if not my_profile %}
+                                <input type="text" class="form-control" value="{{ author.displayName }}" disabled>
+                                {% endif %}
                             </div>
+                            
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">GitHub</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
+                                {% if my_profile %}
                                 <input type="text" class="form-control" value="{{ author.github }}">
+                                {% endif %}
+                                {% if not my_profile %}
+                                <input type="text" class="form-control" value="{{ author.github }}" disabled>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="button" class="btn btn-primary px-4" value="Save Changes">
+                                {% if my_profile %}
+                                <input type="button" class="btn btn-primary px-4" value="Save Changes" hidden>
+                                {% endif %}
+                                {% if not my_profile %}
+                                <input type="button" class="btn btn-primary px-4" value="Save Changes" hidden>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

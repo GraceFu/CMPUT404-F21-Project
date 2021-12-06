@@ -206,6 +206,7 @@ def post_handler(request, authorID):
                     request.get_host(), authorID, postID)
                 instance.author = Author.objects.get(authorID=authorID)
                 instance.comments = instance.url + "/comments"
+                instance.visibility = form.data["visibility"]
                 populate_post_data(form.cleaned_data, instance)
                 messages.info(
                     request, "Congratulations! Your post has been published.")

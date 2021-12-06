@@ -74,7 +74,7 @@ class Post(models.Model):
     content = models.CharField(max_length=500, null=True, blank=True)
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, blank=True)
-    categories = models.JSONField(null=True, blank=True)  # list of strings
+    categories = models.CharField(max_length=500, null=True, blank=True)
     count = models.IntegerField(default=0)
     published = models.DateTimeField(default=timezone.now)
     visibility = models.CharField(

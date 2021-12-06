@@ -52,8 +52,8 @@ My Posts
                 Categories: {{ post.categories }} <br>
                 Visibility: {{ post.visibility }} <br>
                 Unlisted: {{ post.unlisted }} <br>
-                Source: {{ post.source }} <br>
-                Origin: {{ post.origin }} <br>
+                <!-- Source: {{ post.source }} <br>
+                Origin: {{ post.origin }} <br> -->
             </div>
 
             <hr>
@@ -83,7 +83,7 @@ My Posts
 
                 <!-- Body -->
                 <div class="modal-body">
-                    <form method="POST" action="api/author/{{ user.author.authorID }}/posts/{{ post.postID }}">
+                    <form method="POST" action="api/author/{{ user.author.authorID }}/posts">
                         <!-- POST - Update the post -->
                         <input type="hidden" name="myCustom_method" value="POST"/>
                         <input type="hidden" name="myCustom_postID" value="{{ post.postID }}"/>
@@ -109,11 +109,13 @@ My Posts
                         <div class="form-group">
                             <input type="text" name="categories" class="input-field" placeholder="Categories" value="{{ post.categories }}">
                         </div>
-                        <!-- Visibility --><!--
+                        <!-- Visibility -->
                         <div class="form-group">
-                            Public<input type="radio" name="visibility" class="" value="Public" checked>
-                            Friends<input type="radio" name="visibility" class="" value="Friends">
-                        </div>-->
+                            <input type="radio" name="visibility" class="" value="PUBLIC" checked>
+                            <label>PUBLIC</label>
+                            <input type="radio" name="visibility" class="" value="FRIENDS">
+                            <label>FRIENDS</label>
+                        </div>
                         <!-- Source --><!--
                         <div class="form-group">
                             <input type="url" name="source" class="" placeholder="Source" value="{{ post.source }}">

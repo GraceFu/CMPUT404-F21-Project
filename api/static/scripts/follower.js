@@ -1,7 +1,7 @@
 // Handler of Following button click event
 $("#myCustom_following_button_clicked").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -71,8 +71,8 @@ $("#myCustom_following_button_clicked").click(function () {
 
 // Handler of Unfollow button click event
 $("#myCustom_unfollow_button_clicked").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -114,8 +114,8 @@ $("#myCustom_unfollow_button_clicked").click(function () {
 
 // Handler of Add Friend button click event
 $("#myCustom_friend_add_button_clicked").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID= $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -185,8 +185,8 @@ $("#myCustom_friend_add_button_clicked").click(function () {
 
 // Handler of Wait Friend button click event
 $("#myCustom_friend_wait_button_clicked").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID= $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -228,8 +228,8 @@ $("#myCustom_friend_wait_button_clicked").click(function () {
 
 // Handler of Remove Friend button click event
 $("#myCustom_friend_remove_button_clicked").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -271,11 +271,11 @@ $("#myCustom_friend_remove_button_clicked").click(function () {
 
 // Handler of Followees SHOW button click event
 $("#myCustom_followees_button").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/followees",
+        url: "../api/author/" + currentLoginAuthorID + "/followees",
         type: "GET",
         success: function(data) {
             var count = 0;
@@ -301,11 +301,11 @@ $("#myCustom_followees_button").click(function () {
 
 // Handler of Followers SHOW button click event
 $("#myCustom_followers_button").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/followers",
+        url: "../api/author/" + currentLoginAuthorID + "/followers",
         type: "GET",
         success: function(data) {
             var count = 0;
@@ -331,11 +331,11 @@ $("#myCustom_followers_button").click(function () {
 
 // Handler of Friends SHOW button click event
 $("#myCustom_friends_button").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/friends",
+        url: "../api/author/" + currentLoginAuthorID + "/friends",
         type: "GET",
         success: function(data) {
             var count = 0;
@@ -361,8 +361,8 @@ $("#myCustom_friends_button").click(function () {
 
 // Handler of checking the current Author is following and friending to giving Author
 function check_follow_and_friend() {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+    var authorID = $("#myCustom_profile_user_info").attr("var");
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
