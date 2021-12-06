@@ -4,7 +4,7 @@ from api.models import Author, Post
 
 
 def generate_id():
-    return uuid.uuid4().hex
+    return str(uuid.uuid4())
 
 
 class methods:
@@ -24,6 +24,7 @@ def invalid_user_view(request):
 
     return True
 
+
 def author_not_found(authorID):
     """ check existence of an author """
     try:
@@ -31,6 +32,7 @@ def author_not_found(authorID):
             return False
     except Author.DoesNotExist:
         return True
+
 
 def post_not_found(postID):
     """ check existence of a post """
