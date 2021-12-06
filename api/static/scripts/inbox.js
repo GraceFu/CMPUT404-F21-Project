@@ -175,5 +175,16 @@ function page_ctrl(data_obj) {
 
 // Handler of Clear Inbox button clicked event
 $("#myCustom_container_area").on("click", "#myCustom_clear_inbox_button_clicked", function () {
-    
+    var currentUserAuthorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "api/author/" + currentUserAuthorID + "/inbox",
+        type: "DELETE",
+        success: function(data) {
+            window.location.reload();
+            // When page loading, go the top of page
+            window.scrollTo(0,0);
+        }
+    })
 });
