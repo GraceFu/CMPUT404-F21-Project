@@ -27,8 +27,11 @@ My Inbox
 
 {% block content %}
 
+<br><br>
+
 <div class="container">
-    <br><br>
+    <input type="hidden" id="myCustom_profile_user_info" value="{{ user.author.authorID }}">
+
     <div class="row">
         <div class="col-sm"></div>
 
@@ -44,17 +47,20 @@ My Inbox
 
         <div class="col-sm"></div>
     </div>
-    <br><br><br>
 </div>
+
+<br><br><br>
 
 {% endblock %}
 
 {% block script %}
 <script type="text/javascript" src="{% static 'scripts/inbox.js' %}"></script>
 <script>
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+
     $.ajax({
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            url: "api/get_num_of_authors",
+            url: "api/author/" + currentLoginAuthorID + "/inbox/get_num_of_inbox_items",
             type: "GET",
             success: function(data) {
                 var obj = {

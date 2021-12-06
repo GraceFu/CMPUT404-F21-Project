@@ -6,9 +6,13 @@ function page_ctrl(data_obj) {
     var per_num = (data_obj.per_num !== undefined) ? parseInt(data_obj.per_num) : 5; //Default num of authors per page
     var current_page = (data_obj.current_page !== undefined) ? parseInt(data_obj.current_page) : 1; //Current page
     var total_page = Math.ceil(total_item / per_num); //Compute the num of pages
+    if (total_item == 0) {
+        $(obj_box).html('<div class="text-center"><br><br><h1>' + "It's empty here, =.=<h1><br></div>");
+        return;
+    }
 
     // Adding the content
-    $(obj_box).append('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
+    $(obj_box).html('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
     // Adding the page manage
     $(obj_box).append('<div class="page_ctrl text-center"></div>');
 

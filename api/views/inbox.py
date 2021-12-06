@@ -36,7 +36,7 @@ class InboxViewSet(viewsets.GenericViewSet):
         if author_not_found(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        author = Author.objects.filter(authorID=authorID)
+        author = Author.objects.get(authorID=authorID)
         queryset = InboxObject.objects.filter(author__in=author)
         pagination = CustomPagiantor()
         qs = pagination.paginate_queryset(queryset, request)
@@ -77,8 +77,18 @@ class InboxViewSet(viewsets.GenericViewSet):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    # Return the total number of inbox items
+    @action(methods=[methods.GET], detail=True)
+    def get_num_of_inbox_items(self, request, authorID):
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-@login_required(login_url='login')
+        author = Author.objects.get(authorID=authorID)
+        count = InboxObject.objects.filter(author=author).count()
+        res = {"total_item": count}
+        return Response(res, status=status.HTTP_200_OK)
+
+
 def my_inbox_view(request):
     # Check the user is invalid in view
     if invalid_user_view(request):
