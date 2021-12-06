@@ -19,8 +19,34 @@ function page_ctrl(data_obj) {
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 url: "api/author/<str:authorID>/inbox",
                 type: "GET",
+                data: {"page": current_page},
                 success: function(data) {
-                    
+                    var count = 0;
+                    var html = '<div class="text-center"><br><br><h1>Here is your inbox, =.=<h1><br></div>';
+
+                    for (var item of data.items) {
+                        count += 1;
+                        if (item["type"].match("post")) {
+                            // TODO
+                        }
+                        else if (item["type"].match("follow")) {
+                            html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '">' + item["actor"].displayName + '</a>';
+                            html += ' wants to Friend with you. If you want to be Friend with him/her, you can Follow Back or Add As Friend by click him/her Profile</h4>';
+                        }
+                        else if (item["type"].match("like")) {
+                            html += '<hr><h4><a href="../profile/' + item["author"].authorID + '">' + item["author"].displayName + '</a>';
+                            html += item["summary"].substring(item["summary"].indexOf(" Likes")) + '</h4>';
+                        }
+                    }
+
+                    if (count == 0) {
+                        html = '<div class="text-center"><br><br><h1>' + "It's empty here, =.=<h1><br><br><br></div>";
+                    }
+                    else {
+                        html = html.substring(html.indexOf("<hr>") + 4);
+                    }
+
+                    $(obj_box).children('.page_content').html(html);
                 }
             })
         }
