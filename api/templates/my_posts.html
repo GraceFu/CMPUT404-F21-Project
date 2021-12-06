@@ -19,7 +19,7 @@ My Posts
     <div class="text-center">
         <br><br>
         <h1>Here is your posts, =.=<h1>
-        <h2>You can manage them here by edit or delete.</h2>
+        <h2>You can manage them here by editing or deleting.</h2>
         <br>
     </div>
     {% else %}
@@ -91,23 +91,23 @@ My Posts
                         {% csrf_token %}
                         <!-- Title -->
                         <div class="form-group">
-                            <input type="text" name="title" class="" placeholder="Title" value="{{ post.title }}" required> 
+                            <input type="text" name="title" class="input-field" placeholder="Title" value="{{ post.title }}" required> 
                         </div>
                         <!-- Description -->
                         <div class="form-group">
-                            <input type="text" name="description" class="" placeholder="Description" value="{{ post.description }}">
+                            <input type="text" name="description" class="input-field" placeholder="Description" value="{{ post.description }}">
                         </div>
                         <!-- Content -->
                         <div class="form-group">
-                            <textarea type="text" name="content" class="" placeholder="Content">{{ post.content }}</textarea>
+                            <textarea type="text" name="content" class="input-field" placeholder="Content">{{ post.content }}</textarea>
                         </div>
                         <!-- Image -->
                         <div class="form-group">
-                            Image<input type="file" name="image" class="" placeholder="Image">
+                            Image   <input type="file" name="image" class="" placeholder="Image">
                         </div>
                         <!-- Categories -->
                         <div class="form-group">
-                            <input type="text" name="categories" class="" placeholder="Categories" value="{{ post.categories }}">
+                            <input type="text" name="categories" class="input-field" placeholder="Categories" value="{{ post.categories }}">
                         </div>
                         <!-- Visibility --><!--
                         <div class="form-group">
@@ -124,7 +124,7 @@ My Posts
                         </div> -->
                         <!-- Unlisted -->
                         <div class="form-group">
-                            Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
+                            Unlisted   <input type="checkbox" name="unlisted" class="" value="unlisted">
                         </div>
                         <!-- Update Button -->
                         <input type="submit" class="btn btn-success" value="Update">

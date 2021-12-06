@@ -74,7 +74,7 @@ class InboxViewSet(viewsets.GenericViewSet):
             like = {
                 "type": "like",
                 "author": AuthorSerializer(actor).data,
-                "summary": actor.displayName + " Likes your " + obj_type,
+                "summary": actor.displayName + " likes your " + obj_type,
                 "object": request.data["object"]
             }
 
