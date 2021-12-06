@@ -21,3 +21,4 @@
 - AJAX request to API: https://www.jianshu.com/p/1e1bedf1f1ce
 - JQuery addition to HTML: https://cloud.tencent.com/developer/article/1544580
 - AJAX Dynamic Click Handler: https://blog.csdn.net/qq_37505609/article/details/80615152
+- HTML and AJAX Page Turning: https://blog.csdn.net/a_hui_tai_lang/article/details/84137847

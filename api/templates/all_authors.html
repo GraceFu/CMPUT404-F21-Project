@@ -4,6 +4,68 @@
 All Authors
 {% endblock %}
 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile.css' %}">
+<style>
+    .page_num {
+        margin: 5px;
+        width: 50px;
+    }
+
+    .page_dot {
+        margin: 19px;
+        width: 50px;
+    }
+
+    .current_page {
+        color:#fff;
+        background-color: #007bff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
+<div class="container">
+    <br><br>
+    <div class="row">
+        <div class="col-sm"></div>
+
+        <div class="col-sm-8">
+            <div class="myCustom_card" style="padding: 10px;">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <h2 class="text-center">All the Authors on the Server</h2>
+                        <div id="page_area"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm"></div>
+    </div>
+    <br><br><br>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'scripts/all_authors.js' %}"></script>
+<script>
+    $.ajax({
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            url: "api/get_num_of_authors",
+            type: "GET",
+            success: function(data) {
+                var obj = {
+                    obj_box: '#page_area',
+                    total_item: data["total_item"],
+                    per_num: 5,
+                    current_page: 1
+                };
+                page_ctrl(obj);
+            }
+        })
+</script>
 {% endblock %}
