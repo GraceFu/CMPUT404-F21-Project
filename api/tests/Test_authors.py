@@ -21,13 +21,11 @@ class TestAuthorView(APITestCase):
         test_user = User.objects.create_user(
             username= 'testuser',
             password= 'testpassword',
-            displayName = "Test User",
-            github = "https://github.com/testuser",
         )
 
         test_user2 = User.objects.create_user(
             username='testuser2',
-            password='testpassword2'
+            password='testpassword2',
         )
 
         self.client = APIClient()
