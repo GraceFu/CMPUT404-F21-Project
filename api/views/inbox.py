@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 
 from api.models import Author, Like, Post, Follower, InboxObject
-from api.serializers import PostSerializer, InboxObjectSerializer
+from api.serializers import AuthorSerializer, PostSerializer, InboxObjectSerializer
 from api.utils import methods, generate_id, author_not_found, post_not_found
 from api.paginaion import CustomPagiantor
 from api.utils import invalid_user_view
@@ -67,11 +67,41 @@ class InboxViewSet(viewsets.GenericViewSet):
                 instance.object = serialized_post.data
                 instance.save()
 
-            # elif type == "follow":
-            #    instance.requests = request
-            # elif request.data["type"] == "like":
-            #     """ required: {"type", } """
-            #     instance.likes = request
+            elif request.data["type"] == "like":
+                """ required: {"type", "object", "actor"} """
+                actor = Author.objects.get(authorID=request.data["actor"])
+                obj_type = "comment" if (
+                    "comment" in request.data["object"]) else "post"
+
+                like = {
+                    "type": "like",
+                    "author": AuthorSerializer(actor).data,
+                    "summary": actor.displayName + " likes your " + obj_type,
+                    "object": request.data["object"]
+                }
+
+                instance = InboxObject(type="like")
+                instance.author = Author.objects.get(authorID=authorID)
+                instance.object = like
+                instance.save()
+
+            elif request.data["type"] == "follow":
+                """ required: {"type", "follower"} """
+                followee = Author.objects.get(authorID=authorID)
+                follower = Author.objects.get(
+                    authorID=request.data["follower"])
+
+                req = {
+                    "type": "follow",
+                    "summary": follower.displayName + " wants to follow " + followee.displayName,
+                    "actor": AuthorSerializer(follower).data,
+                    "object": AuthorSerializer(followee).data
+                }
+
+                instance = InboxObject(type="follow")
+                instance.author = followee
+                instance.object = req
+                instance.save()
 
             return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
         else:
