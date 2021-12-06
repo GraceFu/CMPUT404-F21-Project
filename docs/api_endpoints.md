@@ -11,9 +11,9 @@
 
 ### URL: ://api/authors/
 
-- **GET**: Retrieve all authors on the server
+- **GET**: Retrieve all authors on the server *(DEFAULT pagenation)*
 
-  - Example request: `GET /api/authors/`
+  - Example request: `GET /api/authors/` with default pagination size=5
 
   - Example response:
     - 200 OK
@@ -716,9 +716,9 @@ Getting a list of likes from other authors on a post /author/{AUTHOR_ID}/post/{P
 
 ### URL: ://author/{AUTHOR_ID}/inbox
 
-- **GET**: Get all object of author's inbox *(NO pagenation)*
+- **GET**: Get all object of author's inbox *(DEFAULT pagenation)*
 
-  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5/likes`
+  - Example request: `GET /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/inbox` with default pagination of size=5
 
   - Example response:
     - 200 OK
@@ -727,24 +727,96 @@ Getting a list of likes from other authors on a post /author/{AUTHOR_ID}/post/{P
     {
         "type": "inbox",
         "author": "https://cmput404-proj-social-app/api/author/3af2be83-2191-45e8-9ca2-2a8ae83b042c/",
-        "items": []
+        "items": [
+        {
+            "type": "post",
+            "title": "New Post Title",
+            "postID": "70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "author": {
+                "type": "author",
+                "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
+                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
+                "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                "displayName": "team19",
+                "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+            },
+            "source": null,
+            "origin": null,
+            "description": "my description",
+            "contentType": "text/plain",
+            "content": "my content",
+            "categories": [
+                "web",
+                "tutorial"
+            ],
+            "count": 0,
+            "published": "2021-12-05T01:31:48.037419Z",
+            "visibility": "PUBLIC",
+            "unlisted": false,
+            "likes": 0,
+            "comments": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb/comments"
+        }
+      ]
     }
     ```
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
 
-- **POST**: Add an object to author's inbox
+- **POST**: Add an object to author's inbox (post only for now)
 
-  - Example request: `POST /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/posts/226acb04-b62f-4b18-b20c-8feb2e490ebd/comments/4b8341d7-d2ea-49c6-9426-7b9f9cba12f5/likes`
+  - Example request: `POST /api/author/1cd4b70d-b38b-4f45-bb75-4d2940d24532/inbox`
+  ```json
+    {
+        "type": "post",
+        "postID": "70d0a59b-4fee-4e84-b091-1b1161455ebb",
+    }
+  ```
 
   - Example response:
     - 200 OK
-
-    ```json
+  ```json
     {
         "type": "post",
-        "object": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/67a293a3-67a8-4191-82da-91c85c72371b",
+        "author": {
+                "type": "author",
+                "authorID": "e4801aff-10b2-43f0-a1dc-ca27dc94c7a9",
+                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/e4801aff10b243f0a1dcca27dc94c7a9/",
+                "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                "displayName": "tester19",
+                "github": "https://github.com/tester19.com"
+            },
+        "object": {
+            "type": "post",
+            "title": "New Post Title",
+            "postID": "70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "author": {
+                "type": "author",
+                "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
+                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
+                "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                "displayName": "team19",
+                "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+            },
+            "source": null,
+            "origin": null,
+            "description": "my description",
+            "contentType": "text/plain",
+            "content": "my content",
+            "categories": [
+                "web",
+                "tutorial"
+            ],
+            "count": 0,
+            "published": "2021-12-05T01:31:48.037419Z",
+            "visibility": "PUBLIC",
+            "unlisted": false,
+            "likes": 0,
+            "comments": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb/comments"
+        }
     }
     ```
+  
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
