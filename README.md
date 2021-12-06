@@ -1,6 +1,6 @@
-# CMPUT404-F21-Project
+# Communiti
 
-This is a blogging/social network platform that will allow the importing of other sources of posts (github, twitter, etc.) as well allow the distributing sharing of posts and content. This project is initially made for CMPUT404 Fall 2021 at University of Alberta.
+Communiti is a blogging/social network platform that will allow the importing of other sources of posts (github, twitter, etc.) as well allow the distributing sharing of posts and content. This project is initially made for CMPUT404 Fall 2021 at University of Alberta.
 
 ## Heroku App
 

@@ -38,7 +38,7 @@ My Posts
         <!-- Header - Title and date -->
         <div class="card-header">
             <h2>{{ post.title }}</h2>
-            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+            Posted by <a href="{% url 'profile' authorID=post.author.authorID %}"
                 style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>

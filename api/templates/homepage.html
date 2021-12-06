@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 
 {% block title %}
-Homepage
+Communiti
 {% endblock %}
 
 {% load static %}
@@ -96,7 +96,7 @@ Homepage
         <!-- Header - Title and date -->
         <div class="card-header">
             <h2 style="margin-top: 10px;">{{ post.title }}</h2>
-            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+            Posted by <a href="{% url 'profile' authorID=post.author.authorID %}"
                 style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>
@@ -140,7 +140,7 @@ Homepage
 
                             <!-- Body -->
                             <div class="modal-body">
-                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
+                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' button to like this post</h5>
                                 <input type="hidden" id="like_post_hostname_{{ post.postID }}" 
                                     value="{{ HOSTNAME }}" var="{{ post.author.authorID }}">
                                 <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}" style="width: 100px;"
