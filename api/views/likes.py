@@ -21,10 +21,10 @@ class LikeViewSet(viewsets.ViewSet):
     def get_author_liked(self, request, authorID):
         """ list author liked, get list of of likes originating from this author"""
         if self.check_author_by_id(authorID) is False:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        author = Author.objects.filter(authorID=authorID)
-        queryset = Like.objects.filter(author__in=author)
+        author = Author.objects.get(authorID=authorID)
+        queryset = Like.objects.filter(author=author)
         serializer = LikeSerializer(queryset, many=True)
         res = {
             "items": serializer.data
@@ -66,7 +66,7 @@ class LikeViewSet(viewsets.ViewSet):
     def like_object(self, request, authorID):
         """ like a post or comment """
         if self.check_author_by_id(authorID) is False:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = LikeSerializer(data=request.data)
         if serializer.is_valid():

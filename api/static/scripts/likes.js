@@ -211,3 +211,39 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
         success: function(data) {}
     })
 });
+
+// Handler of Likes SHOW button click event
+$("#myCustom_likes_button").click(function () {
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/liked",
+        type: "GET",
+        success: function(data) {
+            var count = 0;
+            var html = "";
+
+            for (var like of data.items) {
+                count += 1;
+                var isPostOrComment = "";
+                if (like['summary'].match("comment")) {
+                    isPostOrComment = "comment";
+                }
+                else {
+                    isPostOrComment = "post";
+                }
+                html += '<hr><div>Him/Her liked ' + isPostOrComment + ' - ' + like["object"] + '</div>';
+            }
+
+            if (count == 0) {
+                html = "<br><h4>His/Her has no likes, T^T</h4><br>";
+            }
+            else {
+                html = html.substring(html.indexOf("<hr>") + 4);
+            }
+            
+            $("#myCustom_likes").html(html);
+        }
+    })
+});
