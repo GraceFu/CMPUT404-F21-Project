@@ -54,58 +54,54 @@ class InboxViewSet(viewsets.GenericViewSet):
         if author_not_found(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = InboxObjectSerializer(data=request.data)
-        if serializer.is_valid():
-            if request.data["type"] == "post":
-                """ required: {"type", "postID" }"""
-                postID = request.data["postID"]
-                post = Post.objects.get(postID=postID)
-                serialized_post = PostSerializer(post)
+        if request.data["type"] == "post":
+            """ required: {"type", "postID" }"""
+            postID = request.data["postID"]
+            post = Post.objects.get(postID=postID)
+            serialized_post = PostSerializer(post)
 
-                instance = InboxObject(type="post")
-                instance.author = Author.objects.get(authorID=authorID)
-                instance.object = serialized_post.data
-                instance.save()
+            instance = InboxObject(type="post")
+            instance.author = Author.objects.get(authorID=authorID)
+            instance.object = serialized_post.data
+            instance.save()
 
-            elif request.data["type"] == "like":
-                """ required: {"type", "object", "actor"} """
-                actor = Author.objects.get(authorID=request.data["actor"])
-                obj_type = "comment" if (
-                    "comment" in request.data["object"]) else "post"
+        elif request.data["type"] == "like":
+            """ required: {"type", "object", "actor"} """
+            actor = Author.objects.get(authorID=request.data["actor"])
+            obj_type = "comment" if (
+                "comment" in request.data["object"]) else "post"
 
-                like = {
-                    "type": "like",
-                    "author": AuthorSerializer(actor).data,
-                    "summary": actor.displayName + " likes your " + obj_type,
-                    "object": request.data["object"]
-                }
+            like = {
+                "type": "like",
+                "author": AuthorSerializer(actor).data,
+                "summary": actor.displayName + " likes your " + obj_type,
+                "object": request.data["object"]
+            }
 
-                instance = InboxObject(type="like")
-                instance.author = Author.objects.get(authorID=authorID)
-                instance.object = like
-                instance.save()
+            instance = InboxObject(type="like")
+            instance.author = Author.objects.get(authorID=authorID)
+            instance.object = like
+            instance.save()
 
-            elif request.data["type"] == "follow":
-                """ required: {"type", "follower"} """
-                followee = Author.objects.get(authorID=authorID)
-                follower = Author.objects.get(
-                    authorID=request.data["follower"])
+        elif request.data["type"] == "follow":
+            """ required: {"type", "follower"} """
+            followee = Author.objects.get(authorID=authorID)
+            follower = Author.objects.get(
+                authorID=request.data["follower"])
 
-                req = {
-                    "type": "follow",
-                    "summary": follower.displayName + " wants to follow " + followee.displayName,
-                    "actor": AuthorSerializer(follower).data,
-                    "object": AuthorSerializer(followee).data
-                }
+            req = {
+                "type": "follow",
+                "summary": follower.displayName + " wants to follow " + followee.displayName,
+                "actor": AuthorSerializer(follower).data,
+                "object": AuthorSerializer(followee).data
+            }
 
-                instance = InboxObject(type="follow")
-                instance.author = followee
-                instance.object = req
-                instance.save()
+            instance = InboxObject(type="follow")
+            instance.author = followee
+            instance.object = req
+            instance.save()
 
-            return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
 
     # Return the total number of inbox items
     @action(methods=[methods.GET], detail=True)
