@@ -59,6 +59,14 @@ $("#myCustom_following_button_clicked").click(function () {
 
         }
     })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + authorID + "/inbox",
+        type: "POST",
+        data: {"type": "follow", "followee": currentLoginAuthorID},
+        success: function(data) {}
+    })
 });
 
 // Handler of Unfollow button click event
@@ -164,6 +172,14 @@ $("#myCustom_friend_add_button_clicked").click(function () {
             })
 
         }
+    })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + authorID + "/inbox",
+        type: "POST",
+        data: {"type": "follow", "followee": currentLoginAuthorID},
+        success: function(data) {}
     })
 });
 
