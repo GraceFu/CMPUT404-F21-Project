@@ -83,7 +83,7 @@ My Posts
 
                 <!-- Body -->
                 <div class="modal-body">
-                    <form method="POST" action="api/author/{{ user.author.authorID }}/posts/{{ post.postID }}">
+                    <form method="POST" action="api/author/{{ user.author.authorID }}/posts">
                         <!-- POST - Update the post -->
                         <input type="hidden" name="myCustom_method" value="POST"/>
                         <input type="hidden" name="myCustom_postID" value="{{ post.postID }}"/>
