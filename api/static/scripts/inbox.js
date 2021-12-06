@@ -172,3 +172,8 @@ function page_ctrl(data_obj) {
         }
     });
 }
+
+// Handler of Clear Inbox button clicked event
+$("#myCustom_container_area").on("click", "#myCustom_clear_inbox_button_clicked", function () {
+    
+});
