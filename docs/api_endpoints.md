@@ -11,9 +11,9 @@
 
 ### URL: ://api/authors/
 
-- **GET**: Retrieve all authors on the server
+- **GET**: Retrieve all authors on the server *(DEFAULT pagenation)*
 
-  - Example request: `GET /api/authors/`
+  - Example request: `GET /api/authors/` with default pagination size=5
 
   - Example response:
     - 200 OK
@@ -764,13 +764,43 @@
     {
         "type": "inbox",
         "author": "https://cmput404-proj-social-app/api/author/3af2be83-2191-45e8-9ca2-2a8ae83b042c/",
-        "items": []
+        "items": [
+        {
+            "type": "post",
+            "title": "New Post Title",
+            "postID": "70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb",
+            "author": {
+                "type": "author",
+                "authorID": "c7abd64e-96e6-45d8-bff3-70a2d052d31e",
+                "url": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/",
+                "host": "https://cmput404-proj-social-app.herokuapp.com/",
+                "displayName": "team19",
+                "github": "https://github.com/GraceFu/CMPUT404-F21-Project.com"
+            },
+            "source": null,
+            "origin": null,
+            "description": "my description",
+            "contentType": "text/plain",
+            "content": "my content",
+            "categories": [
+                "web",
+                "tutorial"
+            ],
+            "count": 0,
+            "published": "2021-12-05T01:31:48.037419Z",
+            "visibility": "PUBLIC",
+            "unlisted": false,
+            "likes": 0,
+            "comments": "https://cmput404-proj-social-app.herokuapp.com/api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/posts/70d0a59b-4fee-4e84-b091-1b1161455ebb/comments"
+        }
+      ]
     }
     ```
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
 
-- **POST**: Add an object to author's inbox
+- **POST**: Add an object to author's inbox (post only for now)
 
   - Example request: `POST /api/author/c7abd64e-96e6-45d8-bff3-70a2d052d31e/inbox`
     
@@ -785,8 +815,7 @@
     
   - Example response:
     - 200 OK
-
-    ```json
+  ```json
     {
         "type": "post",
         "author": {
@@ -825,5 +854,6 @@
         }
     }
     ```
+  
     - 401 Unauthorized (if not logged in)
     - 404 Not Found (if this author does not exist)
