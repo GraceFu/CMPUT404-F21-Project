@@ -4,61 +4,73 @@
 My Inbox
 {% endblock %}
 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile.css' %}">
+<style>
+    .page_num {
+        margin: 5px;
+        width: 50px;
+    }
+
+    .page_dot {
+        margin: 19px;
+        width: 50px;
+    }
+
+    .current_page {
+        color:#fff;
+        background-color: #007bff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
+<br><br>
+
 <div class="container">
+    <input type="hidden" id="myCustom_profile_user_info" value="{{ user.author.authorID }}">
 
-    {% if items %}
-    <div class="text-center">
-        <br><br>
-        <h1>Here is your inbox, =.=<h1>
-        <br>
-    </div>
+    <div class="row">
+        <div class="col-sm"></div>
 
-    <div class="text-center">
-        <!-- Button for create post window -->
-        <label role="button" class="btn btn-danger btn-lg" style="width: 40%;" data-bs-toggle="modal" 
-            data-bs-target="#clear_inbox_modal">Clear Inbox</label>
-    </div>
-
-    <!-- Create Clear modal window -->
-    <div class="modal fade" id="clear_inbox_modal" style="top: 30%;" 
-        aria-labelledby="clear_inbox_title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Header -->
-                <div class="modal-header">
-                    <h4 id="clear_inbox_title">Clear The Inbox</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="col-sm-8">
+            <div class="myCustom_card" style="padding: 10px;">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <div id="page_area"></div>
+                    </div>
                 </div>
-
-                <!-- Body -->
-                <div class="modal-body">
-                    <!-- Message -->
-                    <p>Are you sure you want to clear the inbox? To confirm, please click Clear.</p>
-                    <!-- Delete Button -->
-                    <button id="myCustom_clear_inbox_button_clicked" type="button" 
-                        class="btn btn btn-outline-danger" style="width: 120px;">Clear</button>
-                </div>
-
             </div>
         </div>
-    </div>
-    {% else %}
-    <div class="text-center">
-        <br><br>
-        <h1>It's empty here, =.=<h1>
-        <br><br><br>
-    </div>
-    {% endif %}
 
-    {% for item in items %}
-    <div>
-
+        <div class="col-sm"></div>
     </div>
-    {% endfor %}
-
 </div>
 
+<br><br><br>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'scripts/inbox.js' %}"></script>
+<script>
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            url: "api/author/" + currentLoginAuthorID + "/inbox/get_num_of_inbox_items",
+            type: "GET",
+            success: function(data) {
+                var obj = {
+                    obj_box: '#page_area',
+                    total_item: data["total_item"],
+                    per_num: 5,
+                    current_page: 1
+                };
+                page_ctrl(obj);
+            }
+        })
+</script>
 {% endblock %}

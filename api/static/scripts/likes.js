@@ -54,11 +54,13 @@ $(".myCustom_button_like_post_send").click(function () {
     var poster = $("#like_post_hostname_" + postID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
+    var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID;
+
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your post", "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID },
+        data: { "summary": displayName + " Likes your post", "object": send_object },
 
         success: function(data) {
             
@@ -90,6 +92,14 @@ $(".myCustom_button_like_post_send").click(function () {
 
         }
 
+    })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + poster + "/inbox",
+        type: "POST",
+        data: {"type": "like", "object": send_object, "actor": authorID},
+        success: function(data) {}
     })
 });
 
@@ -153,12 +163,13 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
     var poster = $("#like_comment_hostname_" + commentID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
+    var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID;
+
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your comment", 
-            "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
+        data: { "summary": displayName + " Likes your comment", "object": send_object },
 
         success: function(data) {
             
@@ -190,5 +201,13 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
         }
 
+    })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + poster + "/inbox",
+        type: "POST",
+        data: {"type": "like", "object": send_object, "actor": authorID},
+        success: function(data) {}
     })
 });

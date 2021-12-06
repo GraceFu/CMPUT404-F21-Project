@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 
 from api.models import Author, Like, Post, Follower, InboxObject
-from api.serializers import PostSerializer, InboxObjectSerializer
+from api.serializers import AuthorSerializer, PostSerializer, InboxObjectSerializer
 from api.utils import methods, generate_id, author_not_found, post_not_found
 from api.paginaion import CustomPagiantor
 from api.utils import invalid_user_view
@@ -36,15 +36,15 @@ class InboxViewSet(viewsets.GenericViewSet):
         if author_not_found(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        author = Author.objects.filter(authorID=authorID)
-        queryset = InboxObject.objects.filter(author__in=author)
+        author = Author.objects.get(authorID=authorID)
+        queryset = InboxObject.objects.filter(author=author)
         pagination = CustomPagiantor()
         qs = pagination.paginate_queryset(queryset, request)
         serializers = InboxObjectSerializer(qs, many=True)
 
         res = {
             "type": "inbox",
-            "author": author[0].url,
+            "author": author.url,
             "items": [io["object"] for io in serializers.data]
         }
         return Response(res, status=status.HTTP_200_OK)
@@ -54,31 +54,67 @@ class InboxViewSet(viewsets.GenericViewSet):
         if author_not_found(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = InboxObjectSerializer(data=request.data)
-        if serializer.is_valid():
-            if request.data["type"] == "post":
-                """ required: {"type", "postID" }"""
-                postID = request.data["postID"]
-                post = Post.objects.get(postID=postID)
-                serialized_post = PostSerializer(post)
+        if request.data["type"] == "post":
+            """ required: {"type", "postID" }"""
+            postID = request.data["postID"]
+            post = Post.objects.get(postID=postID)
+            serialized_post = PostSerializer(post)
 
-                instance = InboxObject(type="post")
-                instance.author = Author.objects.get(authorID=authorID)
-                instance.object = serialized_post.data
-                instance.save()
+            instance = InboxObject(type="post")
+            instance.author = Author.objects.get(authorID=authorID)
+            instance.object = serialized_post.data
+            instance.save()
 
-            # elif type == "follow":
-            #    instance.requests = request
-            # elif request.data["type"] == "like":
-            #     """ required: {"type", } """
-            #     instance.likes = request
+        elif request.data["type"] == "like":
+            """ required: {"type", "object", "actor"} """
+            actor = Author.objects.get(authorID=request.data["actor"])
+            obj_type = "comment" if (
+                "comment" in request.data["object"]) else "post"
 
-            return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            like = {
+                "type": "like",
+                "author": AuthorSerializer(actor).data,
+                "summary": actor.displayName + " Likes your " + obj_type,
+                "object": request.data["object"]
+            }
+
+            instance = InboxObject(type="like")
+            instance.author = Author.objects.get(authorID=authorID)
+            instance.object = like
+            instance.save()
+
+        elif request.data["type"] == "follow":
+            """ required: {"type", "follower"} """
+            followee = Author.objects.get(authorID=authorID)
+            follower = Author.objects.get(
+                authorID=request.data["follower"])
+
+            req = {
+                "type": "follow",
+                "summary": follower.displayName + " wants to follow " + followee.displayName,
+                "actor": AuthorSerializer(follower).data,
+                "object": AuthorSerializer(followee).data
+            }
+
+            instance = InboxObject(type="follow")
+            instance.author = followee
+            instance.object = req
+            instance.save()
+
+        return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
+
+    # Return the total number of inbox items
+    @action(methods=[methods.GET], detail=True)
+    def get_num_of_inbox_items(self, request, authorID):
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        author = Author.objects.get(authorID=authorID)
+        count = InboxObject.objects.filter(author=author).count()
+        res = {"total_item": count}
+        return Response(res, status=status.HTTP_200_OK)
 
 
-@login_required(login_url='login')
 def my_inbox_view(request):
     # Check the user is invalid in view
     if invalid_user_view(request):
