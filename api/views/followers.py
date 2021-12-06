@@ -71,7 +71,6 @@ class FollowersViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         followers = Follower.objects.filter(followee=authorID)
 
-        # Addition the displayName of the followers
         index = 0
         for item in followers:
             if author_not_found(item.follower.authorID):

@@ -12,6 +12,28 @@ Communiti
 {% block script %}
 <script type="text/javascript" src="{% static 'scripts/comments.js' %}"></script>
 <script type="text/javascript" src="{% static 'scripts/likes.js' %}"></script>
+<!--<script>
+    function friend_post_send_to_inbox() {
+        var authorID = $("#myCustom_current_author_displayName").attr("var");
+
+        $.ajax({
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            url: "api/author/" + authorID + "/friends",
+            type: "GET",
+            success: function(data) {
+                for (var follow of data) {
+                    $.ajax({
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        url: "api/author/" + follow['follower'].authorID + "/inbox",
+                        type: "POST",
+                        data: {"type": "post", "postID":},
+                        success: function(data) {}
+                    })
+                }
+            }
+        })
+    }
+</script>-->
 {% endblock %}
 
 {% block content %}
@@ -85,7 +107,7 @@ Communiti
 <div class="col-sm"></div>
 
 <div class="container col-sm-8 text-center" style="margin-top: 30px;" id="myCustom_container_area">
-    <input type="hidden" id="myCustom_current_author_displayName" value="{{ author.displayName }}">
+    <input type="hidden" id="myCustom_current_author_displayName" value="{{ author.displayName }}" var="{{ author.authorID }}">
     
     <!-- Button for create post window -->
     <label role="button" class="btn btn-primary btn-lg" style="width: 40%;" data-bs-toggle="modal" 

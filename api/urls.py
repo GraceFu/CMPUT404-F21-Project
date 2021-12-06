@@ -73,6 +73,7 @@ urlpatterns = [
     # Post
     # Currently author posts
     path("my-posts", posts.my_posts_view, name="my-posts"),
+    path("author/<str:authorID>/posts/<str:postID>", posts.single_post_view, name="single-post"),
     # Management of Post 'GET' and 'POST' then direct to 'GET', 'POST', 'PUT' and 'DELETE'
     path("api/author/<str:authorID>/posts",
          posts.post_handler, name="post_handler"),
@@ -99,7 +100,7 @@ urlpatterns = [
 
     # Inbox
     path("api/author/<str:authorID>/inbox", inbox.InboxViewSet.as_view(
-        {methods.GET: 'get_inbox_items', methods.POST: 'add_item_to_inbox'}), name="handle_inbox"),
+        {methods.GET: 'get_inbox_items', methods.POST: 'add_item_to_inbox', methods.DELETE: 'clear_inbox'}), name="handle_inbox"),
     path("my-inbox", inbox.my_inbox_view, name="my-inbox"),
     path("api/author/<str:authorID>/inbox/get_num_of_inbox_items", inbox.InboxViewSet.as_view(
         {methods.GET: 'get_num_of_inbox_items'}), name="get_num_of_inbox_items"),
