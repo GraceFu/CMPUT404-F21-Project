@@ -13,8 +13,21 @@ function page_ctrl(data_obj) {
 
     var currentAuthorID = $("#myCustom_profile_user_info").attr("value");
 
+    // Adding the clear inbox modal
+    var clear_html = '<div class="modal fade" id="clear_inbox_modal" style="top: 30%;" ';
+    clear_html += 'aria-labelledby="clear_inbox_title" aria-hidden="true">';
+    clear_html += '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">';
+    clear_html += '<h4 id="clear_inbox_title">Clearing The Inbox</h4>';
+    clear_html += '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
+    clear_html += '</div><div class="modal-body">';
+    clear_html += '<p>Are you sure you want to clear the inbox? To confirm, please click Clear.</p>';
+    clear_html += '<button type="button" id="myCustom_clear_inbox_button_clicked" class="btn btn-outline-danger">Clear</button>';
+    clear_html += '</div></div></div></div>';
+    $(obj_box).html(clear_html);
+    // Adding the button to clear the inbox
+    $(obj_box).append('<label role="button" class="btn btn-danger btn-lg" style="width: 500px;" data-bs-toggle="modal" data-bs-target="#clear_inbox_modal">Clear Inbox</label>');
     // Adding the content
-    $(obj_box).html('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
+    $(obj_box).append('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
     // Adding the page manage
     $(obj_box).append('<div class="page_ctrl text-center"></div>');
 
