@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.urls import reverse
 
+USER_LOGIN_URL = reverse('login')
+USER_REGISTER_URL = reverse('signup')
+USER_LOGOUT_URL = reverse('logout')
 
 
 class AuthenticationTests(TestCase):
@@ -20,7 +24,7 @@ class AuthenticationTests(TestCase):
         }
 
         registration_response = self.client.post(
-            f"/api/v1/dj-rest-auth/registration/",   ##### is this correct?##########
+            USER_REGISTER_URL,   
             registration_data,
             format="json",
         )
@@ -41,7 +45,7 @@ class AuthenticationTests(TestCase):
             "github": "https://github.com/testuser2",
         }
         registration_response = self.client.post(
-            f"/api/v1/dj-rest-auth/registration/",
+            USER_REGISTER_URL,
             registration_data,
             format="json",
         )
@@ -56,7 +60,7 @@ class AuthenticationTests(TestCase):
         }
 
         login_response = self.client.post(
-            f"/api/v1/dj-rest-auth/login/",
+            USER_LOGIN_URL,
             login_data,
             format="json",
         )
@@ -65,7 +69,7 @@ class AuthenticationTests(TestCase):
         new_user.is_active = True
         new_user.save()
         login_response = self.client.post(
-            f"/api/v1/dj-rest-auth/login/",
+            USER_LOGIN_URL,
             login_data,
             format="json",
         )
@@ -84,7 +88,7 @@ class AuthenticationTests(TestCase):
             "github": "https://github.com/testuser3",
         }
         registration_response = self.client.post(
-            f"/api/v1/dj-rest-auth/registration/",
+            USER_REGISTER_URL,
             registration_data,
             format="json",
         )
@@ -99,7 +103,7 @@ class AuthenticationTests(TestCase):
         }
 
         login_response = self.client.post(
-            f"/api/v1/dj-rest-auth/login/",
+            USER_LOGIN_URL,
             login_data,
             format="json",
         )
@@ -107,7 +111,7 @@ class AuthenticationTests(TestCase):
         self.assertEquals(login_response.status_code, 200)
 
         logout_response = self.client.post(
-            f"/api/v1/dj-rest-auth/logout/",
+            USER_LOGOUT_URL,
             format="json",
         )
 
