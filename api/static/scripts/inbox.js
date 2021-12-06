@@ -42,9 +42,7 @@ function page_ctrl(data_obj) {
                         else if (item["type"].match("follow")) {
                             html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '"';
                             html += ' style="text-decoration: none;">' + item["actor"].displayName + '</a>';
-                            html += ' wants to Friend with you. <br>If you want to be Friend with him/her, ';
-                            html += 'you can Follow Back or Add As Friend by click him/her Profile. ';
-                            html += '<br>If you guys already become Friend, please ignore this message</h4>';
+                            html += ' follows you! <br> Follow back to be friends with ' + item["actor"].displayName + '<3 </h4>';
                         }
                         else if (item["type"].match("like")) {
                             html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
