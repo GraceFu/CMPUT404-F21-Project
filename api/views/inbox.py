@@ -103,6 +103,16 @@ class InboxViewSet(viewsets.GenericViewSet):
 
         return Response(InboxObjectSerializer(instance).data, status=status.HTTP_200_OK)
 
+    @action(methods=[methods.DELETE], detail=True)
+    def clear_inbox(self, request, authorID):
+        if author_not_found(authorID):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        author = Author.objects.get(authorID=authorID)
+        InboxObject.objects.filter(author=author).delete()
+
+        return Response(status=status.HTTP_200_OK)
+
     # Return the total number of inbox items
     @action(methods=[methods.GET], detail=True)
     def get_num_of_inbox_items(self, request, authorID):
