@@ -3,17 +3,17 @@
 [Author](#author) <br>
 [Post](#post) <br>
 [Comment](#comment) <br>
-[Liked & likes](#liked-&-likes) <br>
-[Follower & Friend](#follower-friend) <br>
+[Liked and Likes](#liked-and-likes) <br>
+[Follower and Friend](#follower-and-friend) <br>
 [Inbox](#inbox) <br>
 
 ## Author
 
 ### URL: ://api/authors/
 
-- **GET**: Retrieve all authors on the server *(DEFAULT pagenation)*
+- **GET**: Retrieve all authors on the server *(default pagination size=5)*
 
-  - Example request: `GET /api/authors/` with default pagination size=5
+  - Example request: `GET /api/authors/`
 
   - Example response:
     - 200 OK
@@ -456,7 +456,7 @@
     - 404 Not Found (if this author or post does not exist)
 
 
-## Liked & Likes
+## Liked and Likes
 
 ### URL: ://api/author/{AUTHOR_ID}/liked
 
@@ -563,7 +563,7 @@
     - 404 Not Found (if this author does not exist)
 
 
-## Follower & Friend
+## Follower and Friend
 
 ### URL: ://author/{AUTHOR_ID}/followers
 
