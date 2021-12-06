@@ -58,7 +58,7 @@ $(".myCustom_button_like_post_send").click(function () {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your post", "object": HOSTNAME + '/author/' + poster + '/posts/' + postID },
+        data: { "summary": displayName + " Likes your Post", "object": HOSTNAME + '/author/' + poster + '/posts/' + postID },
 
         success: function(data) {
             
@@ -157,7 +157,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your comment", 
+        data: { "summary": displayName + " Likes your Comment", 
             "object": HOSTNAME + '/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
 
         success: function(data) {
