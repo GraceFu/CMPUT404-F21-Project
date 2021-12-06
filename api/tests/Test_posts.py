@@ -212,7 +212,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         detail_response = self.client.get(
-            reverse('post_detail', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post1_author.id}))
+            reverse('get_public_post', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post1_author.id}))
 
         self.assertEqual(detail_response.status_code, status.HTTP_200_OK)
 
@@ -224,7 +224,7 @@ class TestPost(APITestCase):
         # forcing authentication of an author
         self.client.force_authenticate(user=self.author_test1.user)
 
-        list_response = self.client.get(reverse('post_list', kwargs={'author_id': self.author_test1.id}))
+        list_response = self.client.get(reverse('my-posts', kwargs={'author_id': self.author_test1.id}))
 
         self.assertEqual(list_response.status_code, status.HTTP_200_OK)
 
@@ -236,7 +236,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.post(
-            reverse('post_object', kwargs={'author_id': self.author_test1.id}),
+            reverse('create_post_with_new_id', kwargs={'author_id': self.author_test1.id}),
             {
                 "type": "post",
                 "title": "Test Post",
@@ -294,7 +294,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.post(
-            reverse('post_object', kwargs={'author_id': self.author_test2.id}),
+            reverse('create_post_with_new_id', kwargs={'author_id': self.author_test2.id}),
             {
                 "type": "post",
                 "title": "Test Post",
@@ -333,7 +333,7 @@ class TestPost(APITestCase):
         """
         self.client.force_authenticate(user=self.author_test1.user)
 
-        response = self.client.get(reverse('post_list', kwargs={'author_id': self.author_test1.id}))
+        response = self.client.get(reverse('get_author_posts', kwargs={'author_id': self.author_test1.id}))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -347,7 +347,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.put(
-            reverse('post_object', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
+            reverse('update_post', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
             {
                 "type": "post",
                 "title": "Test Post to Update",
@@ -391,7 +391,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.delete(
-            reverse('post_object', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_delete.id}),
+            reverse('delete_post', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_delete.id}),
             format='json',
         )
 
@@ -407,7 +407,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.post(
-            reverse('post_object', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
+            reverse('update_post', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
             {
                 "description": "Test Post to Update Description",
                 "contentType": "text/plain",
@@ -441,7 +441,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test1.user)
 
         response = self.client.post(
-            reverse('post_object', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
+            reverse('update_post', kwargs={'author_id': self.author_test1.id, 'post_id': self.test_post_to_update.id}),
             {
                 "description": "Test Post to Update Description",
                 "contentType": "text/plain",
@@ -475,7 +475,7 @@ class TestPost(APITestCase):
         self.client.force_authenticate(user=self.author_test2.user)
 
         response = self.client.put(
-            reverse('post_object', kwargs={'author_id':author_id, 'post_id': post_id}),
+            reverse('create_post_with_existing_id', kwargs={'author_id':author_id, 'post_id': post_id}),
             { 
                 "title": "Test Post for an author",
                 "id": "http://localhost:8000/author/{}/posts/{}".format(
@@ -519,7 +519,7 @@ class TestPost(APITestCase):
             self.client.force_authenticate(user=self.author_test2.user)
     
             response = self.client.put(
-                reverse('post_object', kwargs={'author_id':author_id}),
+                reverse('create_post_with_existing_id', kwargs={'author_id':author_id}),
                 { 
                     "title": "Test Post for an author",
                     "id": "http://localhost:8000/author/{}/posts/{}".format(
@@ -560,7 +560,7 @@ class TestPost(APITestCase):
 
             response_2 = self.client.get(
                 reverse(
-                    'inbox_object',
+                    'get_inbox_items',
                     kwargs={
                         'author_id': self.author_test3.id,
                     }

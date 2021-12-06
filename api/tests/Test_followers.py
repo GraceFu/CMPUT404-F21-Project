@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
-USER_LOGIN_URL = reverse('author_login')
+USER_LOGIN_URL = reverse('login')
 
 
 class TestFollow(APITestCase):
@@ -107,28 +107,24 @@ class TestFollow(APITestCase):
         self.author1_follow_author2 = Follower.objects.create(
             follower=self.author_test1,
             followee=self.author_test2,
-            friends=False
         )
         self.author1_follow_author2.save()
 
         self.author3_follow_author2 = Follower.objects.create(
             follower=self.author_test3,
             followee=self.author_test2,
-            friends=False
         )
         self.author3_follow_author2.save()
 
         self.author3_friend_author4 = Follower.objects.create(
             follower=self.author_test3,
             followee=self.author_test4,
-            friends=True
         )
         self.author3_friend_author4.save()
 
         self.author4_friend_author3 = Follower.objects.create(
             follower=self.author_test4,
             followee=self.author_test3,
-            friends=True
         )
         self.author4_friend_author3.save()
 
@@ -145,9 +141,9 @@ class TestFollow(APITestCase):
         self.client.force_authenticate(user=self.author_test2.user)
 
 
-        response = self.client.post(
+        response = self.client.put(
             reverse(
-                'update_followers',
+                'handle_follower',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'foreign_id': self.author_test2.id
@@ -181,16 +177,14 @@ class TestFollow(APITestCase):
             Follower.objects.get(
                 follower=self.author_test1,
                 followee=self.author_test2
-            ).friends,
-            True
+            )
         )
 
         self.assertEqual(
             Follower.objects.get(
                 follower=self.author_test2,
                 followee=self.author_test1
-            ).friends,
-            True
+            )
         )
 
 
@@ -208,7 +202,7 @@ class TestFollow(APITestCase):
 
         response = self.client.get(
             reverse(
-                'update_followers',
+                'handle_follower',
                 kwargs={
                     'author_id': self.author_test2.id,
                     'foreign_id': self.author_test1.id
@@ -235,7 +229,7 @@ class TestFollow(APITestCase):
 
         response = self.client.get(
             reverse(
-                'followers_list',
+                'get_author_followers',
                 kwargs={
                     'author_id': self.author_test2.id
                 }
@@ -261,7 +255,7 @@ class TestFollow(APITestCase):
 
         response = self.client.get(
             reverse(
-                'friends_api',
+                'friends_request',
                 kwargs={
                     'author_id': self.author_test5.id
                 }
@@ -289,7 +283,7 @@ class TestFollow(APITestCase):
 
         response = self.client.put(
             reverse(
-                'update_followers',
+                'get_author_followers',
                 kwargs={
                     'author_id': self.author_test6.id,
                     'foreign_id': self.author_test5.id
@@ -303,7 +297,7 @@ class TestFollow(APITestCase):
 
         response = self.client.get(
             reverse(
-                'friends_api',
+                'friends_request',
                 kwargs={
                     'author_id': self.author_test5.id
                 }
@@ -331,7 +325,7 @@ class TestFollow(APITestCase):
 
         response = self.client.put(
             reverse(
-                'update_followers',
+                'get_author_followers',
                 kwargs={
                     'author_id': self.author_test5.id,
                     'foreign_id': self.author_test6.id
@@ -345,7 +339,7 @@ class TestFollow(APITestCase):
 
         response = self.client.get(
             reverse(
-                'friends_api',
+                'friends_request',
                 kwargs={
                     'author_id': self.author_test5.id
                 }

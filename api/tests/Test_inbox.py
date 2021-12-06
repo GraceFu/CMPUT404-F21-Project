@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
-USER_LOGIN_URL = reverse('author_login')
+USER_LOGIN_URL = reverse('login')
 
 
 class TestInbox(APITestCase):
@@ -125,7 +125,7 @@ class TestInbox(APITestCase):
 
         response = self.client.post(
             reverse(
-                'inbox_object',
+                'handle_inbox',
                 kwargs={
                     'author_id': self.author_test1.id
                 }
@@ -169,7 +169,7 @@ class TestInbox(APITestCase):
 
         response = self.client.post(
             reverse(
-                'inbox_object',
+                'handle_inbox',
                 kwargs={
                     'author_id': self.author_test1.id,
                 }
@@ -202,7 +202,7 @@ class TestInbox(APITestCase):
 
         response = self.client.get(
             reverse(
-                'inbox_object',
+                'handle_inbox',
                 kwargs={
                     'author_id': self.author_test1.id,
                 }
@@ -225,7 +225,7 @@ class TestInbox(APITestCase):
 
         response = self.client.delete(
             reverse(
-                'inbox_object',
+                'handle_inbox',
                 kwargs={
                     'author_id': self.author_test1.id,
                 }

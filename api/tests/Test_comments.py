@@ -7,9 +7,9 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
-USER_LOGIN_URL = reverse('author_login')
-USER_REGISTER_URL = reverse('author_register')
-USER_LOGOUT_URL = reverse('author_logout')
+USER_LOGIN_URL = reverse('login')
+USER_REGISTER_URL = reverse('signup')
+USER_LOGOUT_URL = reverse('logout')
 USER_PROFILE_URL = reverse('author_profile')
 
 
@@ -142,7 +142,7 @@ class TestCommentView(APITestCase):
 
         response = self.client.post(
             reverse(
-                'comments_object',
+                'handle_new_comment',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'post_id': self.test_post_to_comment.id
@@ -177,7 +177,7 @@ class TestCommentView(APITestCase):
 
         response = self.client.post(
             reverse(
-                'comments_object',
+                'handle_new_comment',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'post_id': self.test_post_to_comment.id
@@ -216,7 +216,7 @@ class TestCommentView(APITestCase):
     
             response = self.client.post(
                 reverse(
-                    'comments_object',
+                    'handle_new_comment',
                     kwargs={
                         'author_id': self.author_test1.id,
                         'post_id': self.test_post_to_comment.id   ##need a post id here
@@ -240,7 +240,7 @@ class TestCommentView(APITestCase):
 
         response = self.client.post(
             reverse(
-                'comments_object',
+                'handle_new_comment',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'post_id': self.test_post_to_comment.id

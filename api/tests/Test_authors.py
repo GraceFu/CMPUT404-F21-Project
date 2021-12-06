@@ -6,9 +6,9 @@ from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
 
-USER_LOGIN_URL = reverse('author_login')
-USER_REGISTER_URL = reverse('author_register')
-USER_LOGOUT_URL = reverse('author_logout')
+USER_LOGIN_URL = reverse('login')
+USER_REGISTER_URL = reverse('signup')
+USER_LOGOUT_URL = reverse('logout')
 
 
 class TestAuthorView(APITestCase):
@@ -73,7 +73,7 @@ class TestAuthorView(APITestCase):
         self.client.force_authenticate(user=self.author_test.user)
 
         author_response = self.client.get(
-            reverse('author_object', kwargs={'id': self.author_test.id}))
+            reverse('author_profile', kwargs={'id': self.author_test.id}))
 
         # checking for authorized user
         self.assertEqual(author_response.status_code, status.HTTP_200_OK)
@@ -143,7 +143,7 @@ class TestAuthorView(APITestCase):
         self.client.force_authenticate(user=self.author_test.user)
 
         author_response = self.client.delete(
-            reverse('author_detail', args=[self.author_test.id]))
+            reverse('author_profile', args=[self.author_test.id]))
 
         # checking for authorized user
         self.assertEqual(author_response.status_code, status.HTTP_204_NO_CONTENT)
@@ -175,7 +175,7 @@ class TestAuthorView(APITestCase):
         """Testing for login of an unauthorized author"""
 
         author_response = self.client.get(
-            reverse('author_object', kwargs={'id': self.author_test.id}))
+            reverse('author_profile', kwargs={'id': self.author_test.id}))
 
         # checking for authorized user
         self.assertEqual(author_response.status_code,
@@ -197,7 +197,7 @@ class TestAuthorView(APITestCase):
         }
 
         update_response = self.client.post(
-            reverse('author_detail', args=[self.author_test.id]),
+            reverse('author_profile', args=[self.author_test.id]),
             post_request,
             format='json'
         )
@@ -222,7 +222,7 @@ class TestAuthorView(APITestCase):
         self.client.force_authenticate(user=self.author_test2.user)
 
         authors_response = self.client.get(
-            reverse('author_list'))
+            reverse('authors_list'))
 
         # checking for authorized user
         self.assertEqual(authors_response.status_code, status.HTTP_200_OK)

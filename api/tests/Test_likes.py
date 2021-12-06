@@ -166,7 +166,7 @@ class TestLikeAPI(APITestCase):
 
         response = self.client.get(
             reverse(
-                'like_post',
+                'get_post_likes',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'post_id': self.test_post2friends_author.id
@@ -186,7 +186,7 @@ class TestLikeAPI(APITestCase):
 
         response = self.client.get(
             reverse(
-                'like_comment',
+                'get_comment_likes',
                 kwargs={
                     'author_id': self.author_test1.id,
                     'post_id': self.test_post1_author.id,
@@ -206,7 +206,7 @@ class TestLikeAPI(APITestCase):
     
             response = self.client.get(
                 reverse(
-                    'like_comment',
+                    'get_comment_likes',
                     kwargs={
                         'author_id': self.author_test2.id,
                         'post_id': self.test_post1_author.id,
@@ -219,24 +219,7 @@ class TestLikeAPI(APITestCase):
 
 
 
-    #test for unliking a post made by a friend
-    def test_unlike_on_post_friends(self):
-                
-                # forcing authentication of authors
-                self.client.force_authenticate(user=self.author_test1.user)
-        
-                response = self.client.get(
-                    reverse(
-                        'unlike_post',
-                        kwargs={
-                            'author_id': self.author_test1.id,
-                            'post_id': self.test_post2friends_author.id
-                        }
-                    )
-                )
-        
-                self.assertEqual(response.status_code, status.HTTP_200_OK)
-                
+  
 
     #list of items liked by author
     def test_list_of_likes_author(self):
@@ -246,7 +229,7 @@ class TestLikeAPI(APITestCase):
 
         response = self.client.get(
             reverse(
-                'list_of_likes',
+                'get_author_liked',
                 kwargs={
                     'author_id': self.author_test1.id
                 }
