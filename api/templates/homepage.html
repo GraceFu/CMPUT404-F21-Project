@@ -54,23 +54,25 @@ Communiti
                     <div class="form-group">
                         <input type="text" name="categories" class="input-field" placeholder="Categories">
                     </div>
-                    <!-- Visibility --><!--
+                    <!-- Visibility -->
                     <div class="form-group">
-                        Public<input type="radio" name="visibility" class="" value="Public" checked>
-                        Friends<input type="radio" name="visibility" class="" value="Friends">
-                    </div>-->
+                        <input type="radio" name="visibility" class="" value="PUBLIC" checked>
+                        <label>PUBLIC</label>
+                        <input type="radio" name="visibility" class="" value="FRIENDS">
+                        <label>FRIENDS</label>
+                    </div>
                     <!-- Unlisted -->
                     <div class="form-group">
                         Unlisted   <input type="checkbox" name="unlisted" class="" value="unlisted">
                     </div>
                     <!-- Source -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="url" name="source" class="input-field" placeholder="Source"> 
-                    </div>
+                    </div> -->
                     <!-- Origin -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="url" name="origin" class="input-field" placeholder="Origin">
-                    </div>
+                    </div> -->
                     <!-- Post Button -->
                     <input type="submit" class="btn btn-success" value="POST">
                 </form>
@@ -108,8 +110,10 @@ Communiti
                 Content: {{ post.content }} <br>
                 Image: {{ post.image }} <br>
                 Categories: {{ post.categories }} <br>
-                Source: {{ post.source }} <br>
-                Origin: {{ post.origin }} <br>
+                Visibility: {{ post.visibility }} <br>
+                Unlisted: {{ post.unlisted }} <br>
+                <!-- Source: {{ post.source }} <br>
+                Origin: {{ post.origin }} <br> -->
             </div>
 
             <hr>
