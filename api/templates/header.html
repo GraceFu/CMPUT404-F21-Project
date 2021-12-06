@@ -40,6 +40,15 @@
             <div id="mainListDiv" class="myCustom_main_list">
                 <ul class="myCustom_navlinks">
 
+                    {% if not all_authors %}
+                    <!-- All the Authors -->
+                    <li>
+                        <form method="GET" id="form_all_authors" action="{% url 'authors' %}">
+                            <a onclick="document.getElementById('form_all_authors').submit()">Authors</a>
+                        </form>
+                    </li>
+                    {% endif %}
+
                     {% if not my_profile %}
                     <!-- My Profile -->
                     <li>
@@ -52,8 +61,17 @@
                     {% if not my_posts_page %}
                     <!-- My Posts -->
                     <li>
-                        <form method="GET" id="form_my_posts" action="{% url 'post_handler' authorID=user.author.authorID %}">
+                        <form method="GET" id="form_my_posts" action="{% url 'my-posts' %}">
                             <a onclick="document.getElementById('form_my_posts').submit()">MyPosts</a>
+                        </form>
+                    </li>
+                    {% endif %}
+
+                    {% if not my_inbox_page %}
+                    <!-- My Posts -->
+                    <li>
+                        <form method="GET" id="form_my_inbox" action="{% url 'my-inbox' %}">
+                            <a onclick="document.getElementById('form_my_inbox').submit()">Inbox</a>
                         </form>
                     </li>
                     {% endif %}

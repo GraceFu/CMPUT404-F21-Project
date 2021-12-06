@@ -18,7 +18,7 @@ $(".myCustom_like_post_show").click(function () {
             var html = "";
             var AmILiked = false;
 
-            for (var like of data) {
+            for (var like of data.items) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
@@ -51,7 +51,6 @@ $(".myCustom_button_like_post_send").click(function () {
     var authorID = clockedButtonInformation.substring(authorID_index + 8);
 
     var HOSTNAME = $("#like_post_hostname_" + postID).attr("value");
-    console.log(HOSTNAME)
     var poster = $("#like_post_hostname_" + postID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
@@ -59,7 +58,7 @@ $(".myCustom_button_like_post_send").click(function () {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your post", "object": HOSTNAME + '/author/' + poster + '/posts/' + postID },
+        data: { "summary": displayName + " Likes your post", "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID },
 
         success: function(data) {
             
@@ -72,7 +71,7 @@ $(".myCustom_button_like_post_send").click(function () {
                     var html = "";
                     var AmILiked = false;
 
-                    for (var like of data) {
+                    for (var like of data.items) {
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
@@ -116,7 +115,7 @@ $("#myCustom_container_area").on("click", ".myCustom_like_comment_show", functio
             var html = "";
             var AmILiked = false;
 
-            for (var like of data) {
+            for (var like of data.items) {
                 count += 1;
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
@@ -159,7 +158,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
         data: { "summary": displayName + " Likes your comment", 
-            "object": HOSTNAME + '/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
+            "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
 
         success: function(data) {
             
@@ -172,7 +171,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
                     var html = "";
                     var AmILiked = false;
 
-                    for (var like of data) {
+                    for (var like of data.items) {
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';

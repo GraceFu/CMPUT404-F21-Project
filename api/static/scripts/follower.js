@@ -27,6 +27,30 @@ $("#myCustom_following_button_clicked").click(function () {
                     } else {
                         document.getElementById("myCustom_following_button_id").style.display = 'none';
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+
+                        $.ajax({
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            url: "../api/author/" + authorID + "/followers/" + currentLoginAuthorID,
+                            type: "GET",
+                            success: function(data) {
+                                var count = 0;
+                    
+                                for (var follow of data) {
+                                    count += 1;
+                                }
+                    
+                                if (count == 0) {
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'inline';
+                                }
+                                else {
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'inline';
+                                }
+                            }
+                        })
                     }
 
                     $("#follow_modal").modal('toggle');
@@ -62,6 +86,10 @@ $("#myCustom_unfollow_button_clicked").click(function () {
                     if (count == 0) {
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
                         document.getElementById("myCustom_following_button_id").style.display = 'inline';
+
+                        document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
                     } else {
                         document.getElementById("myCustom_following_button_id").style.display = 'none';
                         document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
@@ -69,6 +97,155 @@ $("#myCustom_unfollow_button_clicked").click(function () {
                     }
 
                     $("#unfollow_modal").modal('toggle');
+                }
+            })
+
+        }
+    })
+});
+
+// Handler of Add Friend button click event
+$("#myCustom_friend_add_button_clicked").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "PUT",
+        success: function(data) {
+            
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+                type: "GET",
+                success: function(data) {
+                    var count = 0;
+
+                    for (var follow of data) {
+                        count += 1;
+                    }
+
+                    if (count == 0) {
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+                        document.getElementById("myCustom_following_button_id").style.display = 'inline';
+                        alert("Following Failed");
+                    } else {
+                        document.getElementById("myCustom_following_button_id").style.display = 'none';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+
+                        $.ajax({
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            url: "../api/author/" + authorID + "/followers/" + currentLoginAuthorID,
+                            type: "GET",
+                            success: function(data) {
+                                var count = 0;
+                    
+                                for (var follow of data) {
+                                    count += 1;
+                                }
+                    
+                                if (count == 0) {
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'inline';
+                                }
+                                else {
+                                    document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                                    document.getElementById("myCustom_remove_friend_button_id").style.display = 'inline';
+                                }
+                            }
+                        })
+                    }
+
+                    $("#friend_add_modal").modal('toggle');
+                }
+            })
+
+        }
+    })
+});
+
+// Handler of Wait Friend button click event
+$("#myCustom_friend_wait_button_clicked").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "DELETE",
+        success: function(data) {
+            
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+                type: "GET",
+                success: function(data) {
+                    var count = 0;
+
+                    for (var follow of data) {
+                        count += 1;
+                    }
+
+                    if (count == 0) {
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+                        document.getElementById("myCustom_following_button_id").style.display = 'inline';
+
+                        document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                    } else {
+                        document.getElementById("myCustom_following_button_id").style.display = 'none';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+                        alert("Unfollow Failed");
+                    }
+
+                    $("#friend_wait_modal").modal('toggle');
+                }
+            })
+
+        }
+    })
+});
+
+// Handler of Remove Friend button click event
+$("#myCustom_friend_remove_button_clicked").click(function () {
+    var authorID = $("#myCustom_profile_user_info").attr("value");
+    var currentLoginAuthorID = $("#myCustom_profile_user_info").attr("var");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+        type: "DELETE",
+        success: function(data) {
+            
+            $.ajax({
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: "../api/author/" + currentLoginAuthorID + "/followers/" + authorID,
+                type: "GET",
+                success: function(data) {
+                    var count = 0;
+
+                    for (var follow of data) {
+                        count += 1;
+                    }
+
+                    if (count == 0) {
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'none';
+                        document.getElementById("myCustom_following_button_id").style.display = 'inline';
+
+                        document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
+                        document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                    } else {
+                        document.getElementById("myCustom_following_button_id").style.display = 'none';
+                        document.getElementById("myCustom_unfollow_button_id").style.display = 'inline';
+                        alert("Unfollow Failed");
+                    }
+
+                    $("#friend_remove_modal").modal('toggle');
                 }
             })
 
@@ -90,8 +267,8 @@ $("#myCustom_followees_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['followee'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followeeDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['followee'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followee"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -120,8 +297,8 @@ $("#myCustom_followers_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['follower'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["follower"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -150,38 +327,8 @@ $("#myCustom_friends_button").click(function () {
 
             for (var follow of data) {
                 count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
-            }
-
-            if (count == 0) {
-                html = "<br><h4>His/Her has no friends, T^T</h4><br>";
-            } 
-            else {
-                html = html.substring(html.indexOf("<hr>") + 4);
-            }
-            
-            $("#myCustom_friends").html(html);
-        }
-    })
-});
-
-// Handler of Friends SHOW button click event
-$("#myCustom_friends_button").click(function () {
-    var authorID = $("#myCustom_profile_user_info").attr("value");
-
-    $.ajax({
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/friends",
-        type: "GET",
-        success: function(data) {
-            var count = 0;
-            var html = "";
-
-            for (var follow of data) {
-                count += 1;
-                html += '<hr><a href="../profile/' + follow['follower'] + '" ';
-                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["followerDisplayName"] + '</a>';
+                html += '<hr><a href="../profile/' + follow['follower'].authorID + '" ';
+                html += 'style="text-decoration: none; font-size: 14pt;">' + follow["follower"].displayName + '</a>';
             }
 
             if (count == 0) {
@@ -235,9 +382,9 @@ function check_follow_and_friend() {
                         }
             
                         if (count == 0) {
-                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'none';
                             document.getElementById("myCustom_remove_friend_button_id").style.display = 'none';
-                            document.getElementById("myCustom_add_friend_button_id").style.display = 'inline';
+                            document.getElementById("myCustom_add_friend_button_id").style.display = 'none';
+                            document.getElementById("myCustom_wait_friend_button_id").style.display = 'inline';
                         }
                         else {
                             document.getElementById("myCustom_add_friend_button_id").style.display = 'none';

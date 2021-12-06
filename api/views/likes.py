@@ -26,7 +26,10 @@ class LikeViewSet(viewsets.ViewSet):
         author = Author.objects.filter(authorID=authorID)
         queryset = Like.objects.filter(author__in=author)
         serializer = LikeSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        res = {
+            "items": serializer.data
+        }
+        return Response(res, status=status.HTTP_200_OK)
 
     @action(methods=[methods.GET], detail=True)
     def get_post_likes(self, request, authorID, postID):
@@ -34,10 +37,14 @@ class LikeViewSet(viewsets.ViewSet):
         if self.check_post_by_id(postID) is False and not self.check_author_by_id(authorID):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        post_url = request.get_host() + '/author/' + authorID + '/posts/' + postID
+        post_url = "https://" + request.get_host() + '/api/author/' + \
+            authorID + '/posts/' + postID
         queryset = Like.objects.filter(object=post_url)
         serializer = LikeSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        res = {
+            "items": serializer.data
+        }
+        return Response(res, status=status.HTTP_200_OK)
 
     @action(methods=[methods.GET], detail=True)
     def get_comment_likes(self, request, authorID, postID, commentID):
@@ -46,11 +53,14 @@ class LikeViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         # TODO do we need to check post id ?
 
-        comment_url = request.get_host() + '/author/' + authorID + \
+        comment_url = "https://" + request.get_host() + '/api/author/' + authorID + \
             '/posts/' + postID + '/comments/' + commentID
         queryset = Like.objects.filter(object=comment_url)
         serializer = LikeSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        res = {
+            "items": serializer.data
+        }
+        return Response(res, status=status.HTTP_200_OK)
 
     @action(methods=[methods.POST], detail=True)
     def like_object(self, request, authorID):
@@ -60,8 +70,7 @@ class LikeViewSet(viewsets.ViewSet):
 
         serializer = LikeSerializer(data=request.data)
         if serializer.is_valid():
-            instance = Like()
-            instance.author = Author.objects.get(authorID=authorID)
+            instance = Like(author=Author.objects.get(authorID=authorID))
             self.populate_like_data(serializer.data, instance)
             return Response(LikeSerializer(instance).data, status=status.HTTP_200_OK)
         else:

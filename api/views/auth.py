@@ -20,6 +20,7 @@ def signup_request(request):
             author.host = "https://" + request.get_host() + "/"
             author.url = author.host + "api/author/" + author.authorID + "/"
             author.save()
+
             messages.warning(
                 request, "Thank you! Please wait for admin to appove your registration.")
         else:
