@@ -87,7 +87,4 @@ def my_inbox_view(request):
     content = {}
     content['my_inbox_page'] = True
 
-    inbox = Inbox.objects.get(author=request.user.author)
-    content['items'] = inbox.items[::-1]
-
     return render(request, "inbox.html", content)
