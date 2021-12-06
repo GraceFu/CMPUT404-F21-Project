@@ -62,9 +62,9 @@ $("#myCustom_following_button_clicked").click(function () {
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/inbox",
+        url: "../api/author/" + currentLoginAuthorID + "/inbox",
         type: "POST",
-        data: {"type": "follow", "follower": currentLoginAuthorID},
+        data: {"type": "follow", "follower": authorID},
         success: function(data) {}
     })
 });
@@ -176,9 +176,9 @@ $("#myCustom_friend_add_button_clicked").click(function () {
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + authorID + "/inbox",
+        url: "../api/author/" + currentLoginAuthorID + "/inbox",
         type: "POST",
-        data: {"type": "follow", "follower": currentLoginAuthorID},
+        data: {"type": "follow", "follower": authorID},
         success: function(data) {}
     })
 });
