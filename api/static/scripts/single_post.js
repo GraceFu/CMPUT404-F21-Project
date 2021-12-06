@@ -27,6 +27,7 @@ $(".myCustom_comment_show").click(function () {
                 for (var comment of data.comments) {
                     count += 1;
                     html += "<hr>" + '<div class="">';
+                    html += '<input type="hidden" id="myCustom_comment_commenter_' + comment['commentID']+ '" value="' + comment['author'].authorID + '">';
                     html += 'Commented by <a href="../../../profile/' + comment['author'].authorID + '" ';
                     html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
@@ -107,6 +108,7 @@ $("button.myCustom_comment_send").click(function () {
                     var html = "";
                     for (var comment of data.comments) {
                         html += "<hr>" + '<div class="">';
+                        html += '<input type="hidden" id="myCustom_comment_commenter_' + comment['commentID']+ '" value="' + comment['author'].authorID + '">';
                         html += 'Commented by <a href="../../../profile/' + comment['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                         html += '<p class="col-sm-12">' + comment["content"] + '</p>';
@@ -315,6 +317,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
     var HOSTNAME = $("#like_comment_hostname_" + commentID).attr("value");
     var poster = $("#like_comment_hostname_" + commentID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
+    var commenter = $("#myCustom_comment_commenter_" + commentID).attr("value");
 
     var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID;
 
@@ -357,7 +360,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../../../api/author/" + poster + "/inbox",
+        url: "../../../api/author/" + commenter + "/inbox",
         type: "POST",
         data: {"type": "like", "object": send_object, "actor": authorID},
         success: function(data) {}
