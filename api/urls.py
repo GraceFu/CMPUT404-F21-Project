@@ -101,5 +101,7 @@ urlpatterns = [
     path("api/author/<str:authorID>/inbox", inbox.InboxViewSet.as_view(
         {methods.GET: 'get_inbox_items', methods.POST: 'add_item_to_inbox'}), name="handle_inbox"),
     path("my-inbox", inbox.my_inbox_view, name="my-inbox"),
+    path("api/author/<str:authorID>/inbox/get_num_of_inbox_items", inbox.InboxViewSet.as_view(
+        {methods.GET: 'get_num_of_inbox_items'}), name="get_num_of_inbox_items"),
 
 ]

@@ -18,7 +18,7 @@ def signup_request(request):
             author.github = form.cleaned_data["github"]
             author.displayName = form.cleaned_data["displayName"]
             author.host = "https://" + request.get_host() + "/"
-            author.url = author.host + "api/author/" + author.authorID + "/"
+            author.url = author.host + "api/author/" + author.authorID
             author.save()
 
             messages.warning(

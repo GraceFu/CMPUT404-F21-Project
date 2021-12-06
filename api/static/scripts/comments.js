@@ -24,7 +24,7 @@ $(".myCustom_comment_show").click(function () {
                 for (var comment of data.comments) {
                     count += 1;
                     html += "<hr>" + '<div class="">';
-                    html += 'Comment by <a href="profile/' + comment['author'].authorID + '" ';
+                    html += 'Commented by <a href="profile/' + comment['author'].authorID + '" ';
                     html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                     html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
@@ -49,7 +49,7 @@ $(".myCustom_comment_show").click(function () {
 
                     // Body
                     html += '<div class="modal-body">';
-                    html += '<h5 id="like_comment_content_' + comment['commentID'] + '">Click ' + "'Like'" + ' Button to Liked this Comment</h5>';
+                    html += '<h5 id="like_comment_content_' + comment['commentID'] + '">Click ' + "'Like'" + ' Button to like this comment</h5>';
                     html += '<input type="hidden" id="like_comment_hostname_' + comment['commentID'] + '" ';
                     html += 'value="' + HOSTNAME + '" var="' + poster + '">';
                     html += '<button id="button_like_post_' + postID + '_author_' + authorID + '_comment_' + comment['commentID'] + '" ';
@@ -106,7 +106,7 @@ $("button.myCustom_comment_send").click(function () {
                     var html = "";
                     for (var comment of data.comments) {
                         html += "<hr>" + '<div class="">';
-                        html += 'Comment by <a href="profile/' + comment['author'].authorID + '" ';
+                        html += 'Commented by <a href="profile/' + comment['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">' + comment["author"].displayName + '</a> <br>';
                         html += '<p class="col-sm-12">' + comment["content"] + '</p>';
 
@@ -131,7 +131,7 @@ $("button.myCustom_comment_send").click(function () {
 
                         // Body
                         html += '<div class="modal-body">';
-                        html += '<h5 id="like_comment_content_' + comment['commentID'] + '">Click ' + "'Like'" + ' Button to Liked this Comment</h5>';
+                        html += '<h5 id="like_comment_content_' + comment['commentID'] + '">Click ' + "'Like'" + ' Button to like this comment</h5>';
                         html += '<input type="hidden" id="like_comment_hostname_' + comment['commentID'] + '" ';
                         html += 'value="' + HOSTNAME + '" var="' + poster + '">';
                         html += '<button id="button_like_post_' + postID + '_author_' + authorID + '_comment_' + comment['commentID'] + '" ';

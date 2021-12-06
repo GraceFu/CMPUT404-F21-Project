@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 
 {% block title %}
-Homepage
+Communiti
 {% endblock %}
 
 {% load static %}
@@ -36,23 +36,23 @@ Homepage
                     {% csrf_token %}
                     <!-- Title -->
                     <div class="form-group">
-                        <input type="text" name="title" class="" placeholder="Title" required> 
+                        <input type="text" name="title" class="input-field" placeholder="Title" required> 
                     </div>
                     <!-- Description -->
                     <div class="form-group">
-                        <input type="text" name="description" class="" placeholder="Description">
+                        <input type="text" name="description" class="input-field" placeholder="Description">
                     </div>
                     <!-- Content -->
                     <div class="form-group">
-                        <textarea type="text" name="content" class="" placeholder="Content"></textarea>
+                        <textarea type="text" name="content" class="input-field" placeholder="Content"></textarea>
                     </div>
                     <!-- Image -->
                     <div class="form-group">
-                        Image<input type="file" name="image" class="" placeholder="Image">
+                        Image   <input type="file" name="image" class="" placeholder="Image">
                     </div>
                     <!-- Categories -->
                     <div class="form-group">
-                        <input type="text" name="categories" class="" placeholder="Categories">
+                        <input type="text" name="categories" class="input-field" placeholder="Categories">
                     </div>
                     <!-- Visibility --><!--
                     <div class="form-group">
@@ -61,15 +61,15 @@ Homepage
                     </div>-->
                     <!-- Unlisted -->
                     <div class="form-group">
-                        Unlisted<input type="checkbox" name="unlisted" class="" value="unlisted">
+                        Unlisted   <input type="checkbox" name="unlisted" class="" value="unlisted">
                     </div>
                     <!-- Source -->
                     <div class="form-group">
-                        <input type="url" name="source" class="" placeholder="Source"> 
+                        <input type="url" name="source" class="input-field" placeholder="Source"> 
                     </div>
                     <!-- Origin -->
                     <div class="form-group">
-                        <input type="url" name="origin" class="" placeholder="Origin">
+                        <input type="url" name="origin" class="input-field" placeholder="Origin">
                     </div>
                     <!-- Post Button -->
                     <input type="submit" class="btn btn-success" value="POST">
@@ -96,7 +96,7 @@ Homepage
         <!-- Header - Title and date -->
         <div class="card-header">
             <h2 style="margin-top: 10px;">{{ post.title }}</h2>
-            Post by <a href="{% url 'profile' authorID=post.author.authorID %}"
+            Posted by <a href="{% url 'profile' authorID=post.author.authorID %}"
                 style="text-decoration: none; font-size: 14pt;">{{ post.author.displayName }}</a> <br>
             Last release - {{ post.published }}
         </div>
@@ -140,7 +140,7 @@ Homepage
 
                             <!-- Body -->
                             <div class="modal-body">
-                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' Button to Liked this Post</h5>
+                                <h5 id="like_post_content_{{ post.postID }}">Click 'Like' button to like this post</h5>
                                 <input type="hidden" id="like_post_hostname_{{ post.postID }}" 
                                     value="{{ HOSTNAME }}" var="{{ post.author.authorID }}">
                                 <button id="button_like_post_{{ post.postID }}_author_{{ author.authorID }}" style="width: 100px;"

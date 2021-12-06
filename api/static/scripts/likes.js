@@ -23,17 +23,17 @@ $(".myCustom_like_post_show").click(function () {
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">';
-                html += like['author'].displayName + "</a> Liked this Post</div>";
+                html += like['author'].displayName + "</a> liked this post</div>";
 
                 if (AmILiked == false && like['author'].authorID.match(authorID)) {
-                    $("#like_post_content_" + postID).html("You Liked This Post");
+                    $("#like_post_content_" + postID).html("You have liked this post");
                     $("#button_like_post_" + postID + "_author_" + authorID).remove();
                     AmILiked = true;
                 }
             }
 
             if (count == 0) {
-                html = "<hr><h5>No one Like this post so far, T^T</h5>";
+                html = "<hr><h5>No one liked this post so far, T^T</h5>";
             }
 
             $("#like_post_" + postID).html(html);
@@ -54,11 +54,13 @@ $(".myCustom_button_like_post_send").click(function () {
     var poster = $("#like_post_hostname_" + postID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
+    var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID;
+
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your post", "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID },
+        data: { "summary": displayName + " likes your post", "object": send_object },
 
         success: function(data) {
             
@@ -75,10 +77,10 @@ $(".myCustom_button_like_post_send").click(function () {
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
-                        html += like['author'].displayName + "</a> Liked this Post</div>";
+                        html += like['author'].displayName + "</a> liked this post</div>";
 
                         if (AmILiked == false && like['author'].authorID.match(authorID)) {
-                            $("#like_post_content_" + postID).html("You Liked This Post");
+                            $("#like_post_content_" + postID).html("You liked this post");
                             $("#button_like_post_" + postID + "_author_" + authorID).remove();
                             AmILiked = true;
                         }
@@ -90,6 +92,14 @@ $(".myCustom_button_like_post_send").click(function () {
 
         }
 
+    })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + poster + "/inbox",
+        type: "POST",
+        data: {"type": "like", "object": send_object, "actor": authorID},
+        success: function(data) {}
     })
 });
 
@@ -120,17 +130,17 @@ $("#myCustom_container_area").on("click", ".myCustom_like_comment_show", functio
                 html += "<hr>" + '<div class="">';
                 html += '<a href="profile/' + like['author'].authorID + '" ';
                 html += 'style="text-decoration: none; font-size: 14pt;">';
-                html += like['author'].displayName + "</a> Liked this Post</div>";
+                html += like['author'].displayName + "</a> liked this post</div>";
 
                 if (AmILiked == false && like['author'].authorID.match(authorID)) {
-                    $("#like_comment_content_" + commentID).html("You Liked This Comment");
+                    $("#like_comment_content_" + commentID).html("You have liked this Comment");
                     $("#button_like_post_" + postID + "_author_" + authorID + "_comment_" + commentID).remove();
                     AmILiked = true;
                 }
             }
 
             if (count == 0) {
-                html = "<hr><h5>No one Like this comment so far, T^T</h5>";
+                html = "<hr><h5>No one liked this comment so far, T^T</h5>";
             }
 
             $("#like_comment_" + commentID).html(html);
@@ -153,12 +163,13 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
     var poster = $("#like_comment_hostname_" + commentID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
 
+    var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID;
+
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
-        data: { "summary": displayName + " Likes your comment", 
-            "object": 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID },
+        data: { "summary": displayName + " likes your comment", "object": send_object },
 
         success: function(data) {
             
@@ -175,10 +186,10 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
                         html += "<hr>" + '<div class="">';
                         html += '<a href="profile/' + like['author'].authorID + '" ';
                         html += 'style="text-decoration: none; font-size: 14pt;">';
-                        html += like['author'].displayName + "</a> Liked this Post</div>";
+                        html += like['author'].displayName + "</a> liked this Post</div>";
 
                         if (AmILiked == false && like['author'].authorID.match(authorID)) {
-                            $("#like_comment_content_" + commentID).html("You Liked This Comment");
+                            $("#like_comment_content_" + commentID).html("You have liked this comment");
                             $("#button_like_post_" + postID + "_author_" + authorID + "_comment_" + commentID).remove();
                             AmILiked = true;
                         }
@@ -190,5 +201,13 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
         }
 
+    })
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "../api/author/" + poster + "/inbox",
+        type: "POST",
+        data: {"type": "like", "object": send_object, "actor": authorID},
+        success: function(data) {}
     })
 });
