@@ -11,6 +11,8 @@ function page_ctrl(data_obj) {
         return;
     }
 
+    var currentAuthorID = $("#myCustom_profile_user_info").attr("value");
+
     // Adding the content
     $(obj_box).html('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
     // Adding the page manage
@@ -21,7 +23,7 @@ function page_ctrl(data_obj) {
         function change_content() {
             $.ajax({
                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                url: "api/author/<str:authorID>/inbox",
+                url: "api/author/" + currentAuthorID + "/inbox",
                 type: "GET",
                 data: {"page": current_page},
                 success: function(data) {
@@ -34,11 +36,15 @@ function page_ctrl(data_obj) {
                             // TODO
                         }
                         else if (item["type"].match("follow")) {
-                            html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '">' + item["actor"].displayName + '</a>';
-                            html += ' wants to Friend with you. If you want to be Friend with him/her, you can Follow Back or Add As Friend by click him/her Profile</h4>';
+                            html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '"';
+                            html += ' style="text-decoration: none;">' + item["actor"].displayName + '</a>';
+                            html += ' wants to Friend with you. <br>If you want to be Friend with him/her, ';
+                            html += 'you can Follow Back or Add As Friend by click him/her Profile. ';
+                            html += '<br>If you guys already become Friend, please ignore this message</h4>';
                         }
                         else if (item["type"].match("like")) {
-                            html += '<hr><h4><a href="../profile/' + item["author"].authorID + '">' + item["author"].displayName + '</a>';
+                            html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
+                            html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
                             html += item["summary"].substring(item["summary"].indexOf(" Likes")) + '</h4>';
                         }
                     }

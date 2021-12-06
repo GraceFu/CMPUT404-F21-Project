@@ -37,14 +37,14 @@ class InboxViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         author = Author.objects.get(authorID=authorID)
-        queryset = InboxObject.objects.filter(author__in=author)
+        queryset = InboxObject.objects.filter(author=author)
         pagination = CustomPagiantor()
         qs = pagination.paginate_queryset(queryset, request)
         serializers = InboxObjectSerializer(qs, many=True)
 
         res = {
             "type": "inbox",
-            "author": author[0].url,
+            "author": author.url,
             "items": [io["object"] for io in serializers.data]
         }
         return Response(res, status=status.HTTP_200_OK)
@@ -74,7 +74,7 @@ class InboxViewSet(viewsets.GenericViewSet):
             like = {
                 "type": "like",
                 "author": AuthorSerializer(actor).data,
-                "summary": actor.displayName + " likes your " + obj_type,
+                "summary": actor.displayName + " Likes your " + obj_type,
                 "object": request.data["object"]
             }
 

@@ -64,7 +64,7 @@ $("#myCustom_following_button_clicked").click(function () {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "../api/author/" + authorID + "/inbox",
         type: "POST",
-        data: {"type": "follow", "followee": currentLoginAuthorID},
+        data: {"type": "follow", "follower": currentLoginAuthorID},
         success: function(data) {}
     })
 });
@@ -178,7 +178,7 @@ $("#myCustom_friend_add_button_clicked").click(function () {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "../api/author/" + authorID + "/inbox",
         type: "POST",
-        data: {"type": "follow", "followee": currentLoginAuthorID},
+        data: {"type": "follow", "follower": currentLoginAuthorID},
         success: function(data) {}
     })
 });
