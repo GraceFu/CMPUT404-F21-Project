@@ -104,7 +104,7 @@ class PostViewSet(viewsets.GenericViewSet):
         queryset = Post.objects.filter(
             postID=postID, visibility=visibility_type.PUBLIC)
         serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data[0])
 
     @action(methods=[methods.PUT], detail=True)
     def create_post_with_existing_id(self, request, authorID, postID):
