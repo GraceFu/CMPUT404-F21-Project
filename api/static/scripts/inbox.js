@@ -13,8 +13,21 @@ function page_ctrl(data_obj) {
 
     var currentAuthorID = $("#myCustom_profile_user_info").attr("value");
 
+    // Adding the clear inbox modal
+    var clear_html = '<div class="modal fade" id="clear_inbox_modal" style="top: 30%;" ';
+    clear_html += 'aria-labelledby="clear_inbox_title" aria-hidden="true">';
+    clear_html += '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">';
+    clear_html += '<h4 id="clear_inbox_title">Clearing The Inbox</h4>';
+    clear_html += '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
+    clear_html += '</div><div class="modal-body">';
+    clear_html += '<p>Are you sure you want to clear the inbox? To confirm, please click Clear.</p>';
+    clear_html += '<button type="button" id="myCustom_clear_inbox_button_clicked" class="btn btn-outline-danger">Clear</button>';
+    clear_html += '</div></div></div></div>';
+    $(obj_box).html(clear_html);
+    // Adding the button to clear the inbox
+    $(obj_box).append('<label role="button" class="btn btn-danger btn-lg" style="width: 500px;" data-bs-toggle="modal" data-bs-target="#clear_inbox_modal">Clear Inbox</label>');
     // Adding the content
-    $(obj_box).html('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
+    $(obj_box).append('<hr><div class="page_content text-center"></div><hr style="margin-bottom: 25px;">');
     // Adding the page manage
     $(obj_box).append('<div class="page_ctrl text-center"></div>');
 
@@ -27,25 +40,27 @@ function page_ctrl(data_obj) {
                 type: "GET",
                 data: {"page": current_page},
                 success: function(data) {
+                    console.log(data)
                     var count = 0;
                     var html = '<div class="text-center"><br><br><h1>Here is your inbox, =.=<h1><br></div>';
 
                     for (var item of data.items) {
                         count += 1;
                         if (item["type"].match("post")) {
-                            // TODO
+                            let single_post_url = item["url"].replace('api/', '');
+                            html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
+                            html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
+                            html += ' share a <a style="text-decoration: none;" href="' + single_post_url + '">post</a> with you</h4>';
                         }
                         else if (item["type"].match("follow")) {
                             html += '<hr><h4><a href="../profile/' + item["actor"].authorID + '"';
                             html += ' style="text-decoration: none;">' + item["actor"].displayName + '</a>';
-                            html += ' wants to Friend with you. <br>If you want to be Friend with him/her, ';
-                            html += 'you can Follow Back or Add As Friend by click him/her Profile. ';
-                            html += '<br>If you guys already become Friend, please ignore this message</h4>';
+                            html += ' follows you! <br> Follow back to be friends with ' + item["actor"].displayName + '<3 </h4>';
                         }
                         else if (item["type"].match("like")) {
                             html += '<hr><h4><a href="../profile/' + item["author"].authorID + '"';
                             html += ' style="text-decoration: none;">' + item["author"].displayName + '</a>';
-                            html += item["summary"].substring(item["summary"].indexOf(" Likes")) + '</h4>';
+                            html += item["summary"].substring(item["summary"].indexOf(" likes")) + '</h4>';
                         }
                     }
 
@@ -157,3 +172,19 @@ function page_ctrl(data_obj) {
         }
     });
 }
+
+// Handler of Clear Inbox button clicked event
+$("#myCustom_container_area").on("click", "#myCustom_clear_inbox_button_clicked", function () {
+    var currentUserAuthorID = $("#myCustom_profile_user_info").attr("value");
+
+    $.ajax({
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        url: "api/author/" + currentUserAuthorID + "/inbox",
+        type: "DELETE",
+        success: function(data) {
+            window.location.reload();
+            // When page loading, go the top of page
+            window.scrollTo(0,0);
+        }
+    })
+});

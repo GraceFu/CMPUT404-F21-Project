@@ -12,7 +12,6 @@ $(".myCustom_like_post_show").click(function () {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + poster + "/posts/" + postID + "/likes",
         type: "GET",
-
         success: function(data) {
             var count = 0;
             var html = "";
@@ -61,14 +60,12 @@ $(".myCustom_button_like_post_send").click(function () {
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
         data: { "summary": displayName + " likes your post", "object": send_object },
-
         success: function(data) {
             
             $.ajax({
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 url: "api/author/" + poster + "/posts/" + postID + "/likes",
                 type: "GET",
-
                 success: function(data) {
                     var html = "";
                     var AmILiked = false;
@@ -119,7 +116,6 @@ $("#myCustom_container_area").on("click", ".myCustom_like_comment_show", functio
         csrfmiddlewaretoken: '{{ csrf_token }}',
         url: "api/author/" + poster + "/posts/" + postID + "/comments/" + commentID + "/likes",
         type: "GET",
-
         success: function(data) {
             var count = 0;
             var html = "";
@@ -162,6 +158,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
     var HOSTNAME = $("#like_comment_hostname_" + commentID).attr("value");
     var poster = $("#like_comment_hostname_" + commentID).attr("var");
     var displayName = $("#myCustom_current_author_displayName").attr("value");
+    var commenter = $("#myCustom_comment_commenter_" + commentID).attr("value");
 
     var send_object = 'https://' + HOSTNAME + '/api/author/' + poster + '/posts/' + postID + '/comments/' + commentID;
 
@@ -170,14 +167,12 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
         url: "api/author/" + authorID + "/inbox/",
         type: "POST",
         data: { "summary": displayName + " likes your comment", "object": send_object },
-
         success: function(data) {
             
             $.ajax({
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 url: "api/author/" + poster + "/posts/" + postID + "/comments/" + commentID + "/likes",
                 type: "GET",
-
                 success: function(data) {
                     var html = "";
                     var AmILiked = false;
@@ -205,7 +200,7 @@ $("#myCustom_container_area").on("click", ".myCustom_button_like_comment_send", 
 
     $.ajax({
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        url: "../api/author/" + poster + "/inbox",
+        url: "../api/author/" + commenter + "/inbox",
         type: "POST",
         data: {"type": "like", "object": send_object, "actor": authorID},
         success: function(data) {}

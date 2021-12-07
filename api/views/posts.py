@@ -1,18 +1,19 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from api.models import Author, Post, Comment, visibility_type
-from api.serializers import PostSerializer
+from api.models import Author, Post, Follower, InboxObject, visibility_type
+from api.serializers import PostSerializer, FollowSerializer
 from api.utils import methods, generate_id, invalid_user_view, author_not_found, post_not_found
 from api.forms import NewPostForm
 from api.paginaion import CustomPagiantor
 
 from datetime import datetime
-
 
 """ 
 put request data into instance 
@@ -210,6 +211,35 @@ def post_handler(request, authorID):
                 populate_post_data(form.cleaned_data, instance)
                 messages.info(
                     request, "Congratulations! Your post has been published.")
+
+                try:
+                    if (instance.visibility == "FRIENDS"):
+                        followers = Follower.objects.filter(followee=authorID)
+
+                        index = 0
+                        for item in followers:
+                            if author_not_found(item.follower.authorID):
+                                return Response(status=status.HTTP_404_NOT_FOUND)
+                            try:
+                                follow_back = Follower.objects.get(
+                                    Q(followee=item.follower.authorID) & Q(follower=authorID))
+                            except:
+                                followers = followers.exclude(follower=item.follower.authorID)
+                            index += 1
+
+                        serializer = FollowSerializer(followers, many=True)
+
+                        for item in serializer.data:
+                            post = Post.objects.get(postID=postID)
+                            serialized_post = PostSerializer(post)
+
+                            instance_inbox = InboxObject(type="post")
+                            instance_inbox.author = Author.objects.get(authorID=item['follower']['authorID'])
+                            instance_inbox.object = serialized_post.data
+                            instance_inbox.save()
+                except:
+                    pass
+                    
             else:
                 messages.error(
                     request, "Unsuccessful published. Invalid information.")
@@ -285,3 +315,23 @@ def my_posts_view(request):
     content['my_posts_page'] = True
 
     return render(request, "my_posts.html", content)
+
+
+@login_required(login_url='login')
+def single_post_view(request, authorID, postID):
+    # Check the user is invalid in view
+    if invalid_user_view(request): 
+        return redirect("login")
+
+    content = {}
+
+    if author_not_found(authorID) or post_not_found(postID):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    author = Author.objects.get(authorID=request.user.author.authorID)
+    post = Post.objects.filter(postID=postID)
+
+    content['author'] = author
+    content['posts'] = post
+    content['HOSTNAME'] = request.get_host()
+
+    return render(request, "post.html", content)
